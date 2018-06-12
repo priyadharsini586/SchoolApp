@@ -27,11 +27,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void init() {
-        videoView  = (VideoView) findViewById(R.id.videoView);
+        /*videoView  = (VideoView) findViewById(R.id.videoView);
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.background_video);
 
         videoView.setDrawingCacheEnabled(true);
         videoView.setVideoURI(uri);
-        videoView.requestFocus();
+        videoView.requestFocus();*/
     }
 }
