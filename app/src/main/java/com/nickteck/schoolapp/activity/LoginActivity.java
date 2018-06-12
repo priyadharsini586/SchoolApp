@@ -1,5 +1,6 @@
 package com.nickteck.schoolapp.activity;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +20,6 @@ public class LoginActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
-
         init();
 
     }
@@ -31,5 +31,12 @@ public class LoginActivity extends AppCompatActivity {
         mVideoView.setVideoURI(uri);
         mVideoView.requestFocus();
         mVideoView.start();
+
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
+            }
+        });
     }
 }
