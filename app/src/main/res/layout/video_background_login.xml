@@ -1,22 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <VideoView
         android:id="@+id/videoView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_gravity="center" />
 
-    <ImageView
+    <!--<LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/transparentimage"
-        android:scaleType="centerCrop"/>
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit_phone_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/edit_text_design"
+            android:hint="@string/mobile_no"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/button_corner"
+            android:padding="10dp"
+            android:text="Submit"
+            android:textColor="@android:color/white" />
+
+        &lt;!&ndash;<TextView
+            android:id="@+id/change_mobile_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="italic"
+            android:textAlignment="center"
+            android:text="@string/mobile_no_change"/>&ndash;&gt;
+
+
+
+    </LinearLayout>-->
+
+
+
+</LinearLayout>
