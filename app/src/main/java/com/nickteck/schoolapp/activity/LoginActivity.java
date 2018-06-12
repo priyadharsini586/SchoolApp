@@ -11,7 +11,7 @@ import com.nickteck.schoolapp.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private VideoView videoView;
+    VideoView mVideoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,18 +20,16 @@ public class LoginActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
-
         init();
-
 
     }
 
     private void init() {
-        /*videoView  = (VideoView) findViewById(R.id.videoView);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.background_video);
-
-        videoView.setDrawingCacheEnabled(true);
-        videoView.setVideoURI(uri);
-        videoView.requestFocus();*/
+        mVideoView  = (VideoView) findViewById(R.id.videoView);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.wildlife);
+        mVideoView.setDrawingCacheEnabled(true);
+        mVideoView.setVideoURI(uri);
+        mVideoView.requestFocus();
+        mVideoView.start();
     }
 }
