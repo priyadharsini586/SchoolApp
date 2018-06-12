@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SchoolApp.iml" filepath="$PROJECT_DIR$/SchoolApp.iml" />
+      <module fileurl="file://D:\priya\AndroidProjects\SchoolApp\SchoolApp\SchoolApp.iml" filepath="D:\priya\AndroidProjects\SchoolApp\SchoolApp\SchoolApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

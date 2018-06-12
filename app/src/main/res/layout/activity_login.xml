@@ -1,60 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#29000000"
     tools:context="com.nickteck.schoolapp.activity.LoginActivity">
 
-    <!--<include layout="@layout/video_background_login"/>-->
-
-    <pl.droidsonroids.gif.GifTextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/login_gif" />
-
+    <include layout="@layout/video_background_login"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/edit_phone_no"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="@drawable/edit_text_design"
-            android:hint="@string/mobile_no"
-            android:drawableLeft="@drawable/ic_phone_black"
-            android:padding="10dp" />
-
-        <Button
-            android:id="@+id/submit_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="@drawable/button_corner"
-            android:padding="10dp"
-            android:text="Submit"
-            android:textColor="@android:color/white" />
-
-        <!--<TextView
-            android:id="@+id/change_mobile_no"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="italic"
-            android:textAlignment="center"
-            android:text="@string/mobile_no_change"/>-->
-
-
+        android:layout_height="match_parent">
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp">
 
+        <EditText
+            android:id="@+id/editPhoneNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_design"
+            android:hint="@string/mobile_no"
+            android:padding="20dp"
+            android:inputType="phone"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+        <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_corner"
+            app:spinning_bar_width="4dp"
+            app:spinning_bar_color="#FFF"
+           app:spinning_bar_padding="6dp"
+            android:padding="20dp"
+            android:text="Submit"
+            android:textColor="@android:color/white"
+            android:id="@+id/btnSubmit"
+            android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
