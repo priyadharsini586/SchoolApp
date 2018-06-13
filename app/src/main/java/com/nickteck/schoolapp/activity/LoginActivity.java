@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 btnSubmit.startAnimation();
                 Intent intent = new Intent(getApplicationContext(),DashboardActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

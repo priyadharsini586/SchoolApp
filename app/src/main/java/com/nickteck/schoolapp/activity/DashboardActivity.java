@@ -14,10 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.nickteck.schoolapp.R;
+import com.nickteck.schoolapp.fragment.DashboardFragment;
+import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
+import com.nickteck.schoolapp.utilclass.Constants;
+import com.nickteck.schoolapp.utilclass.UtilClasses;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    protected  OnBackPressedListener onBackPressedListener ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,8 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        UtilClasses.setFragmentContainer(DashboardActivity.this,new DashboardFragment(), Constants.DASHBOARD_FRAGMENT);
     }
 
     @Override
@@ -49,11 +56,17 @@ public class DashboardActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+
+        if (onBackPressedListener != null)
+            onBackPressedListener.onBackPressed();
+        else
+            super.onBackPressed();
     }
 
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
