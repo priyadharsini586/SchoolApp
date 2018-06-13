@@ -1,5 +1,6 @@
 package com.nickteck.schoolapp.activity;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -49,8 +50,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 btnSubmit.startAnimation();
+                Intent intent = new Intent(getApplicationContext(),DashboardActivity.class);
+                startActivity(intent);
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mVideoView.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mVideoView.pause();
     }
 }
