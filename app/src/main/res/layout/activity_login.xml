@@ -11,7 +11,7 @@
         android:id="@+id/slider_imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_splash_screen"/>
+        android:scaleType="centerCrop"/>
 
    <!-- <include layout="@layout/video_background_login"/>-->
 

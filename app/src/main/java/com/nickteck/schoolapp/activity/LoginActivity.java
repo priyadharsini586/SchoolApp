@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
@@ -28,13 +30,9 @@ public class LoginActivity extends AppCompatActivity {
 
     CircularProgressButton btnSubmit;
     ArrayList<Integer> sliderImages = new ArrayList<>();
-    private static int currentPage = 0;
-    private static int NUM_PAGES = 0;
-    private static ViewPager mPager;
-    CirclePageIndicator indicator;
     ImageView slider_imageView;
-
-
+    int page = 0;
+    Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +52,31 @@ public class LoginActivity extends AppCompatActivity {
         sliderImages.add(R.drawable.slide_1);
         sliderImages.add(R.drawable.silde_2);
         sliderImages.add(R.drawable.slide_3);
+        sliderImages.add(R.drawable.ic_splash_screen);
 
         slider_imageView = (ImageView) findViewById(R.id.slider_imageView);
-
         btnSubmit = (CircularProgressButton) findViewById(R.id.btnSubmit);
-
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.login_img_slide);
+        testing();
     }
 
+    private void testing() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (page == sliderImages.size()-1) {
+                    page = 0;
+                }else
+                {
+                    page = page + 1;
+                }
+                slider_imageView.startAnimation(animation);
+                slider_imageView.setImageResource(sliderImages.get(page));
+                testing();
+            }
+        }, 2000);
+    }
 
 
 
@@ -82,12 +98,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-      //  mVideoView.start();
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-      //  mVideoView.pause();
+
     }
 }
