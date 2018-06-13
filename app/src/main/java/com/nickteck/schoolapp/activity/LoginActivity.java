@@ -3,22 +3,38 @@ package com.nickteck.schoolapp.activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.VideoView;
 
 import com.nickteck.schoolapp.R;
+import com.viewpagerindicator.CirclePageIndicator;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    VideoView mVideoView;
+
     CircularProgressButton btnSubmit;
+    ArrayList<Integer> sliderImages = new ArrayList<>();
+    private static int currentPage = 0;
+    private static int NUM_PAGES = 0;
+    private static ViewPager mPager;
+    CirclePageIndicator indicator;
+    ImageView slider_imageView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,24 +44,30 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         init();
+        setOnClickListener();
 
     }
 
+
+
     private void init() {
-        mVideoView  = (VideoView) findViewById(R.id.videoView);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.app_background);
-        mVideoView.setDrawingCacheEnabled(true);
-        mVideoView.setVideoURI(uri);
-        mVideoView.requestFocus();
-        mVideoView.start();
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setLooping(true);
-            }
-        });
+        sliderImages.add(R.drawable.slide_1);
+        sliderImages.add(R.drawable.silde_2);
+        sliderImages.add(R.drawable.slide_3);
+
+        slider_imageView = (ImageView) findViewById(R.id.slider_imageView);
 
         btnSubmit = (CircularProgressButton) findViewById(R.id.btnSubmit);
+
+    }
+
+
+
+
+
+
+    private void setOnClickListener() {
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,18 +76,17 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mVideoView.start();
+      //  mVideoView.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mVideoView.pause();
+      //  mVideoView.pause();
     }
 }

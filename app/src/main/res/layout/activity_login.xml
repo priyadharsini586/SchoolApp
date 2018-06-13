@@ -7,14 +7,35 @@
     android:layout_height="match_parent"
     tools:context="com.nickteck.schoolapp.activity.LoginActivity">
 
-    <include layout="@layout/video_background_login"/>
+    <ImageView
+        android:id="@+id/slider_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_splash_screen"/>
 
+   <!-- <include layout="@layout/video_background_login"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/menu_layout"
+        android:orientation="horizontal"
+        android:id="@+id/ldtSlideShow">
 
+
+            <com.viewpagerindicator.CirclePageIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="bottom"
+                android:padding="10dip"
+                app:centered="true"
+                app:fillColor="#ff0099cc"
+                app:pageColor="#fff"
+                app:snap="false" />
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
