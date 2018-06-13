@@ -7,5 +7,8 @@
     <dimen name="content_padding">10dp</dimen>
     <dimen name="login_component_padding">7dp</dimen>
 
+    <!-- image Slider layout width -->
+    <dimen name="menu_layout">150dp</dimen>
+
 
 </resources>
