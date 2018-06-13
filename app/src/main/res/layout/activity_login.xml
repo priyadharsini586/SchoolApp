@@ -7,35 +7,21 @@
     android:layout_height="match_parent"
     tools:context="com.nickteck.schoolapp.activity.LoginActivity">
 
-    <ImageView
-        android:id="@+id/slider_imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
-
-   <!-- <include layout="@layout/video_background_login"/>-->
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/menu_layout"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/ldtSlideShow">
-
-
-            <com.viewpagerindicator.CirclePageIndicator
-                android:id="@+id/indicator"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="bottom"
-                android:padding="10dip"
-                app:centered="true"
-                app:fillColor="#ff0099cc"
-                app:pageColor="#fff"
-                app:snap="false" />
-    </LinearLayout>
+                android:layout_height="wrap_content" />
 
+        </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,6 +29,19 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:padding="@dimen/content_padding">
+
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:padding="10dip"
+            app:centered="true"
+            app:fillColor="#ffffff"
+            app:pageColor="#161615"
+            app:snap="false" />
 
         <EditText
             android:id="@+id/editPhoneNo"
@@ -53,12 +52,24 @@
             android:padding="@dimen/login_component_padding"
             android:inputType="phone"
             />
+
+        <EditText
+            android:id="@+id/editActivationCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_design"
+            android:hint="@string/activation_code"
+            android:padding="@dimen/login_component_padding"
+            android:inputType="number"
+            android:visibility="gone"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/login_component_padding"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
         <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
             android:layout_width="match_parent"
@@ -72,6 +83,20 @@
             android:textColor="@android:color/white"
             android:id="@+id/btnSubmit"
             android:gravity="center"/>
+
+            <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+                android:id="@+id/activationSumbit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_corner"
+                app:spinning_bar_width="4dp"
+                app:spinning_bar_color="#FFF"
+                app:spinning_bar_padding="6dp"
+                android:padding="@dimen/login_component_padding"
+                android:text="Submit"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

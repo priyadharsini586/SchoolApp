@@ -30,5 +30,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'br.com.simplepass:loading-button-android:1.14.0'
     implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+    compile 'com.github.stfalcon:smsverifycatcher:0.3.1'
 
 }
