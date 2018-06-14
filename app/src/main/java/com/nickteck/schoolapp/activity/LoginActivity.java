@@ -3,8 +3,6 @@ package com.nickteck.schoolapp.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -14,21 +12,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.VideoView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.adapter.ViewPagerAdapter;
+import com.nickteck.schoolapp.api.ApiClient;
+import com.nickteck.schoolapp.api.ApiInterface;
 import com.nickteck.schoolapp.model.LoginDetails;
+import com.nickteck.schoolapp.service.MyApplication;
+import com.nickteck.schoolapp.service.NetworkChangeReceiver;
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
 import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -37,9 +39,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements NetworkChangeReceiver.ConnectivityReceiverListener {
 
 
 
@@ -60,6 +65,11 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<String> permissions = new ArrayList<>();
     ArrayList<String> permissionsToRequest;
     ArrayList<String> permissionsRejected = new ArrayList<>();
+    private String getMobileNo;
+    ApiInterface apiInterface;
+    boolean isNetworkConnected;
+    RelativeLayout mainView;
+    boolean netWorkConnection;
 
 
     @Override
@@ -68,6 +78,10 @@ public class LoginActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+
+        mainView = (RelativeLayout) findViewById(R.id.sclMainView);
+
+
 
         // getting permission for app
         getPermission();
@@ -88,10 +102,15 @@ public class LoginActivity extends AppCompatActivity {
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);*/
         permissionsToRequest = findUnAskedPermissions(permissions);
+
+        MyApplication.getInstance().setConnectivityListener(this);
+        if (HelperClass.isNetworkAvailable(getApplicationContext()))
+            netWorkConnection = true;
+        else
+            netWorkConnection = false;
     }
 
     private void init() {
-
         imageModelArrayList =  populateList();
         sliderImages.add(R.drawable.slide_1);
         sliderImages.add(R.drawable.silde_2);
@@ -191,14 +210,62 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkLogin() {
+        if (netWorkConnection){
+            getMobileNo = mMobileNo.getText().toString();
+            // api call for the add favourite list
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("phone", getMobileNo);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            Call<LoginDetails> checkMobileNo = apiInterface.checkMobileNo(jsonObject);
+            checkMobileNo.enqueue(new Callback<LoginDetails>() {
+
+                @Override
+                public void onResponse(Call<LoginDetails> call, Response<LoginDetails> response) {
+                    if (response.isSuccessful()){
+                        if(response.body().getStatus_code().equals("1")){
+                            Toast.makeText(LoginActivity.this, "PRegistered user : Phone number verified.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this,DashboardActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }else if(response.body().getStatus_code().equals("-1")){
+                            Toast.makeText(LoginActivity.this, "Registered user :  : Phone number notverified.", Toast.LENGTH_SHORT).show();
+                            enableActivationBox();
+
+                        }else if(response.body().getStatus_code().equals("0")){
+                            Toast.makeText(LoginActivity.this, "Unregistered user : Phone number not available.", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    }
+
+                }
+                @Override
+                public void onFailure(Call<LoginDetails> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+        }else {
+            HelperClass.showTopSnackBar(mainView,"Network not connected");
+        }
+
+        // checking for opt
+        // checkForOtp();
+    }
+
+    private void enableActivationBox(){
         // after login api sucess then only it should start
         mMobileNo.setVisibility(View.GONE);
         mbtnSubmit.setVisibility(View.GONE);
+        meditActivationCode.startAnimation(AnimationUtils.loadAnimation(LoginActivity.this,R.anim.edit_text_animation));
+        mactivationSumbit.startAnimation(AnimationUtils.loadAnimation(LoginActivity.this,R.anim.edit_text_animation));
         meditActivationCode.setVisibility(View.VISIBLE);
         mactivationSumbit.setVisibility(View.VISIBLE);
-
-        // checking for opt
-        checkForOtp();
 
     }
 
@@ -323,5 +390,16 @@ public class LoginActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+
+        netWorkConnection = isConnected;
+        if (mainView != null) {
+            if (!isConnected)
+                HelperClass.showTopSnackBar(mainView,"Network not connected");
+        }
+
     }
 }

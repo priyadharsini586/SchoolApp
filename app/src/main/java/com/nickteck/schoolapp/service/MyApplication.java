@@ -1,4 +1,4 @@
-package com.nickteck.schoolapp.network;
+package com.nickteck.schoolapp.service;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.nickteck.schoolapp.network.ConnectivityReceiver;
 import com.nickteck.schoolapp.utilclass.Constants;
 import com.nickteck.schoolapp.utilclass.FontsOverride;
 
@@ -49,7 +50,7 @@ public class MyApplication extends Application {
         return mInstance;
     }
 
-    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
-        ConnectivityReceiver.connectivityReceiverListener = listener;
+    public void setConnectivityListener(NetworkChangeReceiver.ConnectivityReceiverListener listener) {
+        NetworkChangeReceiver.connectivityReceiverListener = listener;
     }
 }
