@@ -25,6 +25,7 @@ import com.nickteck.schoolapp.api.ApiInterface;
 import com.nickteck.schoolapp.model.LoginDetails;
 import com.nickteck.schoolapp.service.MyApplication;
 import com.nickteck.schoolapp.service.NetworkChangeReceiver;
+import com.nickteck.schoolapp.utilclass.Constants;
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
 import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -182,17 +183,12 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
             public void onClick(View view) {
                 isPhone = HelperClass.isValidMobile(mMobileNo.getText().toString());
                 //check for mobile no is valid
-                if (isPhone){
+                if (!isPhone){
+                    mbtnSubmit.startAnimation();
                     checkLogin();
                 }else {
                     validation();
                 }
-                // need to check for api validation
-
-                /*btnSubmit.startAnimation();
-                Intent intent = new Intent(getApplicationContext(),DashboardActivity.class);
-                startActivity(intent);
-                finish();*/
             }
         });
         mactivationSumbit.setOnClickListener(new View.OnClickListener() {
@@ -226,18 +222,21 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                 @Override
                 public void onResponse(Call<LoginDetails> call, Response<LoginDetails> response) {
                     if (response.isSuccessful()){
-                        if(response.body().getStatus_code().equals("1")){
-                            Toast.makeText(LoginActivity.this, "PRegistered user : Phone number verified.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this,DashboardActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }else if(response.body().getStatus_code().equals("-1")){
-                            Toast.makeText(LoginActivity.this, "Registered user :  : Phone number notverified.", Toast.LENGTH_SHORT).show();
-                            enableActivationBox();
+                        LoginDetails loginDetails = response.body();
+                        mbtnSubmit.stopAnimation();
+                        if (loginDetails.getStatus_code() != null) {
+                            if (loginDetails.getStatus_code().equals(Constants.SUCESS)) {
+                                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else if (loginDetails.getStatus_code().equals(Constants.NOT_VERIFIED)) {
+                                Toast.makeText(LoginActivity.this, loginDetails.getStatus_message(), Toast.LENGTH_SHORT).show();
+                                enableActivationBox();
 
-                        }else if(response.body().getStatus_code().equals("0")){
-                            Toast.makeText(LoginActivity.this, "Unregistered user : Phone number not available.", Toast.LENGTH_SHORT).show();
+                            } else if (loginDetails.getStatus_code().equals(Constants.FAILURE)) {
+                                Toast.makeText(LoginActivity.this, loginDetails.getStatus_message(), Toast.LENGTH_SHORT).show();
 
+                            }
                         }
 
                     }
@@ -374,12 +373,17 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     @Override
     protected void onStart() {
         super.onStart();
-        smsVerifyCatcher.onStart();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        smsVerifyCatcher.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         smsVerifyCatcher.onStop();
     }
 

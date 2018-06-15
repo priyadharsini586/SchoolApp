@@ -12,6 +12,7 @@ public class Constants {
     public static String BROADCAST = "broadCastName";
     public static String SUCESS = "1";
     public static String FAILURE = "0";
+    public static String NOT_VERIFIED = "-1";
 
     //fragment tag
     public static String DASHBOARD_FRAGMENT = "DASHBOARD_FRAGMENT";

@@ -1,9 +1,16 @@
 package com.nickteck.schoolapp.utilclass;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nickteck.schoolapp.R;
@@ -22,4 +29,6 @@ public class UtilClasses {
         fragmentTransaction.addToBackStack(fragmentTag);
         fragmentTransaction.commit();
     }
+
+
 }

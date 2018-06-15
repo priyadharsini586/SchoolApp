@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#2ec6f3</color>
+    <color name="colorPrimaryDark">#29b2da</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="sky_blue">#2ec6f3</color>
+    <color name="card_bg" >#2ec6f3</color>
 </resources>
