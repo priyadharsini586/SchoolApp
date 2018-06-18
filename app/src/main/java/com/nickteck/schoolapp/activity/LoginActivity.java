@@ -200,7 +200,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
             public void onClick(View view) {
                 isPhone = HelperClass.isValidMobile(mMobileNo.getText().toString());
                 //check for mobile no is valid
-                if (!isPhone) {
+                if (isPhone) {
 
                     checkLogin();
                 } else {
@@ -359,7 +359,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                 @Override
                 public void onResponse(Call<LoginDetails> call, Response<LoginDetails> response) {
                     if (response.isSuccessful()) {
-                        LoginDetails loginDetails = response.body();
+                         loginDetails = response.body();
                         if (loginDetails.getStatus_code() != null) {
                             if (loginDetails.getStatus_code().equals(Constants.SUCESS)) {
 

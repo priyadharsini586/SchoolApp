@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DataBaseHandler extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "SCHOOLDB   ";
+    private static final String DATABASE_NAME = "SCHOOLDB";
     private static final int DATABASE_VERSION = 1;
 
     //parent table
@@ -102,6 +102,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
          mobileNumber = cursor.getString(2);
+         cursor.close();
         db.close();
 
         return mobileNumber;
@@ -115,8 +116,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
         deviceId = cursor.getString(1);
+        cursor.close();
         db.close();
-
         return deviceId;
     }
     public void dropParentDetails(){
@@ -132,7 +133,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null)
             cursor.moveToFirst();
-        parentDetails = cursor.getString(1);
+        parentDetails = cursor.getString(0);
+        cursor.close();
         db.close();
 
         return parentDetails;

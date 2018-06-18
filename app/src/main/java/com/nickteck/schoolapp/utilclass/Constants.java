@@ -16,4 +16,6 @@ public class Constants {
 
     //fragment tag
     public static String DASHBOARD_FRAGMENT = "DASHBOARD_FRAGMENT";
+
+    public static String CHILD_IMAGE_URL  = "http://docpat-app.com/school_app/images/students/";
 }

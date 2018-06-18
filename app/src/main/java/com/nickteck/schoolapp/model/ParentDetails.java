@@ -1,10 +1,26 @@
 package com.nickteck.schoolapp.model;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+
+import com.nickteck.schoolapp.AdditionalClass.DownloadImage;
+import com.nickteck.schoolapp.AdditionalClass.HelperClass;
+import com.nickteck.schoolapp.utilclass.Constants;
+import com.nickteck.schoolapp.utilclass.UtilClasses;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by admin on 6/18/2018.
@@ -102,7 +118,21 @@ public class ParentDetails {
                 studObject.put("student_name",studentDetails.getStudent_name());
                 studObject.put("student_std",studentDetails.getStudent_std());
                 studObject.put("student_section",studentDetails.getStudent_section());
-                studObject.put("student_photo",studentDetails.getStudent_photo());
+                if (!studentDetails.getStudent_photo().isEmpty()) {
+                    String url = Constants.CHILD_IMAGE_URL + studentDetails.getStudent_photo();
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = new DownloadImage().execute(url).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    String bitmapImage = HelperClass.BitMapToString(bitmap);
+                    studObject.put("student_photo",bitmapImage);
+                }else {
+                    studObject.put("student_photo", studentDetails.getStudent_photo());
+                }
                 studentDetailArray.put(studObject);
             }
             jsonObject.put("student_details",studentDetailArray);
@@ -111,4 +141,7 @@ public class ParentDetails {
         }
         return jsonObject;
     }
+
+
+
 }

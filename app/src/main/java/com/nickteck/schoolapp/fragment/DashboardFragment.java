@@ -18,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ import com.nickteck.schoolapp.utilclass.Constants;
 import com.nickteck.schoolapp.utilclass.UtilClasses;
 import com.stfalcon.multiimageview.MultiImageView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -111,10 +113,6 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         MyApplication.getInstance().setConnectivityListener(this);
 
         profile_image1 = (MultiImageView) mainView.findViewById(R.id.profile_image_dashBoard);
-        profile_image1.addImage(BitmapFactory.decodeResource(getResources(), R.drawable.default_image));
-        profile_image1.addImage(BitmapFactory.decodeResource(getResources(), R.drawable.schoolchild));
-        profile_image1.setShape(MultiImageView.Shape.CIRCLE);//Circle
-
 
 
         if ((DashboardActivity)getActivity() != null)
@@ -336,6 +334,16 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
             JSONObject getParentObject = new JSONObject(getParentDetails);
             txtChildName.setText(getParentObject.getString("parent_name"));
             txtMobileNumber.setText(dataBaseHandler.getMobileNumber());
+            JSONArray getStudentArray = getParentObject.getJSONArray("student_details");
+            for (int i = 0 ;i < getStudentArray.length() ; i ++){
+                JSONObject studObject = getStudentArray.getJSONObject(i);
+                if (studObject.has("student_photo")){
+                    String stuPhoto = studObject.getString("student_photo");
+                    Bitmap bitmap = HelperClass.StringToBitMap(stuPhoto);
+                    profile_image1.addImage(bitmap);
+                }
+            }
+            profile_image1.setShape(MultiImageView.Shape.CIRCLE);
         } catch (JSONException e) {
             e.printStackTrace();
         }

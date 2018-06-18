@@ -3,10 +3,15 @@ package com.nickteck.schoolapp.AdditionalClass;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +19,11 @@ import android.widget.TextView;
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.nickteck.schoolapp.R;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Pattern;
 
 /**
@@ -65,5 +75,50 @@ public class HelperClass {
         dialog.setContentView(R.layout.custom_alert_dialoge);
         //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
+    }
+
+
+    public static String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+
+    public static Bitmap StringToBitMap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+    public static class MyNetworkTask extends AsyncTask<URL, Void, Bitmap>{
+
+        @Override
+        protected Bitmap doInBackground(URL... urls) {
+
+            Bitmap networkBitmap = null;
+
+            URL networkUrl = urls[0]; //Load the first element
+            try {
+                networkBitmap = BitmapFactory.decodeStream(
+                        networkUrl.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return networkBitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+
+        }
+
     }
 }
