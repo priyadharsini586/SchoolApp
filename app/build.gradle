@@ -38,4 +38,5 @@ dependencies {
     compile 'com.androidadvance:topsnackbar:1.1.1'
     implementation project(':circulartools')
     compile 'com.android.support:cardview-v7:22.2.0'
+    compile 'com.github.stfalcon:multiimageview:0.1'
 }

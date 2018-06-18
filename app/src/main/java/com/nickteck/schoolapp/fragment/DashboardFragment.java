@@ -50,6 +50,7 @@ import com.nickteck.schoolapp.service.MyApplication;
 import com.nickteck.schoolapp.service.NetworkChangeReceiver;
 import com.nickteck.schoolapp.utilclass.Constants;
 import com.nickteck.schoolapp.utilclass.UtilClasses;
+import com.stfalcon.multiimageview.MultiImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +66,9 @@ import retrofit2.Response;
 public class DashboardFragment extends Fragment  implements OnBackPressedListener, NetworkChangeReceiver.ConnectivityReceiverListener {
 
     View mainView;
-    CircleImageView profile_image;
+   // CircleImageView profile_image;
+    private MultiImageView profile_image1;
+
     private int screenWidth;
     private int screenHeight;
     private View myView;
@@ -78,6 +81,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TSnackbar tSnackbar;
     ApiInterface apiInterface;
     DataBaseHandler dataBaseHandler;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -105,6 +109,13 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         frameMainLayout = mainView.findViewById(R.id.frameMainLayout);
         MyApplication.getInstance().setConnectivityListener(this);
+
+        profile_image1 = (MultiImageView) mainView.findViewById(R.id.profile_image_dashBoard);
+        profile_image1.addImage(BitmapFactory.decodeResource(getResources(), R.drawable.default_image));
+        profile_image1.addImage(BitmapFactory.decodeResource(getResources(), R.drawable.schoolchild));
+        profile_image1.setShape(MultiImageView.Shape.CIRCLE);//Circle
+
+
 
         if ((DashboardActivity)getActivity() != null)
             ((DashboardActivity) getActivity()).setOnBackPressedListener(this);
@@ -152,7 +163,8 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         frameMainLayout = view.findViewById(R.id.frameMainLayout);
         myView = view.findViewById(R.id.linear);
-        profile_image = view.findViewById(R.id.profile_image);
+     //   profile_image = view.findViewById(R.id.profile_image);
+        profile_image1 = view.findViewById(R.id.profile_image_dashBoard);
 
         //background imageview animation
         int[] myViewLocation = new int[2];
