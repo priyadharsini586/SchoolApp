@@ -45,18 +45,18 @@ public class HelperClass {
         return check;
     }
 
-    public static TSnackbar showTopSnackBar(View appCompatActivity, String content) {
-        TSnackbar snackbar = TSnackbar.make(appCompatActivity, content, TSnackbar.LENGTH_LONG);
+    public static TSnackbar showTopSnackBar(View view, String content) {
+        TSnackbar snackbar = TSnackbar.make(view, content, TSnackbar.LENGTH_LONG);
         snackbar.setActionTextColor(Color.WHITE);
         View snackbarView = snackbar.getView();
         snackbarView.setBackgroundColor(Color.parseColor("#e50000"));
-        snackbar.setMaxWidth(appCompatActivity.getWidth());
-        snackbar.setDuration(3000);
+        snackbar.setMaxWidth(view.getWidth());
+        snackbar.setDuration(50000);
         TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
-        snackbar.show();
+
         return snackbar;
     }
     private void openCustomDialoge(View v, Activity activity) {

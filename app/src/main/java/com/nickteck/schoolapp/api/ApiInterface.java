@@ -1,6 +1,7 @@
 package com.nickteck.schoolapp.api;
 
 import com.nickteck.schoolapp.model.LoginDetails;
+import com.nickteck.schoolapp.model.ParentDetails;
 
 import org.json.JSONObject;
 
@@ -27,7 +28,9 @@ public interface ApiInterface {
     @POST("verify_otp.php")
     Call<LoginDetails> verifyOtp(@Field("x") JSONObject object);
 
-
+    @FormUrlEncoded
+    @POST("parent_details.php")
+    Call<ParentDetails> getParentDetails(@Field("x") JSONObject object);
 
 
 }

@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,19 +33,36 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidadvance.topsnackbar.TSnackbar;
+import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.activity.DashboardActivity;
+import com.nickteck.schoolapp.activity.LoginActivity;
+import com.nickteck.schoolapp.api.ApiClient;
+import com.nickteck.schoolapp.api.ApiInterface;
+import com.nickteck.schoolapp.database.DataBaseHandler;
 import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
+import com.nickteck.schoolapp.model.LoginDetails;
+import com.nickteck.schoolapp.model.ParentDetails;
+import com.nickteck.schoolapp.service.MyApplication;
+import com.nickteck.schoolapp.service.NetworkChangeReceiver;
+import com.nickteck.schoolapp.utilclass.Constants;
 import com.nickteck.schoolapp.utilclass.UtilClasses;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hu.aut.utillib.circular.animation.CircularAnimationUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class DashboardFragment extends Fragment  implements OnBackPressedListener{
+public class DashboardFragment extends Fragment  implements OnBackPressedListener, NetworkChangeReceiver.ConnectivityReceiverListener {
 
     View mainView;
     CircleImageView profile_image;
@@ -56,13 +74,18 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TextView txtChildName,txtMobileNumber;
     Animation animSlideDown,txtNumberAnimation,profileImgAnimation;
     LinearLayout ldtChildName,ldtMobileNumber,ldtImage;
-
+    boolean isNetworkConnected= false;
+    TSnackbar tSnackbar;
+    ApiInterface apiInterface;
+    DataBaseHandler dataBaseHandler;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mainView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        dataBaseHandler = new DataBaseHandler(getActivity());
 
         animSlideDown = AnimationUtils.loadAnimation(getActivity(),R.anim.textview_top_to_down);
         txtNumberAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.textview_top_to_down);
@@ -79,6 +102,9 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         ldtMobileNumber.setVisibility(View.GONE);
         ldtImage = (LinearLayout)mainView.findViewById(R.id.ldtImage);
         ldtImage.setVisibility(View.GONE);
+
+        frameMainLayout = mainView.findViewById(R.id.frameMainLayout);
+        MyApplication.getInstance().setConnectivityListener(this);
 
         if ((DashboardActivity)getActivity() != null)
             ((DashboardActivity) getActivity()).setOnBackPressedListener(this);
@@ -206,10 +232,100 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
             }
         });
+
+        tSnackbar = HelperClass.showTopSnackBar(mainView, "Network not connected");
+
+        if (HelperClass.isNetworkAvailable(getActivity())) {
+            isNetworkConnected = true;
+            if (tSnackbar.isShown())
+                tSnackbar.dismiss();
+        }
+        else {
+            isNetworkConnected = false;
+            tSnackbar.show();
+        }
+        if (isNetworkConnected)
+            getDataFromServer();
+        else
+            setIntoView();
+
+
     }
 
     @Override
     public void onBackPressed() {
         ((DashboardActivity)getActivity()).finish();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        isNetworkConnected = isConnected;
+        if (!isConnected) {
+            tSnackbar.show();
+        }else
+        {
+            if (tSnackbar.isShown())
+                tSnackbar.dismiss();
+        }
+    }
+
+
+    public void getDataFromServer(){
+        if (isNetworkConnected){
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("phone", dataBaseHandler.getMobileNumber());
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            Call<ParentDetails> checkMobileNo = apiInterface.getParentDetails(jsonObject);
+            checkMobileNo.enqueue(new Callback<ParentDetails>() {
+                @Override
+                public void onResponse(Call<ParentDetails> call, Response<ParentDetails> response) {
+                    if (response.isSuccessful()){
+                        ParentDetails parentDetails = response.body();
+                        if (parentDetails.getStatus_code() != null){
+                            if (parentDetails.getStatus_code().equals(Constants.SUCESS)){
+                                if (parentDetails.getDevice_id().equals(dataBaseHandler.getDeviceId())){
+
+                                    JSONObject parentObject = parentDetails.toJSON();
+                                    dataBaseHandler.dropParentDetails();
+                                    dataBaseHandler.insertParentDetails(parentDetails.getParent_id(),parentObject.toString());
+                                    setIntoView();
+
+                                }else {
+                                    Toast.makeText(getActivity(),"Session Expired",Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ParentDetails> call, Throwable t) {
+
+                }
+            });
+
+        }else {
+            tSnackbar.show();
+            setIntoView();
+        }
+
+    }
+
+    private void setIntoView() {
+        String getParentDetails = dataBaseHandler.getParentChildDetails();
+        try {
+            JSONObject getParentObject = new JSONObject(getParentDetails);
+            txtChildName.setText(getParentObject.getString("parent_name"));
+            txtMobileNumber.setText(dataBaseHandler.getMobileNumber());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

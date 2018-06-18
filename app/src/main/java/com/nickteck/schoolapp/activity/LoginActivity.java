@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.androidadvance.topsnackbar.TSnackbar;
 import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.adapter.ViewPagerAdapter;
@@ -75,12 +76,12 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     ArrayList<String> permissionsRejected = new ArrayList<>();
     private String getMobileNo;
     ApiInterface apiInterface;
-    boolean isNetworkConnected;
     RelativeLayout mainView;
     boolean netWorkConnection;
     private String deviceId;
     private final static int ALL_PERMISSIONS_RESULT = 101;
     LoginDetails loginDetails;
+    TSnackbar tSnackbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +91,17 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
         mainView = (RelativeLayout) findViewById(R.id.sclMainView);
 
+        MyApplication.getInstance().setConnectivityListener(this);
+        tSnackbar = HelperClass.showTopSnackBar(mainView, "Network not connected");
+        if (HelperClass.isNetworkAvailable(getApplicationContext())) {
+            netWorkConnection = true;
+            if (tSnackbar.isShown())
+                tSnackbar.dismiss();
+        }
+        else {
+            netWorkConnection = false;
+            tSnackbar.show();
+        }
 
         // getting permission for app
         getPermission();
@@ -115,11 +127,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
             }
         }
 
-        MyApplication.getInstance().setConnectivityListener(this);
-        if (HelperClass.isNetworkAvailable(getApplicationContext()))
-            netWorkConnection = true;
-        else
-            netWorkConnection = false;
+
     }
 
     private void init() {
@@ -193,7 +201,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                 isPhone = HelperClass.isValidMobile(mMobileNo.getText().toString());
                 //check for mobile no is valid
                 if (!isPhone) {
-                    mbtnSubmit.startAnimation();
+
                     checkLogin();
                 } else {
                     validation();
@@ -207,9 +215,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
                 mactivationSumbit.startAnimation();
                 submitOTP();
-                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                startActivity(intent);
-                finish();
+
             }
         });
 
@@ -239,10 +245,10 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                         if (loginDetails.getStatus_code() != null) {
                             if (loginDetails.getStatus_code().equals(Constants.SUCESS)) {
                                 DataBaseHandler  dataBaseHandler = new DataBaseHandler(getApplicationContext());
-                                dataBaseHandler.insertLoginTable("0",getMobileNo);
+                                dataBaseHandler.insertLoginTable("0",getMobileNo,deviceId);
                                 Intent intent = new Intent(getApplicationContext(),DashboardActivity.class);
                                 startActivity(intent);
-                                startActivity(intent);
+
                             }
 
                         }
@@ -265,6 +271,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
     private void checkLogin() {
         if (netWorkConnection) {
+            mbtnSubmit.startAnimation();
             getDeviceId();
             getMobileNo = mMobileNo.getText().toString();
             // api call for the add  mobile no validation
@@ -287,7 +294,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                         if (loginDetails.getStatus_code() != null) {
                             if (loginDetails.getStatus_code().equals(Constants.SUCESS)) {
                                 DataBaseHandler  dataBaseHandler = new DataBaseHandler(getApplicationContext());
-                                dataBaseHandler.insertLoginTable("0",getMobileNo);
+                                dataBaseHandler.insertLoginTable("0",getMobileNo,deviceId);
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -298,6 +305,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
 
                             } else if (loginDetails.getStatus_code().equals(Constants.FAILURE)) {
+                                mbtnSubmit.stopAnimation();
                                 Toast.makeText(LoginActivity.this, loginDetails.getStatus_message(), Toast.LENGTH_SHORT).show();
 
                             }
@@ -315,7 +323,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
             });
 
         } else {
-            HelperClass.showTopSnackBar(mainView, "Network not connected");
+            mbtnSubmit.stopAnimation();
+            tSnackbar.show();
         }
 
         // checking for opt
@@ -374,7 +383,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
 
         }else {
-            HelperClass.showTopSnackBar(mainView,"Network not connected");
+            tSnackbar.show();
         }
     }
 
@@ -570,8 +579,12 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
         netWorkConnection = isConnected;
         if (mainView != null) {
-            if (!isConnected)
-                HelperClass.showTopSnackBar(mainView,"Network not connected");
+            if (!isConnected) {
+               tSnackbar.show();
+            }else {
+                if (tSnackbar.isShown())
+                    tSnackbar.dismiss();
+            }
         }
 
     }
