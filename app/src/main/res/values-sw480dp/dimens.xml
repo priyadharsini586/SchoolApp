@@ -10,4 +10,17 @@
     <!-- image Slider layout width -->
     <dimen name="menu_layout">150dp</dimen>
 
+    <!--Width and height for the profile layout  -->
+    <dimen name="profile_width">match_parent</dimen>
+    <dimen name="profile_height">100dp</dimen>
+
+    <dimen name="circular_image_width">100dp</dimen>
+    <dimen name="circular_image_height">100dp</dimen>
+
+    <dimen name="student_name_text_size">24sp</dimen>
+    <dimen name="student_description_text_size">20sp</dimen>
+
+    <dimen name="student_description_image_size_width">35dp</dimen>
+    <dimen name="student_description_image_size_height">35dp</dimen>
+
 </resources>

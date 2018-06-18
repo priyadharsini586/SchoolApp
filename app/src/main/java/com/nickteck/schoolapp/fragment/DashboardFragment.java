@@ -3,10 +3,13 @@ package com.nickteck.schoolapp.fragment;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,6 +54,8 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TextView txtChildName,txtMobileNumber;
     Animation animSlideDown,txtNumberAnimation,profileImgAnimation;
     LinearLayout ldtChildName,ldtMobileNumber,ldtImage;
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,7 +80,27 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         if ((DashboardActivity)getActivity() != null)
             ((DashboardActivity) getActivity()).setOnBackPressedListener(this);
+
+        init();
+        onclickListener();
+
         return mainView;
+    }
+
+
+
+    private void init() {
+    }
+    private void onclickListener() {
+
+    }
+
+    private void openCustomDialoge(View v) {
+        // common custom alert dialoge
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.custom_alert_dialoge);
+        //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
 

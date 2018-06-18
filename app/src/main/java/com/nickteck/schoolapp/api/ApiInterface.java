@@ -19,6 +19,10 @@ public interface ApiInterface {
     @POST("parent_check.php")
     Call<LoginDetails> checkMobileNo(@Field("x") JSONObject object);
 
+    @FormUrlEncoded
+    @POST("get_opt.php")
+    Call<LoginDetails> checkOpt(@Field("x") JSONObject object);
+
 
 
 

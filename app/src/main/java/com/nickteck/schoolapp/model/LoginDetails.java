@@ -9,6 +9,7 @@ public class LoginDetails {
   private String Status_code;
   private String Status_message;
   private int image_drawable;
+  private String OTP;
 
 
     public int getImage_drawable() {
@@ -33,5 +34,13 @@ public class LoginDetails {
 
     public void setStatus_message(String status_message) {
         Status_message = status_message;
+    }
+
+    public String getOTP() {
+        return OTP;
+    }
+
+    public void setOTP(String OTP) {
+        this.OTP = OTP;
     }
 }

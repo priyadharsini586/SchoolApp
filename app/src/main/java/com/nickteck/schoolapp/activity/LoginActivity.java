@@ -208,7 +208,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     private void checkLogin() {
         if (netWorkConnection){
             getMobileNo = mMobileNo.getText().toString();
-            // api call for the add favourite list
+            // api call for the add  mobile no validation
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
             JSONObject jsonObject = new JSONObject();
             try {
@@ -229,9 +229,11 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
                                 finish();
+                             //   getOptApi();
                             } else if (loginDetails.getStatus_code().equals(Constants.NOT_VERIFIED)) {
                                 Toast.makeText(LoginActivity.this, loginDetails.getStatus_message(), Toast.LENGTH_SHORT).show();
-                                enableActivationBox();
+                                getOptApi();
+
 
                             } else if (loginDetails.getStatus_code().equals(Constants.FAILURE)) {
                                 Toast.makeText(LoginActivity.this, loginDetails.getStatus_message(), Toast.LENGTH_SHORT).show();
@@ -257,6 +259,50 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
         // checkForOtp();
     }
 
+    private void getOptApi() {
+        // get opt if status code is -1
+        if (netWorkConnection) {
+            getMobileNo = mMobileNo.getText().toString();
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("phone", getMobileNo);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            Call<LoginDetails> checkMobileNo = apiInterface.checkOpt(jsonObject);
+            checkMobileNo.enqueue(new Callback<LoginDetails>() {
+
+                @Override
+                public void onResponse(Call<LoginDetails> call, Response<LoginDetails> response) {
+                    if (response.isSuccessful()) {
+                        LoginDetails loginDetails = response.body();
+                        if (loginDetails.getStatus_code() != null) {
+                            if (loginDetails.getStatus_code().equals(Constants.SUCESS)) {
+                                Toast.makeText(LoginActivity.this, "otp generated successfully", Toast.LENGTH_SHORT).show();
+                                enableActivationBox();
+                            }else {
+                                Toast.makeText(LoginActivity.this, "Unregistered user", Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<LoginDetails> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        }else {
+            HelperClass.showTopSnackBar(mainView,"Network not connected");
+        }
+    }
+
     private void enableActivationBox(){
         // after login api sucess then only it should start
         mMobileNo.setVisibility(View.GONE);
@@ -265,6 +311,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
         mactivationSumbit.startAnimation(AnimationUtils.loadAnimation(LoginActivity.this,R.anim.edit_text_animation));
         meditActivationCode.setVisibility(View.VISIBLE);
         mactivationSumbit.setVisibility(View.VISIBLE);
+        checkForOtp();
 
     }
 

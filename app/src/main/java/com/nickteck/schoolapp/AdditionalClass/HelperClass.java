@@ -1,5 +1,7 @@
 package com.nickteck.schoolapp.AdditionalClass;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.nickteck.schoolapp.R;
 
 import java.util.regex.Pattern;
 
@@ -54,7 +57,13 @@ public class HelperClass {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         snackbar.show();
-
         return snackbar;
+    }
+    private void openCustomDialoge(View v, Activity activity) {
+        // common custom alert dialoge
+        Dialog dialog = new Dialog(activity);
+        dialog.setContentView(R.layout.custom_alert_dialoge);
+        //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 }

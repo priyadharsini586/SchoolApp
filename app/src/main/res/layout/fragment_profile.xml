@@ -1,0 +1,176 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nickteck.schoolapp.fragment.ProfileFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/profile_width"
+        android:layout_height="@dimen/profile_height"
+        android:layout_margin="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/circular_image_width"
+                android:layout_height="@dimen/circular_image_height"
+                android:src="@drawable/default_image"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF000000"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/profile_stu_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/student_name_text_size"/>
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/profile_stu_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description - student details"
+                    android:textSize="@dimen/student_description_text_size"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_width="@dimen/student_description_image_size_width"
+            android:layout_height="@dimen/student_description_image_size_height"
+            android:background="@drawable/key" />
+
+        <TextView
+            android:layout_marginLeft="35dp"
+            android:id="@+id/profile_stu_description1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description-1"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/student_description_text_size"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_width="@dimen/student_description_image_size_width"
+            android:layout_height="@dimen/student_description_image_size_height"
+            android:background="@drawable/key" />
+
+        <TextView
+            android:layout_marginLeft="35dp"
+            android:id="@+id/profile_stu_description2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description-2"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/student_description_text_size"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_width="@dimen/student_description_image_size_width"
+            android:layout_height="@dimen/student_description_image_size_height"
+            android:background="@drawable/key" />
+
+        <TextView
+            android:layout_marginLeft="35dp"
+            android:id="@+id/profile_stu_description3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description-3"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/student_description_text_size"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_width="@dimen/student_description_image_size_width"
+            android:layout_height="@dimen/student_description_image_size_height"
+            android:background="@drawable/key" />
+
+        <TextView
+            android:layout_marginLeft="35dp"
+            android:id="@+id/profile_stu_description4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description-4"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/student_description_text_size"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"/>
+
+</LinearLayout>

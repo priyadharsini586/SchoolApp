@@ -8,6 +8,15 @@
     <string name="activation_code">Enter Activation Code</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
 
+    <string name="alert_dialoge_ok">Ok</string>
+
+    <string name="alert_dialoge_cancel">Cancel</string>
+
+    <string name="default_name">Aravindraj</string>
+
+
+    <string name="alert_title_text">Alert Message</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
