@@ -4,6 +4,7 @@ package com.nickteck.schoolapp.fragment;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -92,6 +93,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     private void init() {
     }
     private void onclickListener() {
+
 
     }
 

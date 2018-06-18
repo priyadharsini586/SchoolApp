@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     boolean isNetworkConnected;
     RelativeLayout mainView;
     boolean netWorkConnection;
+    private String deviceId;
 
 
     @Override
@@ -207,12 +209,14 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
     private void checkLogin() {
         if (netWorkConnection){
+            getDeviceId();
             getMobileNo = mMobileNo.getText().toString();
             // api call for the add  mobile no validation
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("phone", getMobileNo);
+                jsonObject.put("device_id", deviceId);
             }catch (JSONException e){
                 e.printStackTrace();
             }
@@ -257,6 +261,12 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
         // checking for opt
         // checkForOtp();
+    }
+
+    private void getDeviceId() {
+         deviceId = Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+
     }
 
     private void getOptApi() {
