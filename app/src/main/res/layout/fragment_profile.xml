@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="@dimen/profile_width"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/profile_height"
         android:layout_margin="15dp">
 

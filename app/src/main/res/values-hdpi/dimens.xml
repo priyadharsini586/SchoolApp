@@ -12,7 +12,7 @@
     <dimen name="menu_layout">150dp</dimen>
 
     <!--Width and height for the profile layout  -->
-    <dimen name="profile_width">match_parent</dimen>
+
     <dimen name="profile_height">85dp</dimen>
 
     <dimen name="circular_image_width">85dp</dimen>

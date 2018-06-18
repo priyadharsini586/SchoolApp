@@ -12,7 +12,6 @@
 
 
     <!--Width and height for the profile layout  -->
-    <dimen name="profile_width">match_parent</dimen>
     <dimen name="profile_height">75dp</dimen>
 
     <dimen name="circular_image_width">75dp</dimen>
