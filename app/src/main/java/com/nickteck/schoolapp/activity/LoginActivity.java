@@ -1,15 +1,21 @@
 package com.nickteck.schoolapp.activity;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -49,7 +55,6 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity implements NetworkChangeReceiver.ConnectivityReceiverListener {
 
 
-
     ArrayList<Integer> sliderImages = new ArrayList<>();
     int page = 0;
     private ArrayList<LoginDetails> imageModelArrayList;
@@ -57,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
     CirclePageIndicator indicator;
-    private int [] sliderList = {R.drawable.slide_1,R.drawable.silde_2,R.drawable.slide_3,R.drawable.ic_splash_screen};
+    private int[] sliderList = {R.drawable.slide_1, R.drawable.silde_2, R.drawable.slide_3, R.drawable.ic_splash_screen};
     private EditText mMobileNo;
     private boolean isPhone;
     private EditText meditActivationCode;
@@ -73,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     RelativeLayout mainView;
     boolean netWorkConnection;
     private String deviceId;
-
+    private final static int ALL_PERMISSIONS_RESULT = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
         mainView = (RelativeLayout) findViewById(R.id.sclMainView);
 
 
-
         // getting permission for app
         getPermission();
 
@@ -95,16 +99,20 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     }
 
     private void getPermission() {
-        //  permissions.add(Manifest.permission.GET_ACCOUNTS);
-         permissions.add(Manifest.permission.READ_SMS);
-         permissions.add(Manifest.permission.RECEIVE_SMS);
-         permissions.add(Manifest.permission.SEND_SMS);
-       /* permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        permissions.add(Manifest.permission.CAMERA);
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);*/
+        permissions.add(Manifest.permission.READ_SMS);
+        permissions.add(Manifest.permission.RECEIVE_SMS);
+        permissions.add(Manifest.permission.SEND_SMS);
+        permissions.add(Manifest.permission.READ_PHONE_STATE);
         permissionsToRequest = findUnAskedPermissions(permissions);
+
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (permissionsToRequest.size() > 0) {
+                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]),
+                        ALL_PERMISSIONS_RESULT);
+
+            }
+        }
 
         MyApplication.getInstance().setConnectivityListener(this);
         if (HelperClass.isNetworkAvailable(getApplicationContext()))
@@ -114,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     }
 
     private void init() {
-        imageModelArrayList =  populateList();
+        imageModelArrayList = populateList();
         sliderImages.add(R.drawable.slide_1);
         sliderImages.add(R.drawable.silde_2);
         sliderImages.add(R.drawable.slide_3);
@@ -123,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
         mPager = (ViewPager) findViewById(R.id.viewPager);
         mMobileNo = (EditText) findViewById(R.id.editPhoneNo);
         mbtnSubmit = (CircularProgressButton) findViewById(R.id.btnSubmit);
-        meditActivationCode = (EditText)findViewById(R.id.editActivationCode);
+        meditActivationCode = (EditText) findViewById(R.id.editActivationCode);
         mactivationSumbit = (CircularProgressButton) findViewById(R.id.activationSumbit);
 
 
@@ -139,6 +147,17 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
 
     }
+    private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {
+        ArrayList result = new ArrayList();
+
+        for (String perm : wanted) {
+            if (!hasPermission(perm)) {
+                result.add(perm);
+            }
+        }
+
+        return result;
+    }
 
     private boolean hasPermission(String permission) {
         if (canAskPermission()) {
@@ -153,23 +172,11 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
 
-    private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {
-        ArrayList result = new ArrayList();
-
-        for (String perm : wanted) {
-            if (!hasPermission(perm)) {
-                result.add(perm);
-            }
-        }
-
-        return result;
-    }
-
-    private ArrayList<LoginDetails> populateList(){
+    private ArrayList<LoginDetails> populateList() {
 
         ArrayList<LoginDetails> list = new ArrayList<>();
 
-        for(int i = 0; i <sliderList.length; i++){
+        for (int i = 0; i < sliderList.length; i++) {
             LoginDetails imageModel = new LoginDetails();
             imageModel.setImage_drawable(sliderList[i]);
             list.add(imageModel);
@@ -178,17 +185,16 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     }
 
 
-
     private void setOnClickListener() {
         mbtnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isPhone = HelperClass.isValidMobile(mMobileNo.getText().toString());
                 //check for mobile no is valid
-                if (!isPhone){
+                if (!isPhone) {
                     mbtnSubmit.startAnimation();
                     checkLogin();
-                }else {
+                } else {
                     validation();
                 }
             }
@@ -199,7 +205,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
 
                 mactivationSumbit.startAnimation();
-                Intent intent = new Intent(getApplicationContext(),DashboardActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -208,7 +214,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     }
 
     private void checkLogin() {
-        if (netWorkConnection){
+        if (netWorkConnection) {
             getDeviceId();
             getMobileNo = mMobileNo.getText().toString();
             // api call for the add  mobile no validation
@@ -217,7 +223,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
             try {
                 jsonObject.put("phone", getMobileNo);
                 jsonObject.put("device_id", deviceId);
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             Call<LoginDetails> checkMobileNo = apiInterface.checkMobileNo(jsonObject);
@@ -225,7 +231,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
                 @Override
                 public void onResponse(Call<LoginDetails> call, Response<LoginDetails> response) {
-                    if (response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         LoginDetails loginDetails = response.body();
                         mbtnSubmit.stopAnimation();
                         if (loginDetails.getStatus_code() != null) {
@@ -233,7 +239,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
                                 finish();
-                             //   getOptApi();
+                                //   getOptApi();
                             } else if (loginDetails.getStatus_code().equals(Constants.NOT_VERIFIED)) {
                                 Toast.makeText(LoginActivity.this, loginDetails.getStatus_message(), Toast.LENGTH_SHORT).show();
                                 getOptApi();
@@ -248,6 +254,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                     }
 
                 }
+
                 @Override
                 public void onFailure(Call<LoginDetails> call, Throwable t) {
                     Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
@@ -255,8 +262,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                 }
             });
 
-        }else {
-            HelperClass.showTopSnackBar(mainView,"Network not connected");
+        } else {
+            HelperClass.showTopSnackBar(mainView, "Network not connected");
         }
 
         // checking for opt
@@ -264,8 +271,13 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     }
 
     private void getDeviceId() {
-         deviceId = Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            deviceId = telephonyManager.getDeviceId();
+            return;
+        }
 
     }
 
@@ -451,6 +463,53 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case ALL_PERMISSIONS_RESULT:
+                Log.d("request", "onRequestPermissionsResult");
+                for (String perms : permissionsToRequest) {
+                    if (!hasPermission(perms)) {
+                        permissionsRejected.add(perms);
+                    }
+                }
+
+                if (permissionsRejected.size() > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
+                            String msg = "These permissions are mandatory for the application. Please allow access.";
+                            showMessageOKCancel(msg,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermissions(permissionsRejected.toArray(
+                                                        new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
+
+                                            }
+                                        }
+                                    });
+                            Log.e("check","inpermission");
+                            return;
+                        }
+                    }
+                } else {
+                }
+                break;
+        }
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(LoginActivity.this)
+                .setMessage(message)
+                .setPositiveButton("OK",okListener )
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        finish();
+                    }
+                })
+                .create()
+                .show();
     }
 
     @Override

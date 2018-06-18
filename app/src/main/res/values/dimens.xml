@@ -13,4 +13,22 @@
     <!-- image Slider layout width -->
     <dimen name="menu_layout">150dp</dimen>
 
+    <!--dashboard layout -->
+    <dimen name="dashboard_profile_bg_size">370dp</dimen>
+    <dimen name="dashboard_profile_pic_size">150dp</dimen>
+    <dimen name="dashboard_name_size">20sp</dimen>
+    <dimen name="dashboard_name_padding">20dp</dimen>
+    <dimen name="dashboard_phone_size">17sp</dimen>
+    <dimen name="dashboard_notification_size">290dp</dimen>
+    <dimen name="dashboard_notification_padding">30dp</dimen>
+    <dimen name="dashboard_notification_card_padding">120dp</dimen>
+    <dimen name="dashboard_notification_inside_card_padding">20dp</dimen>
+    <dimen name="dashboard_notification_bell_size">30dp</dimen>
+    <dimen name="dashboard_notification_text_padding">10dp</dimen>
+    <dimen name="dashboard_notification_text_size">17sp</dimen>
+    <dimen name="dashboard_layout_padding_top">60dp</dimen>
+    <dimen name="dashboard_layout_size">150dp</dimen>
+    <dimen name="dashboard_layout_padding">10dp</dimen>
+    <dimen name="dashboard_layout_text_size">15sp</dimen>
+    <dimen name="dashboard_layout_image_size">50dp</dimen>
 </resources>

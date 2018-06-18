@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nickteck.schoolapp.R;
@@ -50,7 +51,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     private int screenWidth;
     private int screenHeight;
     private View myView;
-    FrameLayout frameMainLayout;
+    RelativeLayout frameMainLayout;
     String TAG = DashboardFragment.class.getName();
     TextView txtChildName,txtMobileNumber;
     Animation animSlideDown,txtNumberAnimation,profileImgAnimation;
@@ -135,7 +136,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         ObjectAnimator animator =
                 CircularAnimationUtils.createCircularReveal(myView, center[0], center[1], 0, finalRadius);
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.setDuration(1800);
+        animator.setDuration(1500);
         animator.start();
 
 
