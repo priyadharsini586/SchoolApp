@@ -29,6 +29,7 @@ import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.adapter.ViewPagerAdapter;
 import com.nickteck.schoolapp.api.ApiClient;
 import com.nickteck.schoolapp.api.ApiInterface;
+import com.nickteck.schoolapp.database.DataBaseHandler;
 import com.nickteck.schoolapp.model.LoginDetails;
 import com.nickteck.schoolapp.service.MyApplication;
 import com.nickteck.schoolapp.service.NetworkChangeReceiver;
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
     boolean netWorkConnection;
     private String deviceId;
     private final static int ALL_PERMISSIONS_RESULT = 101;
-
+    LoginDetails loginDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,11 +206,60 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
 
 
                 mactivationSumbit.startAnimation();
+                submitOTP();
                 Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+
+    }
+
+    private void submitOTP() {
+
+        if (netWorkConnection) {
+            getDeviceId();
+            getMobileNo = mMobileNo.getText().toString();
+            // api call for the add  mobile no validation
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("phone", getMobileNo);
+                jsonObject.put("otp", loginDetails.getOTP());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Call<LoginDetails> checkMobileNo = apiInterface.verifyOtp(jsonObject);
+            checkMobileNo.enqueue(new Callback<LoginDetails>() {
+
+                @Override
+                public void onResponse(Call<LoginDetails> call, Response<LoginDetails> response) {
+                    if (response.isSuccessful()) {
+                        LoginDetails loginDetails = response.body();
+                        if (loginDetails.getStatus_code() != null) {
+                            if (loginDetails.getStatus_code().equals(Constants.SUCESS)) {
+                                DataBaseHandler  dataBaseHandler = new DataBaseHandler(getApplicationContext());
+                                dataBaseHandler.insertLoginTable("0",getMobileNo);
+                                Intent intent = new Intent(getApplicationContext(),DashboardActivity.class);
+                                startActivity(intent);
+                                startActivity(intent);
+                            }
+
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<LoginDetails> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+        } else {
+            HelperClass.showTopSnackBar(mainView, "Network not connected");
+        }
 
     }
 
@@ -232,10 +282,12 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                 @Override
                 public void onResponse(Call<LoginDetails> call, Response<LoginDetails> response) {
                     if (response.isSuccessful()) {
-                        LoginDetails loginDetails = response.body();
+                         loginDetails = response.body();
                         mbtnSubmit.stopAnimation();
                         if (loginDetails.getStatus_code() != null) {
                             if (loginDetails.getStatus_code().equals(Constants.SUCESS)) {
+                                DataBaseHandler  dataBaseHandler = new DataBaseHandler(getApplicationContext());
+                                dataBaseHandler.insertLoginTable("0",getMobileNo);
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -301,6 +353,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                         LoginDetails loginDetails = response.body();
                         if (loginDetails.getStatus_code() != null) {
                             if (loginDetails.getStatus_code().equals(Constants.SUCESS)) {
+
                                 Toast.makeText(LoginActivity.this, "otp generated successfully", Toast.LENGTH_SHORT).show();
                                 enableActivationBox();
                             }else {

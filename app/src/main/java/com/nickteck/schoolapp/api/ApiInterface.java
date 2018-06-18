@@ -23,7 +23,9 @@ public interface ApiInterface {
     @POST("get_opt.php")
     Call<LoginDetails> checkOpt(@Field("x") JSONObject object);
 
-
+    @FormUrlEncoded
+    @POST("verify_otp.php")
+    Call<LoginDetails> verifyOtp(@Field("x") JSONObject object);
 
 
 
