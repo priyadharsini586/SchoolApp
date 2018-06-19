@@ -9,9 +9,14 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
@@ -78,6 +83,7 @@ public class HelperClass {
     }
 
 
+
     public static String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
@@ -97,7 +103,7 @@ public class HelperClass {
         }
     }
 
-    public static class MyNetworkTask extends AsyncTask<URL, Void, Bitmap>{
+    public static class MyNetworkTask extends AsyncTask<URL, Void, Bitmap> {
 
         @Override
         protected Bitmap doInBackground(URL... urls) {
@@ -119,6 +125,17 @@ public class HelperClass {
         protected void onPostExecute(Bitmap result) {
 
         }
+
+
+    }
+
+    public static void replaceFragment(Fragment fragment, String fragmentTag, AppCompatActivity context) {
+        android.support.v4.app.FragmentTransaction fragmentTransaction = context.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right);
+        fragmentTransaction.addToBackStack(fragmentTag);
+        fragmentTransaction.replace(R.id.rldMainContainer, fragment, fragmentTag);
+        fragmentTransaction.commit();
+
 
     }
 }

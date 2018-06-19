@@ -30,7 +30,7 @@
     <dimen name="dashboard_layout_image_size">50dp</dimen>
 
 
-    <!--Width and height for the profile layout  -->
+  <!--  &lt;!&ndash;Width and height for the profile layout  &ndash;&gt;
     <dimen name="profile_height">85dp</dimen>
 
     <dimen name="circular_image_width">85dp</dimen>
@@ -40,5 +40,17 @@
     <dimen name="student_description_text_size">17sp</dimen>
 
     <dimen name="student_description_image_size_width">30dp</dimen>
-    <dimen name="student_description_image_size_height">30dp</dimen>
+    <dimen name="student_description_image_size_height">30dp</dimen>-->
+
+    <!--Width and height for the profile layout  -->
+    <dimen name="profile_height">60dp</dimen>
+
+    <dimen name="circular_image_width">60dp</dimen>
+    <dimen name="circular_image_height">60dp</dimen>
+
+    <dimen name="student_name_text_size">15sp</dimen>
+    <dimen name="student_description_text_size">13sp</dimen>
+
+    <dimen name="student_description_image_size_width">22dp</dimen>
+    <dimen name="student_description_image_size_height">22dp</dimen>
 </resources>

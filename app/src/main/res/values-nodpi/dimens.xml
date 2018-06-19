@@ -31,14 +31,14 @@
 
 
     <!--Width and height for the profile layout  -->
-    <dimen name="profile_height">75dp</dimen>
+    <dimen name="profile_height">65dp</dimen>
 
-    <dimen name="circular_image_width">75dp</dimen>
-    <dimen name="circular_image_height">75dp</dimen>
+    <dimen name="circular_image_width">65dp</dimen>
+    <dimen name="circular_image_height">65dp</dimen>
 
-    <dimen name="student_name_text_size">20sp</dimen>
+    <dimen name="student_name_text_size">18sp</dimen>
     <dimen name="student_description_text_size">15sp</dimen>
 
-    <dimen name="student_description_image_size_width">25dp</dimen>
-    <dimen name="student_description_image_size_height">25dp</dimen>
+    <dimen name="student_description_image_size_width">20dp</dimen>
+    <dimen name="student_description_image_size_height">20dp</dimen>
 </resources>

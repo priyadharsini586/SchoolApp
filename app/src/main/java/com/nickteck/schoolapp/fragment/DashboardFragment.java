@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
+import com.nickteck.schoolapp.activity.AboutChildActivity;
 import com.nickteck.schoolapp.activity.DashboardActivity;
 import com.nickteck.schoolapp.activity.LoginActivity;
 import com.nickteck.schoolapp.api.ApiClient;
@@ -74,7 +75,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class DashboardFragment extends Fragment  implements OnBackPressedListener, NetworkChangeReceiver.ConnectivityReceiverListener {
+public class DashboardFragment extends Fragment  implements OnBackPressedListener, NetworkChangeReceiver.ConnectivityReceiverListener,View.OnClickListener {
 
     View mainView;
    // CircleImageView profile_image;
@@ -92,6 +93,8 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TSnackbar tSnackbar;
     ApiInterface apiInterface;
     DataBaseHandler dataBaseHandler;
+    private LinearLayout about_child;
+
     ArrayList<Bitmap>bitmapArrayList = new ArrayList<>();
     ArrayList<String>bitmapStrArrayList = new ArrayList<>();
 
@@ -100,6 +103,17 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mainView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+
+        init();
+        onclickListener();
+
+        return mainView;
+    }
+
+
+
+    private void init() {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         dataBaseHandler = new DataBaseHandler(getActivity());
 
@@ -119,6 +133,10 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         ldtImage = (LinearLayout)mainView.findViewById(R.id.ldtImage);
         ldtImage.setVisibility(View.GONE);
 
+        about_child = (LinearLayout) mainView.findViewById(R.id.about_child);
+        about_child.setOnClickListener(this);
+
+
         frameMainLayout = mainView.findViewById(R.id.frameMainLayout);
         MyApplication.getInstance().setConnectivityListener(this);
 
@@ -127,16 +145,6 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         if ((DashboardActivity)getActivity() != null)
             ((DashboardActivity) getActivity()).setOnBackPressedListener(this);
-
-        init();
-        onclickListener();
-
-        return mainView;
-    }
-
-
-
-    private void init() {
     }
     private void onclickListener() {
 
@@ -387,6 +395,28 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(isNetworkConnected) {
+            switch (v.getId()) {
+                case R.id.about_child:
+                    Intent intent = new Intent(getActivity(), AboutChildActivity.class);
+                    startActivity(intent);
+                    break;
+
+                case R.id.announcement:
+                    AnnoncementFragment annoncementFragment = new AnnoncementFragment();
+                    HelperClass.replaceFragment(annoncementFragment, Constants.ANNOUNEMENT_FRAGMENT,(AppCompatActivity) getActivity());
+                    break;
+
+            }
+
+        }else {
+            tSnackbar = HelperClass.showTopSnackBar(mainView, "Network not connected");
+        }
+
     }
 
     Target target = new Target() {

@@ -60,7 +60,7 @@ public class DashboardActivity extends AppCompatActivity
         imgNavigationIcon  = (ImageView) findViewById(R.id.imgNavigationIcon);
         imgNavigationIcon.setOnClickListener(this);
 
-//        UtilClasses.setFragmentContainer(DashboardActivity.this,new DashboardFragment(), Constants.DASHBOARD_FRAGMENT);
+    //   UtilClasses.setFragmentContainer(DashboardActivity.this,new DashboardFragment(), Constants.DASHBOARD_FRAGMENT);
 
 
         //Initializing viewPager
