@@ -75,7 +75,8 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TSnackbar tSnackbar;
     ApiInterface apiInterface;
     DataBaseHandler dataBaseHandler;
-    private LinearLayout about_child,announcement;
+    private LinearLayout about_child;
+    private LinearLayout announcement;
 
     ArrayList<Bitmap>bitmapArrayList = new ArrayList<>();
     ArrayList<String>bitmapStrArrayList = new ArrayList<>();

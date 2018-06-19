@@ -131,8 +131,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
                 <ImageView
                     android:layout_width="@dimen/dashboard_notification_bell_size"
                     android:layout_height="@dimen/dashboard_notification_bell_size"
@@ -179,10 +178,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center">
+
+
             <LinearLayout
                 android:layout_width="@dimen/dashboard_layout_size"
                 android:layout_height="@dimen/dashboard_layout_size"
                 android:id="@+id/about_child">
+
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -190,28 +192,44 @@
                     android:orientation="vertical"
                     app:cardCornerRadius="5dp"
                     android:layout_gravity="center">
+
+                    <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txtBrodgeIcon"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="right|end|top"
+                        android:background="@drawable/item_count"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:text="1"
+                        android:textSize="15dp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_gravity="center">
-                <ImageView
-                    android:layout_width="@dimen/dashboard_layout_image_size"
-                    android:layout_height="@dimen/dashboard_layout_image_size"
-                    android:src="@drawable/schoolchild"
-                   android:layout_gravity="center"
-                    />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:text="About Child"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/dashboard_layout_text_size"
-                        android:paddingTop="@dimen/dashboard_layout_padding"
-                        android:paddingBottom="@dimen/dashboard_layout_padding"/>
+                        <ImageView
+                            android:layout_width="@dimen/dashboard_layout_image_size"
+                            android:layout_height="@dimen/dashboard_layout_image_size"
+                            android:src="@drawable/schoolchild"
+                            android:layout_gravity="center"
+                            android:paddingTop="@dimen/dashboard_layout_padding"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/black"
+                            android:text="Annoncement"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/dashboard_layout_text_size"
+                            android:paddingTop="@dimen/dashboard_layout_padding"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
@@ -428,6 +446,8 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+
 
     </LinearLayout>
 </RelativeLayout >
