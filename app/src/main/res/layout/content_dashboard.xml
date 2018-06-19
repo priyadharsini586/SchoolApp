@@ -48,7 +48,7 @@
 
 </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="30dp">
@@ -58,5 +58,6 @@
             android:src="@drawable/ic_navigation_bar"
             android:id="@+id/imgNavigationIcon"
             android:padding="10dp"/>
-    </LinearLayout>
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

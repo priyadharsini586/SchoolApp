@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -63,9 +64,8 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
    // CircleImageView profile_image;
     private MultiImageView profile_image1;
 
-    private int screenWidth;
-    private int screenHeight;
-    private View myView;
+    public int screenWidth,screenHeight;
+    public View myView;
     RelativeLayout frameMainLayout;
     String TAG = DashboardFragment.class.getName();
     TextView txtChildName,txtMobileNumber;
@@ -75,8 +75,8 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TSnackbar tSnackbar;
     ApiInterface apiInterface;
     DataBaseHandler dataBaseHandler;
-    private LinearLayout about_child;
-    private LinearLayout announcement;
+    public LinearLayout about_child,announcement;
+    CardView ldtChoiceChildren;
 
     ArrayList<Bitmap>bitmapArrayList = new ArrayList<>();
     ArrayList<String>bitmapStrArrayList = new ArrayList<>();
@@ -118,6 +118,9 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         announcement = (LinearLayout) mainView.findViewById(R.id.announcement);
         announcement.setOnClickListener(this);
+
+        ldtChoiceChildren = (CardView) mainView.findViewById(R.id.ldtChoiceChildren);
+        ldtChoiceChildren.setVisibility(View.INVISIBLE);
 
         frameMainLayout = mainView.findViewById(R.id.frameMainLayout);
         MyApplication.getInstance().setConnectivityListener(this);
@@ -333,13 +336,15 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
             JSONArray getStudentArray = getParentObject.getJSONArray("student_details");
             bitmapArrayList = new ArrayList<>();
             bitmapStrArrayList = new ArrayList<>();
-            Picasso picasso = Picasso.with(getActivity());
             for (int i = 0 ;i < getStudentArray.length() ; i ++){
                 JSONObject studObject = getStudentArray.getJSONObject(i);
                 if (studObject.has("student_photo")) {
                     String stuPhoto = studObject.getString("student_photo");
                     bitmapStrArrayList.add(stuPhoto);
                 }
+            }
+            if (getStudentArray.length() != 1) {
+                ldtChoiceChildren.setVisibility(View.VISIBLE);
             }
             getActivity().runOnUiThread(new Runnable() {
                 @Override

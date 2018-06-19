@@ -23,12 +23,13 @@
     <dimen name="dashboard_notification_bell_size">24dp</dimen>
     <dimen name="dashboard_notification_text_padding">6dp</dimen>
     <dimen name="dashboard_notification_text_size">12sp</dimen>
-    <dimen name="dashboard_layout_padding_top">40dp</dimen>
+    <dimen name="dashboard_layout_padding_top">20dp</dimen>
     <dimen name="dashboard_layout_size">100dp</dimen>
     <dimen name="dashboard_layout_padding">7dp</dimen>
     <dimen name="dashboard_layout_text_size">11sp</dimen>
     <dimen name="dashboard_layout_image_size">50dp</dimen>
-
+    <dimen name="dashboard_selection_padding">10dp</dimen>
+    <dimen name="dashboard_selection_text_padding">17dp</dimen>
 
   <!--  &lt;!&ndash;Width and height for the profile layout  &ndash;&gt;
     <dimen name="profile_height">85dp</dimen>

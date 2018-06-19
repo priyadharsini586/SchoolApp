@@ -29,6 +29,8 @@
     <dimen name="dashboard_layout_padding">10dp</dimen>
     <dimen name="dashboard_layout_text_size">15sp</dimen>
     <dimen name="dashboard_layout_image_size">50dp</dimen>
+    <dimen name="dashboard_selection_padding">10dp</dimen>
+    <dimen name="dashboard_selection_text_padding">20dp</dimen>
 
 
     <!--Width and height for the profile layout  -->
