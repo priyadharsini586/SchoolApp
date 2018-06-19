@@ -4,37 +4,23 @@ package com.nickteck.schoolapp.fragment;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,19 +29,17 @@ import android.widget.Toast;
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
-import com.nickteck.schoolapp.activity.AboutChildActivity;
+import com.nickteck.schoolapp.activity.CommonFragmentActivity;
 import com.nickteck.schoolapp.activity.DashboardActivity;
 import com.nickteck.schoolapp.activity.LoginActivity;
 import com.nickteck.schoolapp.api.ApiClient;
 import com.nickteck.schoolapp.api.ApiInterface;
 import com.nickteck.schoolapp.database.DataBaseHandler;
 import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
-import com.nickteck.schoolapp.model.LoginDetails;
 import com.nickteck.schoolapp.model.ParentDetails;
 import com.nickteck.schoolapp.service.MyApplication;
 import com.nickteck.schoolapp.service.NetworkChangeReceiver;
 import com.nickteck.schoolapp.utilclass.Constants;
-import com.nickteck.schoolapp.utilclass.UtilClasses;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -64,11 +48,9 @@ import com.stfalcon.multiimageview.MultiImageView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import hu.aut.utillib.circular.animation.CircularAnimationUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -93,7 +75,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TSnackbar tSnackbar;
     ApiInterface apiInterface;
     DataBaseHandler dataBaseHandler;
-    private LinearLayout about_child;
+    private LinearLayout about_child,announcement;
 
     ArrayList<Bitmap>bitmapArrayList = new ArrayList<>();
     ArrayList<String>bitmapStrArrayList = new ArrayList<>();
@@ -103,10 +85,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mainView = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
-
         init();
-        onclickListener();
 
         return mainView;
     }
@@ -136,20 +115,18 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         about_child = (LinearLayout) mainView.findViewById(R.id.about_child);
         about_child.setOnClickListener(this);
 
+        announcement = (LinearLayout) mainView.findViewById(R.id.announcement);
+        announcement.setOnClickListener(this);
 
         frameMainLayout = mainView.findViewById(R.id.frameMainLayout);
         MyApplication.getInstance().setConnectivityListener(this);
 
         profile_image1 = (MultiImageView) mainView.findViewById(R.id.profile_image_dashBoard);
 
-
         if ((DashboardActivity)getActivity() != null)
             ((DashboardActivity) getActivity()).setOnBackPressedListener(this);
     }
-    private void onclickListener() {
 
-
-    }
 
     private void openCustomDialoge(View v) {
         // common custom alert dialoge
@@ -361,26 +338,6 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                 if (studObject.has("student_photo")) {
                     String stuPhoto = studObject.getString("student_photo");
                     bitmapStrArrayList.add(stuPhoto);
-                   /* if (isNetworkConnected) {
-                        picasso.load(stuPhoto)
-                                .into(target);
-
-                    }else {
-                        Picasso.with(getActivity())
-                                .load(stuPhoto)
-                                .networkPolicy(NetworkPolicy.OFFLINE)
-                                .into(profile_image1, new com.squareup.picasso.Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        Log.e(TAG, "onSuccess: image loaded");
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        Log.e(TAG, "onError: not loaded");
-                                    }
-                                });
-                    }*/
                 }
             }
             getActivity().runOnUiThread(new Runnable() {
@@ -399,24 +356,22 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
     @Override
     public void onClick(View v) {
-        if(isNetworkConnected) {
+            Intent intent  = null;
             switch (v.getId()) {
+
                 case R.id.about_child:
-                    Intent intent = new Intent(getActivity(), AboutChildActivity.class);
+                     intent = new Intent(getActivity(), CommonFragmentActivity.class);
+                    intent.putExtra("from",Constants.ABOUT_CHILD_FRAGMENT);
                     startActivity(intent);
                     break;
 
                 case R.id.announcement:
-                    AnnoncementFragment annoncementFragment = new AnnoncementFragment();
-                    HelperClass.replaceFragment(annoncementFragment, Constants.ANNOUNEMENT_FRAGMENT,(AppCompatActivity) getActivity());
+                    intent = new Intent(getActivity(), CommonFragmentActivity.class);
+                    intent.putExtra("from",Constants.ANNOUNEMENT_FRAGMENT);
+                    startActivity(intent);
                     break;
 
             }
-
-        }else {
-            tSnackbar = HelperClass.showTopSnackBar(mainView, "Network not connected");
-        }
-
     }
 
     Target target = new Target() {

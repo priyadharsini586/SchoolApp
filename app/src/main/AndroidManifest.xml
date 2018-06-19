@@ -57,7 +57,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.AboutChildActivity"></activity>
+        <activity android:name=".activity.CommonFragmentActivity"></activity>
     </application>
 
 </manifest>
