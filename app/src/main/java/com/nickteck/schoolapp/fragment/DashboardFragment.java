@@ -11,8 +11,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -51,12 +55,17 @@ import com.nickteck.schoolapp.service.MyApplication;
 import com.nickteck.schoolapp.service.NetworkChangeReceiver;
 import com.nickteck.schoolapp.utilclass.Constants;
 import com.nickteck.schoolapp.utilclass.UtilClasses;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.stfalcon.multiimageview.MultiImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hu.aut.utillib.circular.animation.CircularAnimationUtils;
@@ -83,7 +92,8 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TSnackbar tSnackbar;
     ApiInterface apiInterface;
     DataBaseHandler dataBaseHandler;
-
+    ArrayList<Bitmap>bitmapArrayList = new ArrayList<>();
+    ArrayList<String>bitmapStrArrayList = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -335,17 +345,107 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
             txtChildName.setText(getParentObject.getString("parent_name"));
             txtMobileNumber.setText(dataBaseHandler.getMobileNumber());
             JSONArray getStudentArray = getParentObject.getJSONArray("student_details");
+            bitmapArrayList = new ArrayList<>();
+            bitmapStrArrayList = new ArrayList<>();
+            Picasso picasso = Picasso.with(getActivity());
             for (int i = 0 ;i < getStudentArray.length() ; i ++){
                 JSONObject studObject = getStudentArray.getJSONObject(i);
-                if (studObject.has("student_photo")){
+                if (studObject.has("student_photo")) {
                     String stuPhoto = studObject.getString("student_photo");
-                    Bitmap bitmap = HelperClass.StringToBitMap(stuPhoto);
-                    profile_image1.addImage(bitmap);
+                    bitmapStrArrayList.add(stuPhoto);
+                   /* if (isNetworkConnected) {
+                        picasso.load(stuPhoto)
+                                .into(target);
+
+                    }else {
+                        Picasso.with(getActivity())
+                                .load(stuPhoto)
+                                .networkPolicy(NetworkPolicy.OFFLINE)
+                                .into(profile_image1, new com.squareup.picasso.Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.e(TAG, "onSuccess: image loaded");
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.e(TAG, "onError: not loaded");
+                                    }
+                                });
+                    }*/
                 }
             }
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new loadImg().execute();
+                }
+            });
+
             profile_image1.setShape(MultiImageView.Shape.CIRCLE);
+
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            bitmapArrayList.add(bitmap);
+            profile_image1.setTag(target);
+            profile_image1.addImage(bitmap);
+            Log.e(TAG, "onBitmapLoaded: " );
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+            Log.e(TAG, "onBitmapFailed " );
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+            Log.e(TAG, "onPrepareLoad: " );
+
+
+        }
+    };
+
+
+
+    private class loadImg extends AsyncTask<String,Void,Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            try {
+                for (int i = 0; i < bitmapStrArrayList.size(); i++) {
+                    String link = bitmapStrArrayList.get(i);
+                    if (link != null && !link.isEmpty()) {
+                        Bitmap bitmap = null;
+                        if (isNetworkConnected) {
+                             bitmap = Picasso.with(getActivity()).load(link).get();
+                        }else {
+                            bitmap = Picasso.with(getActivity())
+                                    .load(link)
+                                    .networkPolicy(NetworkPolicy.OFFLINE)
+                                    .get();
+                        }
+                        bitmapArrayList.add(bitmap);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap aVoid) {
+            super.onPostExecute(aVoid);
+            Log.e(TAG, "onPostExecute: "+bitmapArrayList.size() );
+            for (int i = 0 ; i <bitmapArrayList.size() ;i ++){
+                profile_image1.addImage(bitmapArrayList.get(i));
+            }
         }
     }
 }

@@ -133,7 +133,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null)
             cursor.moveToFirst();
-        parentDetails = cursor.getString(0);
+        parentDetails = cursor.getString(1);
         cursor.close();
         db.close();
 

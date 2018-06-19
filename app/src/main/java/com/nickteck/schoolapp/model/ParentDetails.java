@@ -118,21 +118,7 @@ public class ParentDetails {
                 studObject.put("student_name",studentDetails.getStudent_name());
                 studObject.put("student_std",studentDetails.getStudent_std());
                 studObject.put("student_section",studentDetails.getStudent_section());
-                if (!studentDetails.getStudent_photo().isEmpty()) {
-                    String url = Constants.CHILD_IMAGE_URL + studentDetails.getStudent_photo();
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = new DownloadImage().execute(url).get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    String bitmapImage = HelperClass.BitMapToString(bitmap);
-                    studObject.put("student_photo",bitmapImage);
-                }else {
-                    studObject.put("student_photo", studentDetails.getStudent_photo());
-                }
+                studObject.put("student_photo",Constants.CHILD_IMAGE_URL+ studentDetails.getStudent_photo());
                 studentDetailArray.put(studObject);
             }
             jsonObject.put("student_details",studentDetailArray);
