@@ -57,6 +57,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".activity.AboutChildActivity"></activity>
     </application>
 
 </manifest>
