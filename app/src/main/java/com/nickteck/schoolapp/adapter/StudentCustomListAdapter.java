@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nickteck.schoolapp.R;
+import com.nickteck.schoolapp.model.ParentDetails;
 
 import java.util.ArrayList;
 
@@ -19,10 +20,10 @@ import java.util.ArrayList;
 
 public class StudentCustomListAdapter extends BaseAdapter {
     private Activity activity;
-    private ArrayList<String> studentNameList;
+    private ArrayList<ParentDetails.student_details> studentNameList;
 
 
-    public StudentCustomListAdapter(Activity activity, ArrayList<String> getStudentNameArrayList) {
+    public StudentCustomListAdapter(Activity activity, ArrayList<ParentDetails.student_details> getStudentNameArrayList) {
         this.activity = activity;
         this.studentNameList = getStudentNameArrayList;
 
@@ -52,7 +53,7 @@ public class StudentCustomListAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(activity).inflate(R.layout.custom_student_list, parent, false);
 
             TextView textView = (TextView) convertView.findViewById(R.id.student_name);
-            textView.setText(studentNameList.get(position));
+            textView.setText(studentNameList.get(position).getStudent_name());
 
            // View view = (View) convertView.findViewById(R.id.name_seperator);
 

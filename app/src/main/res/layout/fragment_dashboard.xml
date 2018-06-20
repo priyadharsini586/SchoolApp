@@ -69,7 +69,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="PRIYADHARSINI M"
+                            android:text="NAME M"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/dashboard_name_size"
                             android:textStyle="bold"
@@ -91,7 +91,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="7200244755"
+                            android:text="Phone Number"
                             android:textColor="#f0efef"
                             android:textSize="@dimen/dashboard_phone_size"
                             android:gravity="center"
@@ -102,9 +102,7 @@
                 </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
-
         </LinearLayout>
-
     </hu.aut.utillib.circular.widget.CircularFrameLayout>
 
 
@@ -225,7 +223,7 @@
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical"
                     app:cardCornerRadius="5dp"
@@ -244,8 +242,8 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/dashboard_layout_image_size"
+                            android:layout_height="@dimen/dashboard_layout_image_size"
                             android:layout_gravity="center"
                             android:paddingTop="@dimen/dashboard_layout_padding"
                             android:src="@drawable/schoolchild" />
@@ -255,7 +253,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:textColor="@color/black"
-                            android:text="Annoncement"
+                            android:text="About Child"
                             android:textStyle="bold"
                             android:textSize="@dimen/dashboard_layout_text_size"
                             android:paddingTop="@dimen/dashboard_layout_padding"/>
@@ -267,13 +265,13 @@
                             android:layout_alignParentEnd="true">
                             <TextView
                                 android:id="@+id/txtBrodgeIcon"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_width="@dimen/dashboard_badge_size"
+                                android:layout_height="@dimen/dashboard_badge_size"
                                 android:background="@drawable/item_count"
                                 android:gravity="center"
                                 android:textColor="@android:color/white"
                                 android:text="1"
-                                android:textSize="15dp"
+                                android:textSize="@dimen/dashboard_layout_text_size"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </RelativeLayout>
@@ -331,13 +329,13 @@
                             android:layout_alignParentEnd="true">
                             <TextView
                                 android:id="@+id/txtBrodgeIcon1"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_width="@dimen/dashboard_badge_size"
+                                android:layout_height="@dimen/dashboard_badge_size"
                                 android:background="@drawable/item_count"
                                 android:gravity="center"
                                 android:textColor="@android:color/white"
                                 android:text="1"
-                                android:textSize="15dp"
+                                android:textSize="@dimen/dashboard_layout_text_size"
                                 android:textStyle="bold" />
                         </LinearLayout>
                         </RelativeLayout>
@@ -442,13 +440,13 @@
                                 android:layout_alignParentEnd="true">
                                 <TextView
                                     android:id="@+id/txtBrodgeIcon2"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
+                                    android:layout_width="@dimen/dashboard_badge_size"
+                                    android:layout_height="@dimen/dashboard_badge_size"
                                     android:background="@drawable/item_count"
                                     android:gravity="center"
                                     android:textColor="@android:color/white"
                                     android:text="1"
-                                    android:textSize="15dp"
+                                    android:textSize="@dimen/dashboard_layout_text_size"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </RelativeLayout>

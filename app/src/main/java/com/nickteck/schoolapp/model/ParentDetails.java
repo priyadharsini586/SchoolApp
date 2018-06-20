@@ -62,8 +62,12 @@ public class ParentDetails {
         this.parent_name = parent_name;
     }
 
-    public class student_details{
+    public static class student_details{
         private String student_id,student_name,student_std,student_section,student_photo;
+
+        public student_details(){
+
+        }
 
         public String getStudent_id() {
             return student_id;

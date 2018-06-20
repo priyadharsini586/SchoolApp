@@ -27,6 +27,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -90,9 +91,10 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     ArrayList<Bitmap>bitmapArrayList = new ArrayList<>();
     ArrayList<String>bitmapStrArrayList = new ArrayList<>();
     private LinearLayout all_children_dialoge;
-    private ArrayList<String> getStudentNameArrayList  = new ArrayList<>();
+    private ArrayList<ParentDetails.student_details> getStudentNameArrayList  = new ArrayList<>();
     private String[] getStudentNameStringArray;
     private StudentCustomListAdapter studentCustomListAdapter;
+    String childId = "-1";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -164,9 +166,10 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     private void openDialoge() {
 
         ListView select_stu_list;
-        Dialog dialog = new Dialog(getActivity());
+
+        final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.student_select_dialoge);
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        final WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         Window window = dialog.getWindow();
         layoutParams.copyFrom(window.getAttributes());
 
@@ -180,12 +183,26 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         window.setAttributes(layoutParams);
         dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCanceledOnTouchOutside(false);
         select_stu_list = (ListView) dialog.findViewById(R.id.select_stu_list);
 
 
         studentCustomListAdapter = new StudentCustomListAdapter(getActivity(),getStudentNameArrayList);
         select_stu_list.setAdapter(studentCustomListAdapter);
+        select_stu_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.e(TAG, "onItemClick: "+getStudentNameArrayList.get(i).getStudent_name() +" student id " +getStudentNameArrayList.get(i).getStudent_id());
+                if (!getStudentNameArrayList.get(i).getStudent_id().equals("-1")) {
+                    getSelectedChildern(getStudentNameArrayList.get(i).getStudent_id());
+                    childId = getStudentNameArrayList.get(i).getStudent_id();
+                }else {
+                    childId = "-1";
+                    setIntoView();
+                }
+                dialog.cancel();
+            }
+        });
         dialog.show();
 
 
@@ -207,7 +224,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
 
-        if (android.os.Build.VERSION.SDK_INT >= 13) {
+        if (android.os.Build.VERSION.SDK_INT >= 17) {
             Point size = new Point();
             display.getSize(size);
             screenWidth = size.x;
@@ -340,6 +357,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
 
     public void getDataFromServer(){
+        setIntoView();
         if (isNetworkConnected){
             JSONObject jsonObject = new JSONObject();
             try {
@@ -352,6 +370,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                 @Override
                 public void onResponse(Call<ParentDetails> call, Response<ParentDetails> response) {
                     if (response.isSuccessful()){
+                        Log.e(TAG, "onResponse:"+response.isSuccessful() );
                         ParentDetails parentDetails = response.body();
                         if (parentDetails.getStatus_code() != null){
                             if (parentDetails.getStatus_code().equals(Constants.SUCESS)){
@@ -371,12 +390,16 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
                             }
                         }
+                    }else{
+                        setIntoView();
+                        Toast.makeText(getActivity(),"Server Error",Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ParentDetails> call, Throwable t) {
 
+                    Toast.makeText(getActivity(),"Server Error",Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -388,6 +411,9 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     }
 
     private void setIntoView() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
         String getParentDetails = dataBaseHandler.getParentChildDetails();
         try {
             JSONObject getParentObject = new JSONObject(getParentDetails);
@@ -396,43 +422,45 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
             JSONArray getStudentArray = getParentObject.getJSONArray("student_details");
             bitmapArrayList = new ArrayList<>();
             bitmapStrArrayList = new ArrayList<>();
-            for (int i = 0 ;i < getStudentArray.length() ; i ++){
+            getStudentNameArrayList = new ArrayList<>();
+            ParentDetails.student_details student_details = new ParentDetails.student_details();
+            student_details.setStudent_id("-1");
+            student_details.setStudent_name("All Children");
+            getStudentNameArrayList.add(student_details);
+            for (int i = 0 ;i < getStudentArray.length() ; i ++) {
                 JSONObject studObject = getStudentArray.getJSONObject(i);
                 if (studObject.has("student_photo")) {
                     String stuPhoto = studObject.getString("student_photo");
+                    String studId = studObject.getString("student_id");
                     bitmapStrArrayList.add(stuPhoto);
-                }
-            }
-            if (getStudentArray.length() != 1) {
-                try{
-                    for(int i=0; i<=getStudentArray.length();i++){
-                        JSONObject jsonObject = getStudentArray.getJSONObject(i);
-                        if(jsonObject.has("student_name")){
-                            String studentName = jsonObject.getString("student_name");
-                            getStudentNameArrayList.add(studentName);
-                         //  getStudentNameStringArray = getStudentNameArrayList.toArray(new String[getStudentNameArrayList.size()]);
-
-                        }
+                    if (studObject.has("student_name")) {
+                        String studentName = studObject.getString("student_name");
+                        ParentDetails.student_details student_detail = new ParentDetails.student_details();
+                        student_detail.setStudent_id(studId);
+                        student_detail.setStudent_name(studentName);
+                        getStudentNameArrayList.add(student_detail);
                     }
-                }catch (Exception e){
-                    Toast.makeText(getActivity(), "Student Name is Empty", Toast.LENGTH_SHORT).show();
                 }
+             }
 
+            if (getStudentArray.length() != 1){
                 ldtChoiceChildren.setVisibility(View.VISIBLE);
-
+                ldtChoiceChildren.setVisibility(View.VISIBLE);
+            }else {
+                ldtChoiceChildren.setVisibility(View.GONE);
             }
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    new loadImg().execute();
-                }
-            });
 
-            profile_image1.setShape(MultiImageView.Shape.CIRCLE);
+                    new LoadImage().execute();
+                    profile_image1.setShape(MultiImageView.Shape.CIRCLE);
+
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+            }
+        });
     }
 
     @Override
@@ -441,8 +469,9 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
             switch (v.getId()) {
 
                 case R.id.about_child:
-                     intent = new Intent(getActivity(), CommonFragmentActivity.class);
+                    intent = new Intent(getActivity(), CommonFragmentActivity.class);
                     intent.putExtra("from",Constants.ABOUT_CHILD_FRAGMENT);
+                    intent.putExtra("childId",childId);
                     startActivity(intent);
                     break;
 
@@ -479,11 +508,12 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
 
 
-    private class loadImg extends AsyncTask<String,Void,Bitmap> {
+    private class LoadImage extends AsyncTask<String,Void,Bitmap> {
 
         @Override
         protected Bitmap doInBackground(String... strings) {
             try {
+                bitmapArrayList = new ArrayList<>();
                 for (int i = 0; i < bitmapStrArrayList.size(); i++) {
                     String link = bitmapStrArrayList.get(i);
                     if (link != null && !link.isEmpty()) {
@@ -509,9 +539,45 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         protected void onPostExecute(Bitmap aVoid) {
             super.onPostExecute(aVoid);
             Log.e(TAG, "onPostExecute: "+bitmapArrayList.size() );
+            profile_image1.clear();
             for (int i = 0 ; i <bitmapArrayList.size() ;i ++){
                 profile_image1.addImage(bitmapArrayList.get(i));
             }
         }
+    }
+
+
+
+    public void getSelectedChildern(final String studentId){
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String getParentDetails = dataBaseHandler.getParentChildDetails();
+                if (getParentDetails != null && !getParentDetails.isEmpty()){
+                    try {
+                        JSONObject getParentObject = new JSONObject(getParentDetails);
+                        JSONArray getStudentArray = getParentObject.getJSONArray("student_details");
+                        bitmapStrArrayList = new ArrayList<>();
+                        for (int i = 0 ;i < getStudentArray.length() ; i ++) {
+                            JSONObject studObject = getStudentArray.getJSONObject(i);
+                            if (studObject.has("student_photo")) {
+                                String stuPhoto = studObject.getString("student_photo");
+                                String studId = studObject.getString("student_id");
+                                if (studentId.equals(studId)) {
+                                    bitmapStrArrayList.add(stuPhoto);
+                                    if (studObject.has("student_name")) {
+                                        String studentName = studObject.getString("student_name");
+                                    }
+                                }
+                            }
+                        }
+                        new LoadImage().execute();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }

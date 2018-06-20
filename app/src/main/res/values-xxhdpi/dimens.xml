@@ -1,0 +1,62 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--login padding -->
+    <dimen name="content_padding">10dp</dimen>
+    <dimen name="login_component_padding">13dp</dimen>
+
+    <!-- image Slider layout width -->
+    <dimen name="menu_layout">150dp</dimen>
+
+    <!--dashboard layout -->
+    <dimen name="dashboard_profile_bg_size">180dp</dimen>
+    <dimen name="dashboard_profile_pic_size">80dp</dimen>
+    <dimen name="dashboard_name_size">15sp</dimen>
+    <dimen name="dashboard_name_padding">17dp</dimen>
+    <dimen name="dashboard_phone_size">14sp</dimen>
+    <dimen name="dashboard_notification_size">150dp</dimen>
+    <dimen name="dashboard_notification_padding">25dp</dimen>
+    <dimen name="dashboard_notification_card_padding">70dp</dimen>
+    <dimen name="dashboard_notification_inside_card_padding">12dp</dimen>
+    <dimen name="dashboard_notification_bell_size">24dp</dimen>
+    <dimen name="dashboard_notification_text_padding">6dp</dimen>
+    <dimen name="dashboard_notification_text_size">12sp</dimen>
+    <dimen name="dashboard_layout_padding_top">20dp</dimen>
+    <dimen name="dashboard_layout_size">100dp</dimen>
+    <dimen name="dashboard_layout_padding">7dp</dimen>
+    <dimen name="dashboard_layout_text_size">11sp</dimen>
+    <dimen name="dashboard_layout_image_size">50dp</dimen>
+    <dimen name="dashboard_selection_padding">10dp</dimen>
+    <dimen name="dashboard_selection_text_padding">17dp</dimen>
+    <dimen name="dashboard_badge_size">25dp</dimen>
+  <!--  &lt;!&ndash;Width and height for the profile layout  &ndash;&gt;
+    <dimen name="profile_height">85dp</dimen>
+
+    <dimen name="circular_image_width">85dp</dimen>
+    <dimen name="circular_image_height">85dp</dimen>
+
+    <dimen name="student_name_text_size">22sp</dimen>
+    <dimen name="student_description_text_size">17sp</dimen>
+
+    <dimen name="student_description_image_size_width">30dp</dimen>
+    <dimen name="student_description_image_size_height">30dp</dimen>-->
+
+    <!--Width and height for the profile layout  -->
+    <dimen name="profile_height">60dp</dimen>
+
+    <dimen name="circular_image_width">60dp</dimen>
+    <dimen name="circular_image_height">60dp</dimen>
+
+    <dimen name="student_name_text_size">15sp</dimen>
+    <dimen name="student_description_text_size">13sp</dimen>
+
+    <dimen name="student_description_image_size_width">22dp</dimen>
+    <dimen name="student_description_image_size_height">22dp</dimen>
+
+    <!-- custom dialog for student name list -->
+    <dimen name="custom_dialog_select_student">16sp</dimen>
+
+    <dimen name="custom_dialog_student_name">17sp</dimen>
+</resources>

@@ -30,7 +30,7 @@
     <dimen name="dashboard_layout_image_size">50dp</dimen>
     <dimen name="dashboard_selection_padding">10dp</dimen>
     <dimen name="dashboard_selection_text_padding">17dp</dimen>
-
+    <dimen name="dashboard_badge_size">25dp</dimen>
   <!--  &lt;!&ndash;Width and height for the profile layout  &ndash;&gt;
     <dimen name="profile_height">85dp</dimen>
 
