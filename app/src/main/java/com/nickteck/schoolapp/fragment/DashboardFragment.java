@@ -22,7 +22,9 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.activity.CommonFragmentActivity;
 import com.nickteck.schoolapp.activity.DashboardActivity;
 import com.nickteck.schoolapp.activity.LoginActivity;
+import com.nickteck.schoolapp.adapter.StudentCustomListAdapter;
 import com.nickteck.schoolapp.api.ApiClient;
 import com.nickteck.schoolapp.api.ApiInterface;
 import com.nickteck.schoolapp.database.DataBaseHandler;
@@ -80,16 +83,23 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
     ArrayList<Bitmap>bitmapArrayList = new ArrayList<>();
     ArrayList<String>bitmapStrArrayList = new ArrayList<>();
+    private LinearLayout all_children_dialoge;
+    private ArrayList<String> getStudentNameArrayList  = new ArrayList<>();
+    private String[] getStudentNameStringArray;
+    private StudentCustomListAdapter studentCustomListAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mainView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
         init();
+        setOnclickListener();
 
         return mainView;
     }
+
 
 
 
@@ -126,9 +136,46 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         MyApplication.getInstance().setConnectivityListener(this);
 
         profile_image1 = (MultiImageView) mainView.findViewById(R.id.profile_image_dashBoard);
+        all_children_dialoge = (LinearLayout) mainView.findViewById(R.id.all_children_dialoge);
+
+
 
         if ((DashboardActivity)getActivity() != null)
             ((DashboardActivity) getActivity()).setOnBackPressedListener(this);
+    }
+
+    private void setOnclickListener() {
+        all_children_dialoge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                openDialoge();
+            }
+        });
+
+    }
+
+    private void openDialoge() {
+        ListView select_stu_list;
+
+        Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.student_select_dialoge);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        select_stu_list = (ListView) dialog.findViewById(R.id.select_stu_list);
+
+
+        studentCustomListAdapter = new StudentCustomListAdapter(getActivity(),getStudentNameArrayList);
+        select_stu_list.setAdapter(studentCustomListAdapter);
+
+
+        /*// prepare listview in dialoge
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getStudentNameArrayList);
+        select_stu_list.setAdapter(adapter);*/
+
+        dialog.show();
+
+
     }
 
 
@@ -344,7 +391,22 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                 }
             }
             if (getStudentArray.length() != 1) {
+                try{
+                    for(int i=0; i<=getStudentArray.length();i++){
+                        JSONObject jsonObject = getStudentArray.getJSONObject(i);
+                        if(jsonObject.has("student_name")){
+                            String studentName = jsonObject.getString("student_name");
+                            getStudentNameArrayList.add(studentName);
+                         //  getStudentNameStringArray = getStudentNameArrayList.toArray(new String[getStudentNameArrayList.size()]);
+
+                        }
+                    }
+                }catch (Exception e){
+                    Toast.makeText(getActivity(), "Student Name is Empty", Toast.LENGTH_SHORT).show();
+                }
+
                 ldtChoiceChildren.setVisibility(View.VISIBLE);
+
             }
             getActivity().runOnUiThread(new Runnable() {
                 @Override
