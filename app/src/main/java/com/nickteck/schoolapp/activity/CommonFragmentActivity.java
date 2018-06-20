@@ -31,14 +31,13 @@ public class CommonFragmentActivity extends AppCompatActivity {
         if (getIntent().hasExtra("childId")) {
             childID = getIntent().getStringExtra("childId");
         } else {
-            throw new IllegalArgumentException("Activity cannot find  extras from");
+           // throw new IllegalArgumentException("Activity cannot find  extras from");
         }
         if (fromFragment.equals(Constants.ABOUT_CHILD_FRAGMENT)) {
             AboutChildFragment aboutChildFragment = new AboutChildFragment();
             aboutChildFragment.childId(childID);
             HelperClass.replaceFragment(aboutChildFragment, Constants.ABOUT_CHILD_FRAGMENT, CommonFragmentActivity.this);
-        }else if (fromFragment.equals(Constants.ANNOUNEMENT_FRAGMENT))
-        {
+        }else if (fromFragment.equals(Constants.ANNOUNEMENT_FRAGMENT)) {
             AnnoncementFragment annoncementFragment = new AnnoncementFragment();
             HelperClass.replaceFragment(annoncementFragment, Constants.ANNOUNEMENT_FRAGMENT, CommonFragmentActivity.this);
         }

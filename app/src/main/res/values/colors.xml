@@ -15,4 +15,14 @@
     <color name="black">#000000</color>
 
     <color name="grey">#c1c1c1</color>
+
+    <color name="tab_background_color">#dadada</color>
+
+    <color name="tabIndicatorColor">#ffffff</color>
+
+    <color name="tabSelectedTextColor">#de5555</color>
+
+    <color name="tabTextColor">#f9e9e9</color>
+
+    <color name="greyDarkColor">#FF767373</color>
 </resources>

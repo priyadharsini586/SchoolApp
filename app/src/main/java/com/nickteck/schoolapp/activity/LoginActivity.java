@@ -200,7 +200,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
             public void onClick(View view) {
                 isPhone = HelperClass.isValidMobile(mMobileNo.getText().toString());
                 //check for mobile no is valid
-                if (isPhone) {
+                if (!isPhone) {
 
                     checkLogin();
                 } else {
@@ -308,6 +308,8 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                                 mbtnSubmit.stopAnimation();
                                 Toast.makeText(LoginActivity.this, loginDetails.getStatus_message(), Toast.LENGTH_SHORT).show();
 
+                            } else if(loginDetails.getStatus_code().equals(Constants.DEVICE_ID_NOT_MATCHED)){
+                                Toast.makeText(LoginActivity.this, loginDetails.getStatus_message(), Toast.LENGTH_SHORT).show();
                             }
                         }
 

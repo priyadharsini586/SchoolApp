@@ -24,4 +24,11 @@
         <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
 
+    <style name="CustomTextStyle" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+
+
 </resources>
