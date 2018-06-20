@@ -357,7 +357,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
 
     public void getDataFromServer(){
-        setIntoView();
+
         if (isNetworkConnected){
             JSONObject jsonObject = new JSONObject();
             try {
@@ -398,7 +398,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
                 @Override
                 public void onFailure(Call<ParentDetails> call, Throwable t) {
-
+                    setIntoView();
                     Toast.makeText(getActivity(),"Server Error",Toast.LENGTH_LONG).show();
                 }
             });
@@ -414,51 +414,51 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-        String getParentDetails = dataBaseHandler.getParentChildDetails();
-        try {
-            JSONObject getParentObject = new JSONObject(getParentDetails);
-            txtChildName.setText(getParentObject.getString("parent_name"));
-            txtMobileNumber.setText(dataBaseHandler.getMobileNumber());
-            JSONArray getStudentArray = getParentObject.getJSONArray("student_details");
-            bitmapArrayList = new ArrayList<>();
-            bitmapStrArrayList = new ArrayList<>();
-            getStudentNameArrayList = new ArrayList<>();
-            ParentDetails.student_details student_details = new ParentDetails.student_details();
-            student_details.setStudent_id("-1");
-            student_details.setStudent_name("All Children");
-            getStudentNameArrayList.add(student_details);
-            for (int i = 0 ;i < getStudentArray.length() ; i ++) {
-                JSONObject studObject = getStudentArray.getJSONObject(i);
-                if (studObject.has("student_photo")) {
-                    String stuPhoto = studObject.getString("student_photo");
-                    String studId = studObject.getString("student_id");
-                    bitmapStrArrayList.add(stuPhoto);
-                    if (studObject.has("student_name")) {
-                        String studentName = studObject.getString("student_name");
-                        ParentDetails.student_details student_detail = new ParentDetails.student_details();
-                        student_detail.setStudent_id(studId);
-                        student_detail.setStudent_name(studentName);
-                        getStudentNameArrayList.add(student_detail);
+                if (dataBaseHandler.ifParentChildisExists()) {
+                    String getParentDetails = dataBaseHandler.getParentChildDetails();
+                    try {
+                        JSONObject getParentObject = new JSONObject(getParentDetails);
+                        txtChildName.setText(getParentObject.getString("parent_name"));
+                        txtMobileNumber.setText(dataBaseHandler.getMobileNumber());
+                        JSONArray getStudentArray = getParentObject.getJSONArray("student_details");
+                        bitmapArrayList = new ArrayList<>();
+                        bitmapStrArrayList = new ArrayList<>();
+                        getStudentNameArrayList = new ArrayList<>();
+                        ParentDetails.student_details student_details = new ParentDetails.student_details();
+                        student_details.setStudent_id("-1");
+                        student_details.setStudent_name("All Children");
+                        getStudentNameArrayList.add(student_details);
+                        for (int i = 0; i < getStudentArray.length(); i++) {
+                            JSONObject studObject = getStudentArray.getJSONObject(i);
+                            if (studObject.has("student_photo")) {
+                                String stuPhoto = studObject.getString("student_photo");
+                                String studId = studObject.getString("student_id");
+                                bitmapStrArrayList.add(stuPhoto);
+                                if (studObject.has("student_name")) {
+                                    String studentName = studObject.getString("student_name");
+                                    ParentDetails.student_details student_detail = new ParentDetails.student_details();
+                                    student_detail.setStudent_id(studId);
+                                    student_detail.setStudent_name(studentName);
+                                    getStudentNameArrayList.add(student_detail);
+                                }
+                            }
+                        }
+
+                        if (getStudentArray.length() != 1) {
+                            ldtChoiceChildren.setVisibility(View.VISIBLE);
+                            ldtChoiceChildren.setVisibility(View.VISIBLE);
+                        } else {
+                            ldtChoiceChildren.setVisibility(View.GONE);
+                        }
+
+                        new LoadImage().execute();
+                        profile_image1.setShape(MultiImageView.Shape.CIRCLE);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
-             }
-
-            if (getStudentArray.length() != 1){
-                ldtChoiceChildren.setVisibility(View.VISIBLE);
-                ldtChoiceChildren.setVisibility(View.VISIBLE);
-            }else {
-                ldtChoiceChildren.setVisibility(View.GONE);
-            }
-
-                    new LoadImage().execute();
-                    profile_image1.setShape(MultiImageView.Shape.CIRCLE);
-
-
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
             }
         });
     }

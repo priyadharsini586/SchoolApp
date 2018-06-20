@@ -15,15 +15,24 @@ import android.widget.TextView;
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
+import com.nickteck.schoolapp.api.ApiClient;
+import com.nickteck.schoolapp.api.ApiInterface;
 import com.nickteck.schoolapp.database.DataBaseHandler;
+import com.nickteck.schoolapp.model.AboutMyChildDetails;
+import com.nickteck.schoolapp.model.ParentDetails;
 import com.nickteck.schoolapp.service.MyApplication;
 import com.nickteck.schoolapp.service.NetworkChangeReceiver;
+import com.nickteck.schoolapp.utilclass.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AboutChildFragment extends Fragment implements NetworkChangeReceiver.ConnectivityReceiverListener {
     View mainView;
@@ -33,7 +42,8 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
     TextView txtStudentName, txtTeacherName;
     boolean isNetworkConnected = false;
     TSnackbar tSnackbar;
-
+    ApiInterface apiInterface;
+    String childId;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,7 +51,7 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
         mainView = inflater.inflate(R.layout.fragment_about_child, container, false);
         dataBaseHandler = new DataBaseHandler(getActivity());
         MyApplication.getInstance().setConnectivityListener(this);
-
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
         initView();
 
 
@@ -51,8 +61,6 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
     private void initView() {
 
         ldtMainAboutView = (LinearLayout) mainView.findViewById(R.id.ldtMainAboutView);
-
-
 
     }
 
@@ -70,6 +78,41 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
     public void getDataFromServer(){
         if (isNetworkConnected){
             JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("student_id", childId);
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            Call<AboutMyChildDetails> aboutMyChildDetailsCall = apiInterface.getChildAboutDetails(jsonObject);
+            aboutMyChildDetailsCall.enqueue(new Callback<AboutMyChildDetails>() {
+                @Override
+                public void onResponse(Call<AboutMyChildDetails> call, Response<AboutMyChildDetails> response) {
+                    if (response.isSuccessful())
+                    {
+                        AboutMyChildDetails aboutMyChildDetails = response.body();
+                        if (aboutMyChildDetails.getStatus_code() != null) {
+                            if (aboutMyChildDetails.getStatus_code().equals(Constants.SUCESS)) {
+                                String studentId = aboutMyChildDetails.getStudent_id();
+                                JSONObject parentObject = aboutMyChildDetails.toJSON();
+                                if (dataBaseHandler.ifStudentIdisExists(studentId))
+                                {
+                                    dataBaseHandler.dropChildAboutDetails(studentId);
+                                    dataBaseHandler.insertChildAboutDetails(studentId,parentObject.toString());
+                                }else {
+                                    dataBaseHandler.insertChildAboutDetails(studentId,parentObject.toString());
+                                }
+
+                                setViewFromDb();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AboutMyChildDetails> call, Throwable t) {
+
+                }
+            });
 
 
         }else {
@@ -80,7 +123,19 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
     }
 
     public void setViewFromDb(){
-        String getParentDetails = dataBaseHandler.getParentChildDetails();
+        if (dataBaseHandler.ifChildAboutDetailsisExists()){
+            String getChildDetails = dataBaseHandler.getChildAboutDetails(childId);
+            try {
+                JSONObject getChildAboutObject = new JSONObject(getChildDetails);
+                LayoutInflater vi = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View v = vi.inflate(R.layout.about_child_row, null);
+                TextView txtStudentName = v.findViewById(R.id.txtStudentName);
+                txtStudentName.setText(getChildAboutObject.getString("student_name"));
+                ldtMainAboutView.addView(v);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -98,9 +153,20 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
             tSnackbar.show();
         }
 
-        if (isNetworkConnected)
-            getDataFromServer();
-        else
+        if (isNetworkConnected) {
+            if (!childId.equals("-1"))
+                getDataFromServer();
+            else {
+
+            }
+
+        }
+        else {
             setViewFromDb();
+        }
+    }
+
+    public void childId (String childId){
+        this.childId = childId;
     }
 }

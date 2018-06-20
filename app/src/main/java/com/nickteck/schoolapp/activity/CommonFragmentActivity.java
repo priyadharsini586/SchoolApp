@@ -35,9 +35,7 @@ public class CommonFragmentActivity extends AppCompatActivity {
         }
         if (fromFragment.equals(Constants.ABOUT_CHILD_FRAGMENT)) {
             AboutChildFragment aboutChildFragment = new AboutChildFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("childId", childID);
-            aboutChildFragment.setArguments(bundle);
+            aboutChildFragment.childId(childID);
             HelperClass.replaceFragment(aboutChildFragment, Constants.ABOUT_CHILD_FRAGMENT, CommonFragmentActivity.this);
         }else if (fromFragment.equals(Constants.ANNOUNEMENT_FRAGMENT))
         {

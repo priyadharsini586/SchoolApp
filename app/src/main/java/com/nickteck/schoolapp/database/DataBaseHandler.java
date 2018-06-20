@@ -26,6 +26,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String PARENT_ID = "PARENT_ID";
     private static final String PARENT_CHILD_DETAILS = "PARENT_CHILD_DETAILS";
 
+    //child about Deatils
+    private static final String TABLE_CHILD_ABOUT= "TABLE_CHILD_ABOUT";
+    private static final String STUDENT_ID = "STUDENT_ID";
+    private static final String CHILD_ABOUT_DETAILS = "CHILD_ABOUT_DETAILS";
+
     public DataBaseHandler(Context context) {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
@@ -40,14 +45,21 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 + PARENT_ID + " TEXT ,"
                 + PARENT_CHILD_DETAILS + " TEXT " + ")";
 
+        String CREATE_TABLE_CHILD_ABOUT = "CREATE TABLE " + TABLE_CHILD_ABOUT + "("
+                + STUDENT_ID + " TEXT ,"
+                + CHILD_ABOUT_DETAILS + " TEXT " + ")";
+
         sqLiteDatabase.execSQL(CREATE_LOGIN_TABLE);
         sqLiteDatabase.execSQL(CREATE_PARENT_CHILD_TABLE);
+        sqLiteDatabase.execSQL(CREATE_TABLE_CHILD_ABOUT);
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + LOGIN_CHECK);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_PARENT_CHILD);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_CHILD_ABOUT);
     }
 
     public void insertLoginTable(String id,String mobileNumber,String device_id){
@@ -76,6 +88,22 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
 
     }
+
+    public void insertChildAboutDetails(String StudentID,String childAboutDetails){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(STUDENT_ID, StudentID);
+        values.put(CHILD_ABOUT_DETAILS,childAboutDetails);
+
+        // Inserting Row
+        db.insert(TABLE_CHILD_ABOUT, null, values);
+        db.close();
+
+    }
+
+
     public boolean  checkTableIsEmpty(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " +LOGIN_CHECK, null);
@@ -124,6 +152,61 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "DELETE  FROM " + TABLE_PARENT_CHILD;
         db.execSQL(selectQuery);
+        db.close();
+    }
+    public void dropChildAboutDetails(String studentID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "DELETE FROM " + TABLE_CHILD_ABOUT + " WHERE " + STUDENT_ID + "= '" + studentID + "'";
+
+        db.execSQL(selectQuery);
+        db.close();
+    }
+
+    public boolean ifStudentIdisExists(String studentID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean isExits = false;
+        Cursor cursor = null;
+        String sql ="SELECT "+STUDENT_ID+ " FROM "+TABLE_CHILD_ABOUT+" WHERE "+STUDENT_ID +" = "+studentID;
+        cursor= db.rawQuery(sql,null);
+
+        if(cursor.getCount()>0){
+            //PID Found
+            isExits = true;
+        }else{
+            //PID Not Found
+            isExits = false;
+        }
+        cursor.close();
+        db.close();
+        return isExits;
+    }
+
+    public boolean ifParentChildisExists(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_PARENT_CHILD, null);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        if(count > 0){
+            cursor.close();
+            return true;
+        }else {
+            cursor.close();
+            return false;
+        }
+    }
+
+    public boolean ifChildAboutDetailsisExists(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_CHILD_ABOUT, null);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        if(count > 0){
+            cursor.close();
+            return true;
+        }else {
+            cursor.close();
+            return false;
+        }
     }
 
     public String getParentChildDetails(){
@@ -136,7 +219,19 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         parentDetails = cursor.getString(1);
         cursor.close();
         db.close();
-
         return parentDetails;
+    }
+
+    public String getChildAboutDetails(String studentId)
+    {
+        String childAboutDetails = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT "+CHILD_ABOUT_DETAILS +" FROM " +TABLE_CHILD_ABOUT +" WHERE "+STUDENT_ID +" = " +studentId;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        childAboutDetails = cursor.getString(0);
+        db.close();
+        return childAboutDetails;
     }
 }

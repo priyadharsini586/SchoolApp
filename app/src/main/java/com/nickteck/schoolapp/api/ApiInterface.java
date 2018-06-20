@@ -1,5 +1,6 @@
 package com.nickteck.schoolapp.api;
 
+import com.nickteck.schoolapp.model.AboutMyChildDetails;
 import com.nickteck.schoolapp.model.LoginDetails;
 import com.nickteck.schoolapp.model.ParentDetails;
 
@@ -31,6 +32,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("parent_details.php")
     Call<ParentDetails> getParentDetails(@Field("x") JSONObject object);
+
+    @FormUrlEncoded
+    @POST("about_child.php")
+    Call<AboutMyChildDetails> getChildAboutDetails(@Field("x") JSONObject object);
+
 
 
 }
