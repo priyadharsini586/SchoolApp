@@ -45,4 +45,10 @@
     <dimen name="dashboard_layout_image_size">40dp</dimen>
     <dimen name="dashboard_selection_padding">7dp</dimen>
     <dimen name="dashboard_selection_text_padding">10dp</dimen>
+
+
+    <!-- custom dialog for student name list -->
+    <dimen name="custom_dialog_select_student">16sp</dimen>
+
+    <dimen name="custom_dialog_student_name">15sp</dimen>
 </resources>

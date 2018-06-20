@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,15 +15,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -156,10 +162,23 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     }
 
     private void openDialoge() {
-        ListView select_stu_list;
 
+        ListView select_stu_list;
         Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.student_select_dialoge);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        Window window = dialog.getWindow();
+        layoutParams.copyFrom(window.getAttributes());
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int widthLcl = (int) (displayMetrics.widthPixels*0.9f);
+        int heightLcl =  WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.width = widthLcl;
+        layoutParams.height = heightLcl;
+        layoutParams.gravity = Gravity.CENTER;
+
+        window.setAttributes(layoutParams);
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
         select_stu_list = (ListView) dialog.findViewById(R.id.select_stu_list);
@@ -167,12 +186,6 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         studentCustomListAdapter = new StudentCustomListAdapter(getActivity(),getStudentNameArrayList);
         select_stu_list.setAdapter(studentCustomListAdapter);
-
-
-        /*// prepare listview in dialoge
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, getStudentNameArrayList);
-        select_stu_list.setAdapter(adapter);*/
-
         dialog.show();
 
 

@@ -43,4 +43,9 @@
     <dimen name="student_description_image_size_width">35dp</dimen>
     <dimen name="student_description_image_size_height">35dp</dimen>
 
+    <!-- custom dialog for student name list -->
+    <dimen name="custom_dialog_select_student">17sp</dimen>
+
+    <dimen name="custom_dialog_student_name">20sp</dimen>
+
 </resources>
