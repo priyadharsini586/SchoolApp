@@ -13,6 +13,7 @@ import com.nickteck.schoolapp.R;
  * A simple {@link Fragment} subclass.
  */
 public class SpecificAnnouncementFrgament extends Fragment {
+    View view;
 
 
     public SpecificAnnouncementFrgament() {
@@ -24,7 +25,8 @@ public class SpecificAnnouncementFrgament extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_specific_announcement_frgament, container, false);
+        view =  inflater.inflate(R.layout.fragment_specific_announcement_frgament, container, false);
+        return view;
     }
 
 }

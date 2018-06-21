@@ -89,6 +89,24 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public String getParentId(){
+        String parentId = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_PARENT_CHILD;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+        parentId = cursor.getString(0);
+        cursor.close();
+        db.close();
+
+        return parentId;
+
+    }
+
     public void insertChildAboutDetails(String StudentID,String childAboutDetails){
 
         SQLiteDatabase db = this.getWritableDatabase();

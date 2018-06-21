@@ -87,15 +87,13 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
             aboutMyChildDetailsCall.enqueue(new Callback<AboutMyChildDetails>() {
                 @Override
                 public void onResponse(Call<AboutMyChildDetails> call, Response<AboutMyChildDetails> response) {
-                    if (response.isSuccessful())
-                    {
+                    if (response.isSuccessful()) {
                         AboutMyChildDetails aboutMyChildDetails = response.body();
                         if (aboutMyChildDetails.getStatus_code() != null) {
                             if (aboutMyChildDetails.getStatus_code().equals(Constants.SUCESS)) {
                                 String studentId = aboutMyChildDetails.getStudent_id();
                                 JSONObject parentObject = aboutMyChildDetails.toJSON();
-                                if (dataBaseHandler.ifStudentIdisExists(studentId))
-                                {
+                                if (dataBaseHandler.ifStudentIdisExists(studentId)) {
                                     dataBaseHandler.dropChildAboutDetails(studentId);
                                     dataBaseHandler.insertChildAboutDetails(studentId,parentObject.toString());
                                 }else {

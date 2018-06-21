@@ -49,5 +49,11 @@
 
     <dimen name="custom_dialog_student_name">15sp</dimen>
 
+    <!--Common Announement  -->
+    <dimen name="common_annouce_title">15sp</dimen>
+    <dimen name="common_annouce_teacher">12sp</dimen>
+    <dimen name="common_annouce_message">12sp</dimen>
+    <dimen name="common_annouce_date_time">10sp</dimen>
+
 
 </resources>
