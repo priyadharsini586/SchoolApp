@@ -80,60 +80,60 @@ public class AnnoncementDetails {
 
     public class special_announcement {
 
-//        private String classe;
-//        private String section;
-      //  private String title;
-     //   private String message;
-     //   private String teacher_name;
-       // private String date;
+        private String classe;
+        private String section;
+        private String title;
+        private String message;
+        private String teacher_name;
+        private String date;
 
-//        public String getClasse() {
-//            return classe;
-//        }
-//
-//        public void setClasse(String classe) {
-//            this.classe = classe;
-//        }
+        public String getClasse() {
+            return classe;
+        }
 
-//        public String getSection() {
-//            return section;
-//        }
-//
-//        public void setSection(String section) {
-//            this.section = section;
-//        }
+        public void setClasse(String classe) {
+            this.classe = classe;
+        }
 
-       /* public String getTitle() {
+        public String getSection() {
+            return section;
+        }
+
+        public void setSection(String section) {
+            this.section = section;
+        }
+
+        public String getTitle() {
             return title;
         }
 
         public void setTitle(String title) {
             this.title = title;
-        }*/
+        }
 
-        /*public String getMessage() {
+        public String getMessage() {
             return message;
         }
 
         public void setMessage(String message) {
             this.message = message;
-        }*/
+        }
 
-        /*public String getTeacher_name() {
+        public String getTeacher_name() {
             return teacher_name;
         }
 
         public void setTeacher_name(String teacher_name) {
             this.teacher_name = teacher_name;
-        }*/
+        }
 
-       /* public String getDate() {
+        public String getDate() {
             return date;
         }
 
         public void setDate(String date) {
             this.date = date;
-        }*/
+        }
     }
 
 }

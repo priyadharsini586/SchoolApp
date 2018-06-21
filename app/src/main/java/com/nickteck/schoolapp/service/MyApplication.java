@@ -27,17 +27,7 @@ public class MyApplication extends Application {
         mInstance = this;
 //        FontsOverride.setDefaultFont(this, "MONOSPACE", "Cabin-SemiBold.ttf");
         FontsOverride.setDefaultFont(this, "SERIF", "OpenSans-Regular.ttf");
-        DataBaseHandler dataBaseHandler = new DataBaseHandler(getApplicationContext());
-        if (dataBaseHandler.checkTableIsEmpty()) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
 
-        }else {
-            Intent intent = new Intent(this, DashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             networkChangeReceiver = new ConnectivityReceiver()

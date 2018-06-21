@@ -2,6 +2,8 @@ package com.nickteck.schoolapp.activity;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -16,6 +18,19 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DataBaseHandler dataBaseHandler = new DataBaseHandler(getApplicationContext());
+        if (dataBaseHandler.checkTableIsEmpty()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            this.finish();
+
+        }else {
+            Intent intent = new Intent(this, DashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            this.finish();
+        }
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -38,4 +53,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         },SPLASH_TIME_OUT);
     }
+
+
 }

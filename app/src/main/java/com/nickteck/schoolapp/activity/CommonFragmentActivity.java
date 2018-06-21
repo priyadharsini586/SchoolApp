@@ -8,13 +8,14 @@ import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.fragment.AboutChildFragment;
 import com.nickteck.schoolapp.fragment.AnnoncementFragment;
+import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
 import com.nickteck.schoolapp.utilclass.Constants;
 
 public class CommonFragmentActivity extends AppCompatActivity {
 
     String fromFragment = null,childID = null;
     private LinearLayout mainViewActivity;
-
+    protected  OnBackPressedListener onBackPressedListener ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,5 +43,17 @@ public class CommonFragmentActivity extends AppCompatActivity {
             HelperClass.replaceFragment(annoncementFragment, Constants.ANNOUNEMENT_FRAGMENT, CommonFragmentActivity.this);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (onBackPressedListener != null)
+            onBackPressedListener.onBackPressed();
+        else
+            super.onBackPressed();
+    }
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
     }
 }

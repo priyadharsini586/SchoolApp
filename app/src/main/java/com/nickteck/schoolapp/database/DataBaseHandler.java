@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by admin on 6/18/2018.
@@ -30,6 +31,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_CHILD_ABOUT= "TABLE_CHILD_ABOUT";
     private static final String STUDENT_ID = "STUDENT_ID";
     private static final String CHILD_ABOUT_DETAILS = "CHILD_ABOUT_DETAILS";
+
 
     public DataBaseHandler(Context context) {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -89,7 +91,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public String getParentId(){
+    /*public String getParentId(){
         String parentId = null;
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -105,7 +107,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
         return parentId;
 
-    }
+    }*/
 
     public void insertChildAboutDetails(String StudentID,String childAboutDetails){
 
@@ -166,6 +168,19 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
         return deviceId;
     }
+    public String getParentId(){
+        String parentID = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_PARENT_CHILD;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        parentID = cursor.getString(0);
+        cursor.close();
+        db.close();
+        return parentID;
+    }
+
     public void dropParentDetails(){
         SQLiteDatabase db = this.getReadableDatabase();
         String selectQuery = "DELETE  FROM " + TABLE_PARENT_CHILD;
@@ -184,8 +199,13 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean isExits = false;
         Cursor cursor = null;
-        String sql ="SELECT "+STUDENT_ID+ " FROM "+TABLE_CHILD_ABOUT+" WHERE "+STUDENT_ID +" = "+studentID;
-        cursor= db.rawQuery(sql,null);
+        try {
+            String sql ="SELECT "+STUDENT_ID+ " FROM "+TABLE_CHILD_ABOUT+" WHERE "+STUDENT_ID +" = '"+studentID+"'";
+            cursor= db.rawQuery(sql,null);
+        }catch (Exception e){
+            Log.e("TAG", "ifStudentIdisExists: "+e );
+        }
+
 
         if(cursor.getCount()>0){
             //PID Found
@@ -244,7 +264,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     {
         String childAboutDetails = null;
         SQLiteDatabase db = this.getReadableDatabase();
-        String selectQuery = "SELECT "+CHILD_ABOUT_DETAILS +" FROM " +TABLE_CHILD_ABOUT +" WHERE "+STUDENT_ID +" = " +studentId;
+        String selectQuery = "SELECT "+CHILD_ABOUT_DETAILS +" FROM " +TABLE_CHILD_ABOUT +" WHERE "+STUDENT_ID +" = '"+studentId+"'";
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null)
             cursor.moveToFirst();

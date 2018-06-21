@@ -78,7 +78,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     public View myView;
     RelativeLayout frameMainLayout;
     String TAG = DashboardFragment.class.getName();
-    TextView txtChildName,txtMobileNumber;
+    TextView txtChildName,txtMobileNumber,txtChooseChild;
     Animation animSlideDown,txtNumberAnimation,profileImgAnimation;
     LinearLayout ldtChildName,ldtMobileNumber,ldtImage;
     boolean isNetworkConnected= false;
@@ -146,7 +146,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         profile_image1 = (MultiImageView) mainView.findViewById(R.id.profile_image_dashBoard);
         all_children_dialoge = (LinearLayout) mainView.findViewById(R.id.all_children_dialoge);
 
-
+        txtChooseChild= mainView.findViewById(R.id.txtChooseChild);
 
         if ((DashboardActivity)getActivity() != null)
             ((DashboardActivity) getActivity()).setOnBackPressedListener(this);
@@ -192,6 +192,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         select_stu_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                txtChooseChild.setText(getStudentNameArrayList.get(i).getStudent_name());
                 Log.e(TAG, "onItemClick: "+getStudentNameArrayList.get(i).getStudent_name() +" student id " +getStudentNameArrayList.get(i).getStudent_id());
                 if (!getStudentNameArrayList.get(i).getStudent_id().equals("-1")) {
                     getSelectedChildern(getStudentNameArrayList.get(i).getStudent_id());

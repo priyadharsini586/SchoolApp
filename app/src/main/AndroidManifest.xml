@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,11 +37,9 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <!--
             <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        -->
         <activity
             android:name=".activity.DashboardActivity"
             android:label="@string/title_activity_dashboard"
@@ -57,7 +55,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.CommonFragmentActivity"></activity>
+        <activity android:name=".activity.CommonFragmentActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
