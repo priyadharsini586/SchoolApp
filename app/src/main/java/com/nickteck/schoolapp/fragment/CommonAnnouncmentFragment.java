@@ -142,7 +142,7 @@ public class CommonAnnouncmentFragment extends Fragment implements NetworkChange
 
                                     dataBaseHandler.dropCommonAnnounacementDetails();
                                     dataBaseHandler.insertCommonAnnouncementDetails(details.getParent_id(),commonAnnoncementobject.toString(),specificAnnouncement.toString());
-                                progress_bar.setVisibility(View.INVISIBLE);
+                                    progress_bar.setVisibility(View.INVISIBLE);
                                     setIntoView();
                             }
                         }

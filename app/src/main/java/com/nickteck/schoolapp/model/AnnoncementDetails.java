@@ -194,6 +194,7 @@ public class AnnoncementDetails {
                     common_annoncement.put("date",specialAnnouncementDetails.getDate());
                     common_annoncement.put("classe",specialAnnouncementDetails.getClasse());
                     common_annoncement.put("section",specialAnnouncementDetails.getSection());
+                    specificAnnouncement.put(common_annoncement);
                 }
                 jsonObject.put("special_announcement",specificAnnouncement);
             }

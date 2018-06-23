@@ -36,7 +36,7 @@ public class SpecificAnnouncementFrgament extends Fragment {
     SpecificAnnouncementAdapter adapter;
     private TextView NoDataSpecificList;
     private ProgressBar progress_bar;
-
+    private boolean isVisible = false;
 
     public SpecificAnnouncementFrgament() {
 
@@ -68,7 +68,7 @@ public class SpecificAnnouncementFrgament extends Fragment {
         NoDataSpecificList.setVisibility(View.INVISIBLE);
     }
 
-    private void setIntoView() {
+    public void setIntoView() {
         progress_bar.setVisibility(View.VISIBLE);
 
         String getSpecificAnnouncementDetails = dataBaseHandler.getSpecificAnnouncementDtails();
@@ -90,7 +90,7 @@ public class SpecificAnnouncementFrgament extends Fragment {
                         String section = commonannounmentDetails.getString("section");
 
 
-                        AnnoncementDetails.SpecialAnnouncementDetails details = new AnnoncementDetails.SpecialAnnouncementDetails(title,message,date,teacherName,classe,section);
+                        AnnoncementDetails.SpecialAnnouncementDetails details = new AnnoncementDetails.SpecialAnnouncementDetails(classe,section,title,message,teacherName,date);
                         specific_Announancement_ArrayList.add(details);
 
                     }
@@ -127,4 +127,19 @@ public class SpecificAnnouncementFrgament extends Fragment {
 
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        isVisible = isVisibleToUser;
+
+        // Make sure that fragment is currently visible
+        if (!isVisible && isResumed()) {
+            // Call code when Fragment not visible
+        } else if (isVisible && isResumed()) {
+            // Call code when Fragment becomes visible.
+            setIntoView();
+        }
+    }
 }
