@@ -8,9 +8,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.nickteck.schoolapp.R;
 
@@ -23,6 +27,7 @@ public class AnnoncementFragment extends Fragment {
     public  ViewPager viewPager;
     public  int int_items = 2;
     private View mainView;
+    private Toolbar toolBarTitle;
 
 
     public AnnoncementFragment() {
@@ -33,10 +38,16 @@ public class AnnoncementFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         mainView =  inflater.inflate(R.layout.fragment_annoncement, container, false);
         tabLayout = (TabLayout) mainView.findViewById(R.id.tabs);
         viewPager = (ViewPager) mainView.findViewById(R.id.viewpager_announacment);
+
+        toolBarTitle = (Toolbar) getActivity().findViewById(R.id.toolBarTitle);
+        TextView toolBarTextView = (TextView) toolBarTitle.findViewById(R.id.toolBarTextView);
+        toolBarTextView.setText(" ");
+        toolBarTitle.setVisibility(View.GONE);
 
 
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
@@ -77,7 +88,7 @@ public class AnnoncementFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    String recent_news = "Over All Announcement";
+                    String recent_news = "Common Announcement";
                     return recent_news;
                 case 1:
                     String category = "Specific Announcement";
@@ -90,13 +101,14 @@ public class AnnoncementFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
 
     }
 }

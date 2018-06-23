@@ -32,6 +32,14 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String STUDENT_ID = "STUDENT_ID";
     private static final String CHILD_ABOUT_DETAILS = "CHILD_ABOUT_DETAILS";
 
+    // common Announacement table
+    private static final String TABLE_COMMON_ANNOUNCEMENT = "TABLE_COMMON_ANNOUNCEMENT";
+
+    //common Announacement Details
+    private static final String COMMON_ANNOUNCEMENT_DETAILS= "COMMON_ANNOUNCEMENT";
+    private static final String SPECIFIC_ANNOUNCEMENT_DETAILS= "SPECIFIC_ANNOUNCEMENT";
+    private String commonAnnouncementDetails;
+
 
     public DataBaseHandler(Context context) {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -51,9 +59,15 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 + STUDENT_ID + " TEXT ,"
                 + CHILD_ABOUT_DETAILS + " TEXT " + ")";
 
+        String CREATE_COMMON_ANNOUNCEMENT_TABLE = "CREATE TABLE " + TABLE_COMMON_ANNOUNCEMENT + "("
+                + PARENT_ID + " TEXT ,"
+                + COMMON_ANNOUNCEMENT_DETAILS + " TEXT ,"
+                + SPECIFIC_ANNOUNCEMENT_DETAILS + " TEXT " + ")";
+
         sqLiteDatabase.execSQL(CREATE_LOGIN_TABLE);
         sqLiteDatabase.execSQL(CREATE_PARENT_CHILD_TABLE);
         sqLiteDatabase.execSQL(CREATE_TABLE_CHILD_ABOUT);
+        sqLiteDatabase.execSQL(CREATE_COMMON_ANNOUNCEMENT_TABLE);
     }
 
 
@@ -62,6 +76,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + LOGIN_CHECK);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_PARENT_CHILD);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_CHILD_ABOUT);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_COMMON_ANNOUNCEMENT);
     }
 
     public void insertLoginTable(String id,String mobileNumber,String device_id){
@@ -90,6 +105,21 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
 
     }
+
+    public void insertCommonAnnouncementDetails(String ParentID,String commonAnnouncement,String specificAnnonucement){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PARENT_ID, ParentID);
+        values.put(COMMON_ANNOUNCEMENT_DETAILS,commonAnnouncement);
+        values.put(SPECIFIC_ANNOUNCEMENT_DETAILS,specificAnnonucement);
+
+        // Inserting Row
+        db.insert(TABLE_COMMON_ANNOUNCEMENT, null, values);
+        db.close();
+
+    }
+
+
 
     /*public String getParentId(){
         String parentId = null;
@@ -195,6 +225,21 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void dropCommonAnnounacementDetails(){
+        try{
+            SQLiteDatabase db = this.getReadableDatabase();
+            String selectQuery = "DELETE  FROM " + TABLE_COMMON_ANNOUNCEMENT;
+            db.execSQL(selectQuery);
+            db.close();
+
+        }catch (Exception e){
+            Log.e("TAG", "iifCommonAnnouncemetTable exists: "+e );
+        }
+
+    }
+
+
+
     public boolean ifStudentIdisExists(String studentID){
         SQLiteDatabase db = this.getReadableDatabase();
         boolean isExits = false;
@@ -247,6 +292,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         }
     }
 
+
+
     public String getParentChildDetails(){
         String parentDetails = null;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -271,5 +318,38 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         childAboutDetails = cursor.getString(0);
         db.close();
         return childAboutDetails;
+    }
+
+    public String getCommonAnnouncementDtails(){
+        String commonAnnouncementDetails = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_COMMON_ANNOUNCEMENT;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        commonAnnouncementDetails = cursor.getString(1);
+        cursor.close();
+        db.close();
+        return commonAnnouncementDetails;
+    }
+
+    public String getSpecificAnnouncementDtails(){
+        try{
+             commonAnnouncementDetails = null;
+            SQLiteDatabase db = this.getReadableDatabase();
+            String selectQuery = "SELECT  * FROM " + TABLE_COMMON_ANNOUNCEMENT;
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            commonAnnouncementDetails = cursor.getString(2);
+            cursor.close();
+            db.close();
+
+
+        }catch (Exception e){
+            Log.e("TAG", "dataexixts: "+e );
+        }
+        return commonAnnouncementDetails;
+
     }
 }

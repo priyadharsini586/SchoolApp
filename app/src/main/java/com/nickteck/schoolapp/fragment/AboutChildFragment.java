@@ -91,8 +91,7 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
         isNetworkConnected = isConnected;
         if (!isConnected) {
             tSnackbar.show();
-        }else
-        {
+        }else {
             if (tSnackbar.isShown())
                 tSnackbar.dismiss();
         }

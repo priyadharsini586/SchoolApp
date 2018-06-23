@@ -1,16 +1,39 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nickteck.schoolapp.fragment.SpecificAnnouncementFrgament">
 
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+
+            android:id="@+id/specific_announacemnt_recyclerview"
+            android:layout_width="match_parent"
+            android:background="@color/graylight"
+            android:layout_height="match_parent">
+
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Specific Announcment Fragment"
-        android:textSize="25dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/NoDataSpecificList"
+        android:text="No Data"
+        android:layout_centerInParent="true"
         android:gravity="center"
-        />
+        android:textColor="@color/black"
+        android:textSize="17dp"/>
 
-</FrameLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/card_bg"
+        android:id="@+id/progress"/>
+
+</RelativeLayout>

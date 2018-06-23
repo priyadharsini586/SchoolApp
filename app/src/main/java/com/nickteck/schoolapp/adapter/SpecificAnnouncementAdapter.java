@@ -6,14 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.fragment.CommonAnnouncmentFragment;
 import com.nickteck.schoolapp.model.AnnoncementDetails;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -21,15 +18,15 @@ import java.util.ArrayList;
  * Created by admin on 6/21/2018.
  */
 
-public class CommonAnnouncementAdapter extends RecyclerView.Adapter<CommonAnnouncementAdapter.ViewHolder> {
+public class SpecificAnnouncementAdapter extends RecyclerView.Adapter<SpecificAnnouncementAdapter.ViewHolder> {
 
     Context context;
     Activity mactivity;
     CommonAnnouncmentFragment morderTakenFragment;
-    ArrayList<AnnoncementDetails.CommonAnnounacementDetails> mannounacementDetails;
+    ArrayList<AnnoncementDetails.SpecialAnnouncementDetails> mannounacementDetails;
 
 
-    public CommonAnnouncementAdapter(Activity activity, ArrayList<AnnoncementDetails.CommonAnnounacementDetails>
+    public SpecificAnnouncementAdapter(Activity activity, ArrayList<AnnoncementDetails.SpecialAnnouncementDetails>
             announacementDetails) {
         this.mactivity = activity;
         this.mannounacementDetails = announacementDetails;
@@ -48,7 +45,6 @@ public class CommonAnnouncementAdapter extends RecyclerView.Adapter<CommonAnnoun
         holder.title_textview.setText(mannounacementDetails.get(position).getTitle());
         holder.announcemnt_message.setText(mannounacementDetails.get(position).getMessage());
         holder.date_month.setText(mannounacementDetails.get(position).getDate());
-        holder.teacher_staff_linear.setVisibility(View.GONE);
 
     }
 
@@ -63,7 +59,6 @@ public class CommonAnnouncementAdapter extends RecyclerView.Adapter<CommonAnnoun
         TextView announcemnt_message;
         TextView date_month;
         TextView time;
-        LinearLayout teacher_staff_linear;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -72,7 +67,6 @@ public class CommonAnnouncementAdapter extends RecyclerView.Adapter<CommonAnnoun
             announcemnt_message = (TextView) itemView.findViewById(R.id.announcemnt_message);
             date_month = (TextView) itemView.findViewById(R.id.date_month);
             time = (TextView) itemView.findViewById(R.id.time);
-            teacher_staff_linear = (LinearLayout) itemView.findViewById(R.id.teacher_staff_linear);
         }
     }
 }
