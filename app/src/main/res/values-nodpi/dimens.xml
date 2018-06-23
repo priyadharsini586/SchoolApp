@@ -53,5 +53,5 @@
     <dimen name="common_annouce_title">12sp</dimen>
     <dimen name="common_annouce_teacher">11sp</dimen>
     <dimen name="common_annouce_message">13sp</dimen>
-    <dimen name="common_annouce_date_time">8sp</dimen>
+    <dimen name="common_annouce_date_time">11sp</dimen>
 </resources>
