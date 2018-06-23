@@ -29,6 +29,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -59,6 +62,26 @@ public class HelperClass {
         }
         return check;
     }
+
+    public static ArrayList getAllvaluesFromHashMap (HashMap<Object,Object> hashmap){
+        ArrayList<Object> values = new ArrayList<>();
+        for ( Map.Entry<Object, Object> entry : hashmap.entrySet()) {
+            Object key = entry.getValue();
+            values.add(key);
+        }
+        return values;
+    }
+
+    public static ArrayList getAllKeyFromHashMap (HashMap<Object,Object> hashmap){
+        ArrayList<Object> values = new ArrayList<>();
+        for ( Map.Entry<Object, Object> entry : hashmap.entrySet()) {
+            Object key = entry.getKey();
+            values.add(key);
+        }
+        return values;
+    }
+
+
 
     public static TSnackbar showTopSnackBar(View view, String content) {
         TSnackbar snackbar = TSnackbar.make(view, content, TSnackbar.LENGTH_LONG);

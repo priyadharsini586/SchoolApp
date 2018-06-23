@@ -40,6 +40,7 @@ public class CommonFragmentActivity extends AppCompatActivity {
             HelperClass.replaceFragment(aboutChildFragment, Constants.ABOUT_CHILD_FRAGMENT, CommonFragmentActivity.this);
         }else if (fromFragment.equals(Constants.ANNOUNEMENT_FRAGMENT)) {
             AnnoncementFragment annoncementFragment = new AnnoncementFragment();
+            annoncementFragment.getChildID(childID);
             HelperClass.replaceFragment(annoncementFragment, Constants.ANNOUNEMENT_FRAGMENT, CommonFragmentActivity.this);
         }
 
@@ -47,10 +48,14 @@ public class CommonFragmentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (onBackPressedListener != null)
+        if (onBackPressedListener != null) {
             onBackPressedListener.onBackPressed();
-        else
+
+        }
+        else {
             super.onBackPressed();
+
+        }
     }
 
     public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {

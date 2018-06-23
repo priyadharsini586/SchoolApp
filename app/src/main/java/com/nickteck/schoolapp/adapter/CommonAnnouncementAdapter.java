@@ -25,7 +25,6 @@ public class CommonAnnouncementAdapter extends RecyclerView.Adapter<CommonAnnoun
 
     Context context;
     Activity mactivity;
-    CommonAnnouncmentFragment morderTakenFragment;
     ArrayList<AnnoncementDetails.CommonAnnounacementDetails> mannounacementDetails;
 
 
@@ -49,6 +48,7 @@ public class CommonAnnouncementAdapter extends RecyclerView.Adapter<CommonAnnoun
         holder.announcemnt_message.setText(mannounacementDetails.get(position).getMessage());
         holder.date_month.setText(mannounacementDetails.get(position).getDate());
         holder.teacher_staff_linear.setVisibility(View.GONE);
+        holder.staff_name.setText(mannounacementDetails.get(position).getMessage());
 
     }
 

@@ -30,6 +30,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -47,6 +48,7 @@ import com.nickteck.schoolapp.api.ApiClient;
 import com.nickteck.schoolapp.api.ApiInterface;
 import com.nickteck.schoolapp.database.DataBaseHandler;
 import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
+import com.nickteck.schoolapp.model.AboutMyChildDetails;
 import com.nickteck.schoolapp.model.ParentDetails;
 import com.nickteck.schoolapp.service.MyApplication;
 import com.nickteck.schoolapp.service.NetworkChangeReceiver;
@@ -61,6 +63,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import hu.aut.utillib.circular.animation.CircularAnimationUtils;
 import retrofit2.Call;
@@ -78,7 +81,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     public View myView;
     RelativeLayout frameMainLayout;
     String TAG = DashboardFragment.class.getName();
-    TextView txtChildName,txtMobileNumber,txtChooseChild;
+    TextView txtChildName,txtMobileNumber,txtChooseChild,txtBrodgeIcon,txtAnnouncementBrodgeIcon;
     Animation animSlideDown,txtNumberAnimation,profileImgAnimation;
     LinearLayout ldtChildName,ldtMobileNumber,ldtImage;
     boolean isNetworkConnected= false;
@@ -140,6 +143,12 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         ldtChoiceChildren = (CardView) mainView.findViewById(R.id.ldtChoiceChildren);
         ldtChoiceChildren.setVisibility(View.INVISIBLE);
 
+        txtBrodgeIcon = (TextView) mainView.findViewById(R.id.txtBrodgeIcon);
+        txtBrodgeIcon.setVisibility(View.GONE);
+
+        txtAnnouncementBrodgeIcon = (TextView) mainView.findViewById(R.id.txtAnnouncementBrodgeIcon);
+        txtAnnouncementBrodgeIcon.setVisibility(View.GONE);
+
         frameMainLayout = mainView.findViewById(R.id.frameMainLayout);
         MyApplication.getInstance().setConnectivityListener(this);
 
@@ -183,9 +192,16 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         window.setAttributes(layoutParams);
         dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCanceledOnTouchOutside(true);
         select_stu_list = (ListView) dialog.findViewById(R.id.select_stu_list);
 
+        ImageView imgCloseDialog = dialog.findViewById(R.id.imgCloseDialog);
+        imgCloseDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
 
         studentCustomListAdapter = new StudentCustomListAdapter(getActivity(),getStudentNameArrayList);
         select_stu_list.setAdapter(studentCustomListAdapter);
@@ -197,10 +213,14 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                 if (!getStudentNameArrayList.get(i).getStudent_id().equals("-1")) {
                     getSelectedChildern(getStudentNameArrayList.get(i).getStudent_id());
                     childId = getStudentNameArrayList.get(i).getStudent_id();
+
+
                 }else {
                     childId = "-1";
                     setIntoView();
                 }
+                setBadgeIcon(childId);
+                setAnnouncementIcon(childId);
                 dialog.cancel();
             }
         });
@@ -209,6 +229,75 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
     }
 
+    private void setAnnouncementIcon(String childId) {
+
+        int count = 0;
+        AboutMyChildDetails aboutMyChildDetails = AboutMyChildDetails.getInstance();
+
+        if (!childId.equals("-1")) {
+            if (aboutMyChildDetails.getAnnouncementCount().size() != 0){
+                Object value = aboutMyChildDetails.getAnnouncementCount().get(childId);
+
+
+                if (value != null) {
+                    count =(int) value;
+                    txtAnnouncementBrodgeIcon.setVisibility(View.VISIBLE);
+                    count = count + aboutMyChildDetails.getCommounAnnouncementCount();
+                    txtAnnouncementBrodgeIcon.setText(String.valueOf(count));
+                } else {
+                    txtAnnouncementBrodgeIcon.setVisibility(View.GONE);
+                }
+            }
+
+        }else {
+            if (aboutMyChildDetails.getAnnouncementCount().size() != 0){
+                ArrayList<Object> getAllCount = HelperClass.getAllvaluesFromHashMap(aboutMyChildDetails.getAnnouncementCount());
+                int totalCount = 0;
+                for (int  i= 0 ; i < getAllCount.size() ; i++){
+                    int tocount =(int) getAllCount.get(i);
+                    totalCount = totalCount + tocount;
+                }
+                txtAnnouncementBrodgeIcon.setVisibility(View.VISIBLE);
+                totalCount = totalCount + aboutMyChildDetails.getCommounAnnouncementCount();
+                txtAnnouncementBrodgeIcon.setText(String.valueOf(totalCount));
+            }else {
+                txtAnnouncementBrodgeIcon.setVisibility(View.GONE);
+            }
+
+        }
+    }
+
+    private void setBadgeIcon(String childId){
+        String count = null;
+        AboutMyChildDetails aboutMyChildDetails = AboutMyChildDetails.getInstance();
+
+        if (!childId.equals("-1")) {
+            if (aboutMyChildDetails.getStudentCount().size() != 0){
+                Object value = aboutMyChildDetails.getStudentCount().get(childId);
+                count = String.valueOf(value);
+
+                if (!count.equals("0") && value != null) {
+                    txtBrodgeIcon.setVisibility(View.VISIBLE);
+                    txtBrodgeIcon.setText(count);
+                } else {
+                    txtBrodgeIcon.setVisibility(View.GONE);
+                }
+            }
+
+        }else {
+            if (aboutMyChildDetails.getStudentCount().size() != 0){
+                ArrayList<Object> getAllCount = HelperClass.getAllvaluesFromHashMap(aboutMyChildDetails.getStudentCount());
+                int totalCount = 0;
+                for (int  i= 0 ; i < getAllCount.size() ; i++){
+                    int tocount =(int) getAllCount.get(i);
+                    totalCount = totalCount + tocount;
+                }
+                txtBrodgeIcon.setVisibility(View.VISIBLE);
+                txtBrodgeIcon.setText(String.valueOf(totalCount));
+            }
+
+        }
+    }
 
     private void openCustomDialoge(View v) {
         // common custom alert dialoge
@@ -331,8 +420,10 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
             isNetworkConnected = false;
             tSnackbar.show();
         }
-        if (isNetworkConnected)
+        if (isNetworkConnected) {
             getDataFromServer();
+            getChildunReadCount();
+        }
         else
             setIntoView();
 
@@ -474,12 +565,16 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                     intent.putExtra("from",Constants.ABOUT_CHILD_FRAGMENT);
                     intent.putExtra("childId",childId);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+
                     break;
 
                 case R.id.announcement:
                     intent = new Intent(getActivity(), CommonFragmentActivity.class);
                     intent.putExtra("from",Constants.ANNOUNEMENT_FRAGMENT);
+                    intent.putExtra("childId",childId);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;
 
             }
@@ -581,4 +676,106 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
             }
         });
     }
+
+
+    public void getChildunReadCount(){
+        if (isNetworkConnected){
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("parent_id", dataBaseHandler.getParentId());
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            Call<AboutMyChildDetails>getMsgRead = apiInterface.getMsgCount(jsonObject);
+            getMsgRead.enqueue(new Callback<AboutMyChildDetails>() {
+                @Override
+                public void onResponse(Call<AboutMyChildDetails> call, Response<AboutMyChildDetails> response) {
+                    if (response.isSuccessful()){
+                        AboutMyChildDetails aboutMyChildDetails = response.body();
+                        if (aboutMyChildDetails.getStatus_code() != null){
+                            if (aboutMyChildDetails.getStatus_code().equals(Constants.SUCESS)){
+                                ArrayList<AboutMyChildDetails.students_details> myChildDetails = aboutMyChildDetails.getStudents_details();
+                                HashMap<Object,Object>getChildCount = new HashMap<>();
+                                int totalCount = 0 ;
+                                for (int j = 0 ; j < myChildDetails.size() ; j++){
+                                    AboutMyChildDetails.students_details  students_details = myChildDetails.get(j);
+                                    totalCount =totalCount + Integer.valueOf(students_details.getMessage_count());
+                                    if (Integer.valueOf(students_details.getMessage_count()) != 0)
+                                        getChildCount.put(students_details.getStudent_id(), Integer.valueOf(students_details.getMessage_count()));
+                                }
+                                AboutMyChildDetails aboutMyChildDetailsCount = AboutMyChildDetails.getInstance();
+                                aboutMyChildDetailsCount.setStudentCount(getChildCount);
+                                if (totalCount != 0){
+                                    txtBrodgeIcon.setVisibility(View.VISIBLE);
+                                    txtBrodgeIcon.setText(String.valueOf(totalCount));
+                                }
+
+                                ArrayList<AboutMyChildDetails.special_announcement> special_announcementArrayList = aboutMyChildDetails.getSpecial_announcement();
+                                HashMap<Object,Object>getAnnouncementList = new HashMap<>();
+                                int announcementTotalCount = 0 ;
+                                for (int j = 0 ; j < special_announcementArrayList.size() ; j++){
+                                    AboutMyChildDetails.special_announcement  specialAnnouncement = special_announcementArrayList.get(j);
+                                    announcementTotalCount =announcementTotalCount + specialAnnouncement.getCount();
+                                    if (specialAnnouncement.getCount() != 0)
+                                        getAnnouncementList.put(specialAnnouncement.getStudent_id(),specialAnnouncement.getCount());
+                                }
+
+                                aboutMyChildDetailsCount.setAnnouncementCount(getAnnouncementList);
+                                aboutMyChildDetailsCount.setCommounAnnouncementCount(Integer.parseInt(aboutMyChildDetails.getCommon_announcement()));
+                                if (announcementTotalCount != 0){
+                                    txtAnnouncementBrodgeIcon.setVisibility(View.VISIBLE);
+                                    announcementTotalCount = announcementTotalCount + aboutMyChildDetailsCount.getCommounAnnouncementCount();
+                                    txtAnnouncementBrodgeIcon.setText(String.valueOf(announcementTotalCount));
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<AboutMyChildDetails> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+       /* AboutMyChildDetails aboutMyChildDetails = AboutMyChildDetails.getInstance();
+        if (aboutMyChildDetails.getStudentCount().size() != 0){
+            ArrayList<Object> getAllCount = HelperClass.getAllvaluesFromHashMAp(aboutMyChildDetails.getStudentCount());
+            int totalCount = 0;
+            for (int  i= 0 ; i < getAllCount.size() ; i++){
+                int count =(int) getAllCount.get(i);
+                totalCount = totalCount + count;
+            }
+            txtBrodgeIcon.setVisibility(View.VISIBLE);
+            txtBrodgeIcon.setText(String.valueOf(totalCount));
+        }else {
+            txtBrodgeIcon.setVisibility(View.GONE);
+
+        }*/
+        setBadgeIcon(childId);
+        setAnnouncementIcon(childId);
+       /* if (aboutMyChildDetails.getAnnouncementCount().size() != 0){
+            ArrayList<Object> getAllCount = HelperClass.getAllvaluesFromHashMAp(aboutMyChildDetails.getAnnouncementCount());
+            int totalCount = 0;
+            for (int  i= 0 ; i < getAllCount.size() ; i++){
+                int count =(int) getAllCount.get(i);
+                totalCount = totalCount + count;
+            }
+            txtAnnouncementBrodgeIcon.setVisibility(View.VISIBLE);
+            txtAnnouncementBrodgeIcon.setText(String.valueOf(totalCount));
+        }else {
+            txtAnnouncementBrodgeIcon.setVisibility(View.GONE);
+
+        }*/
+    }
+
+
+
 }

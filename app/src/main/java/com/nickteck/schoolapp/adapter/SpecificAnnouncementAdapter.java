@@ -45,6 +45,7 @@ public class SpecificAnnouncementAdapter extends RecyclerView.Adapter<SpecificAn
         holder.title_textview.setText(mannounacementDetails.get(position).getTitle());
         holder.announcemnt_message.setText(mannounacementDetails.get(position).getMessage());
         holder.date_month.setText(mannounacementDetails.get(position).getDate());
+        holder.staff_name.setText(mannounacementDetails.get(position).getTeacher_name());
 
     }
 
@@ -69,4 +70,6 @@ public class SpecificAnnouncementAdapter extends RecyclerView.Adapter<SpecificAn
             time = (TextView) itemView.findViewById(R.id.time);
         }
     }
+
+
 }

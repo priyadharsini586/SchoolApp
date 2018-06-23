@@ -17,22 +17,22 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.nickteck.schoolapp.R;
+import com.nickteck.schoolapp.activity.CommonFragmentActivity;
+import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AnnoncementFragment extends Fragment {
+public class AnnoncementFragment extends Fragment implements OnBackPressedListener {
 
     public  TabLayout tabLayout;
     public  ViewPager viewPager;
     public  int int_items = 2;
     private View mainView;
     private Toolbar toolBarTitle;
+    String childId = null;
 
 
-    public AnnoncementFragment() {
-        // Required empty public constructor
-    }
 
 
     @Override
@@ -49,7 +49,9 @@ public class AnnoncementFragment extends Fragment {
         toolBarTextView.setText(" ");
         toolBarTitle.setVisibility(View.GONE);
 
-
+        if ((CommonFragmentActivity)getActivity() != null) {
+            ((CommonFragmentActivity) getActivity()).setOnBackPressedListener(this);
+        }
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
 
         tabLayout.post(new Runnable() {
@@ -79,6 +81,11 @@ public class AnnoncementFragment extends Fragment {
         return mainView;
     }
 
+    @Override
+    public void onBackPressed() {
+        ((CommonFragmentActivity)getActivity()).finish();
+    }
+
     class MyAdapter extends FragmentPagerAdapter {
 
         public MyAdapter(FragmentManager fm) {
@@ -90,8 +97,11 @@ public class AnnoncementFragment extends Fragment {
             switch (position) {
                 case 0:
                     return new CommonAnnouncmentFragment();
-                case 1:
-                    return new SpecificAnnouncementFrgament();
+                case 1: {
+                    SpecificAnnouncementFrgament specificAnnouncementFrgament = new SpecificAnnouncementFrgament();
+                    specificAnnouncementFrgament.childId(childId);
+                    return specificAnnouncementFrgament;
+                }
             }
             return null;
         }
@@ -127,5 +137,9 @@ public class AnnoncementFragment extends Fragment {
         super.onStop();
 
 
+    }
+
+    public void getChildID(String childId){
+        this.childId = childId;
     }
 }

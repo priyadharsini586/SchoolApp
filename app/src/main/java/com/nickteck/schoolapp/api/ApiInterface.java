@@ -46,6 +46,17 @@ public interface ApiInterface {
     @POST("announcement.php")
     Call<AnnoncementDetails> getAnnoncementDetails(@Field("x") JSONObject object);
 
+    @FormUrlEncoded
+    @POST("read_about_child.php")
+    Call<AboutMyChildDetails> readStatus (@Field("x") JSONObject object);
+
+    @FormUrlEncoded
+    @POST("about_child_count.php")
+    Call<AboutMyChildDetails> getMsgCount (@Field("x") JSONObject object);
+
+    @FormUrlEncoded
+    @POST("read_announcement.php")
+    Call<AboutMyChildDetails> readAnnoncementStatus (@Field("x") JSONObject object);
 
 
 }

@@ -32,7 +32,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:textSize="@dimen/common_annouce_title"
+                        android:textSize=
+                            "@dimen/common_annouce_title"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
                         android:gravity="center"
