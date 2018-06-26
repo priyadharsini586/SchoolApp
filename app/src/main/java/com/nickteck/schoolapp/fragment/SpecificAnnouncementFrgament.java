@@ -13,21 +13,35 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
+import com.nickteck.schoolapp.activity.CommonFragmentActivity;
 import com.nickteck.schoolapp.adapter.CommonAnnouncementAdapter;
 import com.nickteck.schoolapp.adapter.SpecificAnnouncementAdapter;
+import com.nickteck.schoolapp.api.ApiClient;
+import com.nickteck.schoolapp.api.ApiInterface;
 import com.nickteck.schoolapp.database.DataBaseHandler;
+import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
+import com.nickteck.schoolapp.model.AboutMyChildDetails;
 import com.nickteck.schoolapp.model.AnnoncementDetails;
+import com.nickteck.schoolapp.service.MyApplication;
+import com.nickteck.schoolapp.service.NetworkChangeReceiver;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SpecificAnnouncementFrgament extends Fragment {
+public class SpecificAnnouncementFrgament extends Fragment implements OnBackPressedListener, NetworkChangeReceiver.ConnectivityReceiverListener{
 
     DataBaseHandler dataBaseHandler;
     View view;
@@ -36,13 +50,9 @@ public class SpecificAnnouncementFrgament extends Fragment {
     SpecificAnnouncementAdapter adapter;
     private TextView NoDataSpecificList;
     private ProgressBar progress_bar;
-    private boolean isVisible = false;
-
-    public SpecificAnnouncementFrgament() {
-
-        // Required empty public constructor
-    }
-
+    private boolean isVisible = false,isNetworkConnected = false;
+    private String childId;
+    ApiInterface apiInterface;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +60,11 @@ public class SpecificAnnouncementFrgament extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_specific_announcement_frgament, container, false);
         dataBaseHandler = new DataBaseHandler(getActivity());
-
+        if ((CommonFragmentActivity)getActivity() != null) {
+            ((CommonFragmentActivity) getActivity()).setOnBackPressedListener(this);
+        }
+        MyApplication.getInstance().setConnectivityListener(this);
+        apiInterface = ApiClient.getClient().create(ApiInterface.class);
         init();
         setIntoView();
 
@@ -66,6 +80,15 @@ public class SpecificAnnouncementFrgament extends Fragment {
         progress_bar = (ProgressBar) view.findViewById(R.id.progress);
         progress_bar.setVisibility(View.INVISIBLE);
         NoDataSpecificList.setVisibility(View.INVISIBLE);
+
+        if (HelperClass.isNetworkAvailable(getActivity())) {
+            isNetworkConnected = true;
+            readStatus();
+
+        } else {
+            isNetworkConnected = false;
+
+        }
     }
 
     public void setIntoView() {
@@ -82,16 +105,31 @@ public class SpecificAnnouncementFrgament extends Fragment {
                 if(getSpecificAnnouncementDetail.length()>0){
                     for (int i = 0; i < getSpecificAnnouncementDetail.length(); i++) {
                         JSONObject commonannounmentDetails = getSpecificAnnouncementDetail.getJSONObject(i);
-                        String title = commonannounmentDetails.getString("title");
-                        String message = commonannounmentDetails.getString("message");
-                        String date = commonannounmentDetails.getString("date");
-                        String teacherName = commonannounmentDetails.getString("teacher_name");
-                        String classe = commonannounmentDetails.getString("classe");
-                        String section = commonannounmentDetails.getString("section");
+                        if (childId.equals(commonannounmentDetails.getString("student_id"))) {
+                            String title = commonannounmentDetails.getString("title");
+                            String message = commonannounmentDetails.getString("message");
+                            String date = commonannounmentDetails.getString("date");
+                            String teacherName = commonannounmentDetails.getString("teacher_name");
+                            String classe = commonannounmentDetails.getString("classe");
+                            String section = commonannounmentDetails.getString("section");
+                            String studentId = commonannounmentDetails.getString("student_id");
 
 
-                        AnnoncementDetails.SpecialAnnouncementDetails details = new AnnoncementDetails.SpecialAnnouncementDetails(classe,section,title,message,teacherName,date);
-                        specific_Announancement_ArrayList.add(details);
+                            AnnoncementDetails.SpecialAnnouncementDetails details = new AnnoncementDetails.SpecialAnnouncementDetails(classe, section, title, message, teacherName, date, studentId);
+                            specific_Announancement_ArrayList.add(details);
+                        }else if (childId.equals("-1")){
+                            String title = commonannounmentDetails.getString("title");
+                            String message = commonannounmentDetails.getString("message");
+                            String date = commonannounmentDetails.getString("date");
+                            String teacherName = commonannounmentDetails.getString("teacher_name");
+                            String classe = commonannounmentDetails.getString("classe");
+                            String section = commonannounmentDetails.getString("section");
+                            String studentId = commonannounmentDetails.getString("student_id");
+
+
+                            AnnoncementDetails.SpecialAnnouncementDetails details = new AnnoncementDetails.SpecialAnnouncementDetails(classe, section, title, message, teacherName, date, studentId);
+                            specific_Announancement_ArrayList.add(details);
+                        }
 
                     }
                 }
@@ -104,7 +142,9 @@ public class SpecificAnnouncementFrgament extends Fragment {
                     progress_bar.setVisibility(View.INVISIBLE);
 
                 }else {
-                    Toast.makeText(getActivity(), "Specific Announcement is Empty", Toast.LENGTH_SHORT).show();
+                    NoDataSpecificList.setVisibility(View.VISIBLE);
+                    progress_bar.setVisibility(View.INVISIBLE);
+
                 }
 
             }else {
@@ -141,5 +181,51 @@ public class SpecificAnnouncementFrgament extends Fragment {
             // Call code when Fragment becomes visible.
             setIntoView();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((CommonFragmentActivity)getActivity()).finish();
+    }
+
+    public void childId(String childId){
+        this.childId = childId;
+    }
+
+
+    public void readStatus(){
+        if (isNetworkConnected){
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("announcment_type", "spl");
+                jsonObject.put("parent_id",dataBaseHandler.getParentId());
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            Call<AboutMyChildDetails> aboutMyChildDetailsCall = apiInterface.readAnnoncementStatus(jsonObject);
+            aboutMyChildDetailsCall.enqueue(new Callback<AboutMyChildDetails>() {
+                @Override
+                public void onResponse(Call<AboutMyChildDetails> call, Response<AboutMyChildDetails> response) {
+                    if (response.isSuccessful()){
+                        AboutMyChildDetails aboutMyChildDetails = AboutMyChildDetails.getInstance();
+                        HashMap<Object,Object> getChildCount = new HashMap<>();
+                        aboutMyChildDetails.setAnnouncementCount(getChildCount);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AboutMyChildDetails> call, Throwable t) {
+
+                }
+            });
+
+        }
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        isNetworkConnected = isConnected;
+
     }
 }

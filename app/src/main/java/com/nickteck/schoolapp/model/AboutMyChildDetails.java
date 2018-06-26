@@ -9,15 +9,73 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by admin on 6/20/2018.
  */
 
 public class AboutMyChildDetails {
-   private String Status_code,student_id,student_name;
+   private String Status_code,student_id,student_name,common_announcement;
    private ArrayList<student_notes>student_notes = new ArrayList<>();
    private ArrayList<students_details>students_details = new ArrayList<>();
+   private ArrayList<special_announcement>special_announcement = new ArrayList<>();
+    private static AboutMyChildDetails myObj;
+    private HashMap<Object,Object> studentCount = new HashMap<>();
+    private HashMap<Object,Object> announcementCount = new HashMap<>();
+    private int commounAnnouncementCount =0 ;
+
+
+    private AboutMyChildDetails(){
+
+    }
+
+    public static AboutMyChildDetails getInstance(){
+        if(myObj == null){
+            myObj = new AboutMyChildDetails();
+        }
+        return myObj;
+    }
+
+    public int getCommounAnnouncementCount() {
+        return commounAnnouncementCount;
+    }
+
+    public void setCommounAnnouncementCount(int commounAnnouncementCount) {
+        this.commounAnnouncementCount = commounAnnouncementCount;
+    }
+
+    public String getCommon_announcement() {
+        return common_announcement;
+    }
+
+    public void setCommon_announcement(String common_announcement) {
+        this.common_announcement = common_announcement;
+    }
+
+    public ArrayList<AboutMyChildDetails.special_announcement> getSpecial_announcement() {
+        return special_announcement;
+    }
+
+    public void setSpecial_announcement(ArrayList<AboutMyChildDetails.special_announcement> special_announcement) {
+        this.special_announcement = special_announcement;
+    }
+
+    public HashMap<Object, Object> getAnnouncementCount() {
+        return announcementCount;
+    }
+
+    public void setAnnouncementCount(HashMap<Object, Object> announcementCount) {
+        this.announcementCount = announcementCount;
+    }
+
+    public HashMap<Object, Object> getStudentCount() {
+        return studentCount;
+    }
+
+    public void setStudentCount(HashMap<Object, Object> studentCount) {
+        this.studentCount = studentCount;
+    }
 
     public ArrayList<AboutMyChildDetails.students_details> getStudents_details() {
         return students_details;
@@ -95,8 +153,8 @@ public class AboutMyChildDetails {
         }
     }
 
-    private class students_details{
-        String student_id,student_name;
+    public class students_details{
+        String student_id,student_name,message_count;
         ArrayList<student_notes>student_notes = new ArrayList<>();
 
         public ArrayList<AboutMyChildDetails.student_notes> getStudent_notes() {
@@ -105,6 +163,14 @@ public class AboutMyChildDetails {
 
         public void setStudent_notes(ArrayList<AboutMyChildDetails.student_notes> student_notes) {
             this.student_notes = student_notes;
+        }
+
+        public String getMessage_count() {
+            return message_count;
+        }
+
+        public void setMessage_count(String message_count) {
+            this.message_count = message_count;
         }
 
         public String getStudent_id() {
@@ -124,6 +190,26 @@ public class AboutMyChildDetails {
         }
     }
 
+    public class special_announcement{
+        String student_id;
+        int count;
+
+        public String getStudent_id() {
+            return student_id;
+        }
+
+        public void setStudent_id(String student_id) {
+            this.student_id = student_id;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+    }
     public JSONObject toJSON(){
         JSONObject jsonObject = new JSONObject();
         try {

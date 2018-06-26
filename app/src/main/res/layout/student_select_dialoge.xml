@@ -30,7 +30,8 @@
             android:src="@mipmap/ic_cancel_red_icon"
             android:gravity="center"
             android:layout_marginRight="25dp"
-            android:layout_weight="0.1"/>
+            android:layout_weight="0.1"
+            android:id="@+id/imgCloseDialog"/>
     </LinearLayout>
 
     <ListView

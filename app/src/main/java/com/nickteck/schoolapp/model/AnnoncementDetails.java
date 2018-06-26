@@ -96,15 +96,25 @@ public class AnnoncementDetails {
         private String message;
         private String teacher_name;
         private String date;
+        private String student_id;
 
         public SpecialAnnouncementDetails(String classe, String section, String title, String message,
-                                          String teacher_name, String date) {
+                                          String teacher_name, String date,String student_id) {
             this.classe = classe;
             this.section = section;
             this.title = title;
             this.message = message;
             this.teacher_name = teacher_name;
             this.date = date;
+            this.student_id = student_id;
+        }
+
+        public String getStudent_id() {
+            return student_id;
+        }
+
+        public void setStudent_id(String student_id) {
+            this.student_id = student_id;
         }
 
         public String getClasse() {
@@ -194,6 +204,7 @@ public class AnnoncementDetails {
                     common_annoncement.put("date",specialAnnouncementDetails.getDate());
                     common_annoncement.put("classe",specialAnnouncementDetails.getClasse());
                     common_annoncement.put("section",specialAnnouncementDetails.getSection());
+                    common_annoncement.put("student_id",specialAnnouncementDetails.getStudent_id());
                     specificAnnouncement.put(common_annoncement);
                 }
                 jsonObject.put("special_announcement",specificAnnouncement);

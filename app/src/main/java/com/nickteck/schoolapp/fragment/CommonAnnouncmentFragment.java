@@ -18,10 +18,12 @@ import android.widget.Toast;
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
+import com.nickteck.schoolapp.activity.CommonFragmentActivity;
 import com.nickteck.schoolapp.adapter.CommonAnnouncementAdapter;
 import com.nickteck.schoolapp.api.ApiClient;
 import com.nickteck.schoolapp.api.ApiInterface;
 import com.nickteck.schoolapp.database.DataBaseHandler;
+import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
 import com.nickteck.schoolapp.model.AboutMyChildDetails;
 import com.nickteck.schoolapp.model.AnnoncementDetails;
 import com.nickteck.schoolapp.model.ParentDetails;
@@ -34,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +45,8 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommonAnnouncmentFragment extends Fragment implements NetworkChangeReceiver.ConnectivityReceiverListener{
+public class CommonAnnouncmentFragment extends Fragment implements NetworkChangeReceiver.ConnectivityReceiverListener
+,OnBackPressedListener {
     View view;
     private RecyclerView recyclerview;
     boolean isNetworkConnected = false;
@@ -68,7 +72,9 @@ public class CommonAnnouncmentFragment extends Fragment implements NetworkChange
 
         MyApplication.getInstance().setConnectivityListener(this);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
+        if ((CommonFragmentActivity)getActivity() != null) {
+            ((CommonFragmentActivity) getActivity()).setOnBackPressedListener(this);
+        }
         init();
 
         return view;
@@ -87,6 +93,7 @@ public class CommonAnnouncmentFragment extends Fragment implements NetworkChange
     public void onNetworkConnectionChanged(boolean isConnected) {
         isNetworkConnected = isConnected;
         if (!isConnected) {
+
             tSnackbar.show();
         }else {
             if (tSnackbar.isShown()){
@@ -112,6 +119,7 @@ public class CommonAnnouncmentFragment extends Fragment implements NetworkChange
         }
 
         if (isNetworkConnected) {
+            readStatus();
             getDataFromServer();
         }else {
             setViewFromDb();
@@ -208,5 +216,40 @@ public class CommonAnnouncmentFragment extends Fragment implements NetworkChange
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+        ((CommonFragmentActivity)getActivity()).finish();
+    }
+
+
+    public void readStatus(){
+        if (isNetworkConnected){
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("announcment_type", "cmn");
+                jsonObject.put("parent_id",dataBaseHandler.getParentId());
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            Call<AboutMyChildDetails> aboutMyChildDetailsCall = apiInterface.readAnnoncementStatus(jsonObject);
+            aboutMyChildDetailsCall.enqueue(new Callback<AboutMyChildDetails>() {
+                @Override
+                public void onResponse(Call<AboutMyChildDetails> call, Response<AboutMyChildDetails> response) {
+                    if (response.isSuccessful()){
+                        AboutMyChildDetails aboutMyChildDetails = AboutMyChildDetails.getInstance();
+                        aboutMyChildDetails.setCommounAnnouncementCount(0);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AboutMyChildDetails> call, Throwable t) {
+
+                }
+            });
+
+        }
+    }
 }
 

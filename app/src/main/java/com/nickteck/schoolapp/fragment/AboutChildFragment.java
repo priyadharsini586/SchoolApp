@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -241,7 +242,7 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
             else {
                 getAllChildDetails();
             }
-
+            readStatus();
         }
         else {
             if (!childId.equals("-1")) {
@@ -303,6 +304,41 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
         }
     }
 
+    public void readStatus(){
+        if (isNetworkConnected){
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("student_id", childId);
+                jsonObject.put("parent_id",dataBaseHandler.getParentId());
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            Call<AboutMyChildDetails> aboutMyChildDetailsCall = apiInterface.readStatus(jsonObject);
+            aboutMyChildDetailsCall.enqueue(new Callback<AboutMyChildDetails>() {
+                @Override
+                public void onResponse(Call<AboutMyChildDetails> call, Response<AboutMyChildDetails> response) {
+                    if (response.isSuccessful()){
+                        AboutMyChildDetails aboutMyChildDetails = AboutMyChildDetails.getInstance();
+                        HashMap<Object,Object> getChildCount = new HashMap<>();
+                            if (childId.equals("-1"))
+                            {
+                                aboutMyChildDetails.setStudentCount(getChildCount);
+                            }else {
+                                getChildCount.putAll(aboutMyChildDetails.getStudentCount());
+                                getChildCount.remove(childId);
+                                aboutMyChildDetails.setStudentCount(getChildCount);
+                            }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AboutMyChildDetails> call, Throwable t) {
+
+                }
+            });
+
+        }
+    }
     @Override
     public void onBackPressed() {
         ((CommonFragmentActivity)getActivity()).finish();

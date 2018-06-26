@@ -37,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
 
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 DataBaseHandler dataBaseHandler = new DataBaseHandler(getApplicationContext());
@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
 
             }
-        },SPLASH_TIME_OUT);
+        },SPLASH_TIME_OUT);*/
     }
 
 
