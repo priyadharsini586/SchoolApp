@@ -35,10 +35,17 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     // common Announacement table
     private static final String TABLE_COMMON_ANNOUNCEMENT = "TABLE_COMMON_ANNOUNCEMENT";
 
+    // show events table
+    private static final String TABLE_SHOW_EVENTS = "TABLE_SHOW_EVENTS";
+
     //common Announacement Details
     private static final String COMMON_ANNOUNCEMENT_DETAILS= "COMMON_ANNOUNCEMENT";
     private static final String SPECIFIC_ANNOUNCEMENT_DETAILS= "SPECIFIC_ANNOUNCEMENT";
     private String commonAnnouncementDetails;
+
+    // show events details
+    private static final String SHOW_EVENTS_DETAILS= "SHOW_EVENTS";
+    private String showEventsDetails;
 
 
     public DataBaseHandler(Context context) {
@@ -64,10 +71,14 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 + COMMON_ANNOUNCEMENT_DETAILS + " TEXT ,"
                 + SPECIFIC_ANNOUNCEMENT_DETAILS + " TEXT " + ")";
 
+        String CREATE_SHOW_EVENTS_TABLE = "CREATE TABLE " + TABLE_SHOW_EVENTS + "("
+                + SHOW_EVENTS_DETAILS + " TEXT " + ")" ;
+
         sqLiteDatabase.execSQL(CREATE_LOGIN_TABLE);
         sqLiteDatabase.execSQL(CREATE_PARENT_CHILD_TABLE);
         sqLiteDatabase.execSQL(CREATE_TABLE_CHILD_ABOUT);
         sqLiteDatabase.execSQL(CREATE_COMMON_ANNOUNCEMENT_TABLE);
+        sqLiteDatabase.execSQL(CREATE_SHOW_EVENTS_TABLE);
     }
 
 
@@ -118,6 +129,19 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.close();
 
     }
+
+    public void insertShowEvents(String showEvents){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SHOW_EVENTS_DETAILS,showEvents);
+
+        // Inserting Row
+        db.insert(TABLE_SHOW_EVENTS, null, values);
+        db.close();
+
+    }
+
+
 
 
 
@@ -239,6 +263,20 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     }
 
 
+    public void dropShowEventsDetails(){
+        try{
+            SQLiteDatabase db = this.getReadableDatabase();
+            String selectQuery = "DELETE  FROM " + TABLE_SHOW_EVENTS;
+            db.execSQL(selectQuery);
+            db.close();
+
+        }catch (Exception e){
+            Log.e("TAG", "iidshowEventsTable exists: "+e );
+        }
+
+    }
+
+
 
     public boolean ifStudentIdisExists(String studentID){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -350,6 +388,26 @@ public class DataBaseHandler extends SQLiteOpenHelper {
             Log.e("TAG", "dataexixts: "+e );
         }
         return commonAnnouncementDetails;
+
+    }
+
+    public String getShowEventsDetails(){
+        try{
+            showEventsDetails = null;
+            SQLiteDatabase db = this.getReadableDatabase();
+            String selectQuery = "SELECT  * FROM " + TABLE_SHOW_EVENTS;
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+            showEventsDetails = cursor.getString(0);
+            cursor.close();
+            db.close();
+
+        }catch (Exception e){
+            Log.e("TAG", "dataexixts: "+e );
+        }
+
+        return showEventsDetails;
 
     }
 }

@@ -8,6 +8,7 @@ import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.fragment.AboutChildFragment;
 import com.nickteck.schoolapp.fragment.AnnoncementFragment;
+import com.nickteck.schoolapp.fragment.EventsFragment;
 import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
 import com.nickteck.schoolapp.utilclass.Constants;
 
@@ -42,6 +43,9 @@ public class CommonFragmentActivity extends AppCompatActivity {
             AnnoncementFragment annoncementFragment = new AnnoncementFragment();
             annoncementFragment.getChildID(childID);
             HelperClass.replaceFragment(annoncementFragment, Constants.ANNOUNEMENT_FRAGMENT, CommonFragmentActivity.this);
+        }else if (fromFragment.equals(Constants.EVENTS_FRAGMENT)){
+            EventsFragment eventsFragment = new EventsFragment();
+            HelperClass.replaceFragment(eventsFragment, Constants.EVENTS_FRAGMENT, CommonFragmentActivity.this);
         }
 
     }

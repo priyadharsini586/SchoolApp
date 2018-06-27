@@ -55,5 +55,11 @@
     <dimen name="common_annouce_message">13sp</dimen>
     <dimen name="common_annouce_date_time">11sp</dimen>
 
+    <dimen name="vip_gallery_image_view_width">160dp</dimen>
+    <dimen name="vip_gallery_image_view_height">160dp</dimen>
+
+    <dimen name="view_pager_size_width">300dp</dimen>
+    <dimen name="view_pager_size_height">300dp</dimen>
+
 
 </resources>

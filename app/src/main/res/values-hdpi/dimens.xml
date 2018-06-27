@@ -58,4 +58,7 @@
     <dimen name="common_annouce_teacher">11sp</dimen>
     <dimen name="common_annouce_message">13sp</dimen>
     <dimen name="common_annouce_date_time">11sp</dimen>
+
+    <dimen name="view_pager_size_width">225dp</dimen>
+    <dimen name="view_pager_size_height">225dp</dimen>
 </resources>

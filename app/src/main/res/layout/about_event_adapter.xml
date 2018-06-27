@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/event_linearLayout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="10dp">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_adapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/title_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:textSize="@dimen/common_annouce_title"
+                        android:textColor="@color/greyDarkColor_textcolor"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:text="EVENTS"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/tab_background_color"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/teacher_staff_linear"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Description :"
+                        android:layout_weight="0.5"
+                        android:textColor="@color/text_color_grey"
+                        android:layout_gravity="center"
+                        android:paddingRight="15dp"
+                        android:paddingLeft="15dp"
+                        android:textSize="@dimen/common_annouce_teacher"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5">
+
+                        <TextView
+                            android:layout_weight="0.5"
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Date :"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_color_grey"
+                            android:textSize="@dimen/common_annouce_teacher"/>
+
+                        <TextView
+                            android:layout_weight="0.25"
+                            android:id="@+id/date_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Jun 30,2018 17:20 PM"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_color_grey"
+                            android:textSize="@dimen/common_annouce_teacher"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:layout_marginTop="3dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="0.2">
+
+                        <TextView
+                            android:id="@+id/announcemnt_message"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="AravindRaj this is a test sadsaldjsa;djsaljdsajda'sjd dsgsdfsdfsfsfdfssdfgsdfgjehrdfgdgdfgdfgddfgdfg hghgghhhg fgfgfg fgfdgdfgdfgdfgdgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgddfgdfg"
+                            android:paddingLeft="10dp"
+                            android:maxLines="3"
+                            android:ellipsize="end"
+                            android:textColor="@color/text_color_grey"
+                            android:textSize="@dimen/common_annouce_message"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/tab_background_color"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5">
+
+                            <ImageView
+                                android:id="@+id/image_icon"
+                                android:layout_marginLeft="15dp"
+                                android:layout_marginRight="15dp"
+                                android:layout_width="45dp"
+                                android:layout_height="45dp"
+                                android:src="@mipmap/image_galler"
+
+                                android:textSize="@dimen/common_annouce_date_time" />
+
+                            <ImageView
+                                android:id="@+id/video_icon"
+                                android:layout_gravity="left"
+                                android:layout_width="45dp"
+                                android:layout_height="45dp"
+                                android:src="@mipmap/videooo"
+
+                                android:textSize="@dimen/common_annouce_date_time" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.5">
+
+                            <TextView
+                                android:id="@+id/date_month"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Posted On :"
+                                android:gravity="center"
+                                android:layout_weight="0.5"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/common_annouce_date_time"/>
+
+                            <TextView
+                                android:id="@+id/time"
+                                android:paddingLeft="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Jun 30,2018 17:20 PM"
+                                android:layout_weight="0.25"
+                                android:gravity="start"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/common_annouce_date_time"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</LinearLayout>

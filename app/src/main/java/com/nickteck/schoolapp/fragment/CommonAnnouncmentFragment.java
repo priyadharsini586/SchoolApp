@@ -45,8 +45,8 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CommonAnnouncmentFragment extends Fragment implements NetworkChangeReceiver.ConnectivityReceiverListener
-,OnBackPressedListener {
+public class CommonAnnouncmentFragment extends Fragment implements NetworkChangeReceiver.ConnectivityReceiverListener,
+        OnBackPressedListener {
     View view;
     private RecyclerView recyclerview;
     boolean isNetworkConnected = false;

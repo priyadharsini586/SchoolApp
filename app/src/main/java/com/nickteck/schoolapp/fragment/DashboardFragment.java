@@ -98,6 +98,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     private String[] getStudentNameStringArray;
     private StudentCustomListAdapter studentCustomListAdapter;
     String childId = "-1";
+    private LinearLayout about_events;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -139,6 +140,9 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         announcement = (LinearLayout) mainView.findViewById(R.id.announcement);
         announcement.setOnClickListener(this);
+
+        about_events = (LinearLayout) mainView.findViewById(R.id.about_event);
+        about_events.setOnClickListener(this);
 
         ldtChoiceChildren = (CardView) mainView.findViewById(R.id.ldtChoiceChildren);
         ldtChoiceChildren.setVisibility(View.INVISIBLE);
@@ -577,6 +581,11 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                     getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;
 
+                case R.id.about_event:
+                    intent = new Intent(getActivity(), CommonFragmentActivity.class);
+                    intent.putExtra("from",Constants.EVENTS_FRAGMENT);
+                    startActivity(intent);
+                    break;
             }
     }
 

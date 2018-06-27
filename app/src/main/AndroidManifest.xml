@@ -37,7 +37,8 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-            <activity
+
+        <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
@@ -55,8 +56,14 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.CommonFragmentActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.CommonFragmentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activity.YouTubeActivity"
+            android:screenOrientation="landscape">
+
+        </activity>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import com.nickteck.schoolapp.model.AboutMyChildDetails;
 import com.nickteck.schoolapp.model.AnnoncementDetails;
 import com.nickteck.schoolapp.model.LoginDetails;
 import com.nickteck.schoolapp.model.ParentDetails;
+import com.nickteck.schoolapp.model.ShowEvent;
 
 import org.json.JSONObject;
 
@@ -45,6 +46,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("announcement.php")
     Call<AnnoncementDetails> getAnnoncementDetails(@Field("x") JSONObject object);
+
+    @POST("show_event.php")
+    Call<ShowEvent> getEventDetails();
+
+
 
     @FormUrlEncoded
     @POST("read_about_child.php")
