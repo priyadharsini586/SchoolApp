@@ -1,1 +1,1 @@
-include ':app', ':circulartools'
+include ':app', ':circulartools', ':library'

@@ -1,6 +1,7 @@
 package com.nickteck.schoolapp.model;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -57,6 +58,9 @@ public  class ShowEvent {
             this.video_details = videoDetails;
         }
 
+        public EventDetails(){
+
+        }
         public String getTitle() {
             return title;
         }
@@ -205,6 +209,27 @@ public  class ShowEvent {
         return eventObject;
     }
 
+    public JSONObject getEventJSON(){
+        try {
+        JSONObject eventObject = new JSONObject();
+        JSONArray eventArray = new JSONArray();
+        if (event_details.size() != 0){
+            for (int i=0 ; i<event_details.size() ; i ++){
+                ShowEvent.EventDetails eventDetails = event_details.get(i);
+                JSONObject eventDetailsObject = new JSONObject();
+                eventDetailsObject.put("title",eventDetails.getTitle());
+                eventDetailsObject.put("content",eventDetails.getContent());
+                eventDetailsObject.put("held_on",eventDetails.getHeld_on());
+                eventArray.put(eventDetailsObject);
+            }
+        }
+        eventObject.put("event_details",eventArray);
+            return eventObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 
 

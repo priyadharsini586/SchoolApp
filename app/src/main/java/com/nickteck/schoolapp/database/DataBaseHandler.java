@@ -48,6 +48,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private String showEventsDetails;
 
 
+    //CALENDAR TABLE
+    private static final String TABLE_CALENDAR_EVENTS= "TABLE_CALENDAR_EVENTS";
+    private static final String MONTH= "MONTH";
+    private static final String EVENT_DETAILS= "EVENT_DETAILS";
+
     public DataBaseHandler(Context context) {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
@@ -71,6 +76,10 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 + COMMON_ANNOUNCEMENT_DETAILS + " TEXT ,"
                 + SPECIFIC_ANNOUNCEMENT_DETAILS + " TEXT " + ")";
 
+        String CREATE_CALENDAR_EVENTS = "CREATE TABLE " + TABLE_CALENDAR_EVENTS + "("
+                + MONTH + " TEXT ,"
+                + EVENT_DETAILS + " TEXT " + ")";
+
         String CREATE_SHOW_EVENTS_TABLE = "CREATE TABLE " + TABLE_SHOW_EVENTS + "("
                 + SHOW_EVENTS_DETAILS + " TEXT " + ")" ;
 
@@ -78,6 +87,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_PARENT_CHILD_TABLE);
         sqLiteDatabase.execSQL(CREATE_TABLE_CHILD_ABOUT);
         sqLiteDatabase.execSQL(CREATE_COMMON_ANNOUNCEMENT_TABLE);
+        sqLiteDatabase.execSQL(CREATE_CALENDAR_EVENTS);
         sqLiteDatabase.execSQL(CREATE_SHOW_EVENTS_TABLE);
     }
 
@@ -177,6 +187,49 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public void insertCalenddarEvents(String month,String evnentDetails){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(MONTH, month);
+        values.put(EVENT_DETAILS,evnentDetails);
+
+        // Inserting Row
+        db.insert(TABLE_CALENDAR_EVENTS, null, values);
+        db.close();
+    }
+
+    public boolean ifMonthisExists(String month){
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean isExits = false;
+        Cursor cursor = null;
+        try {
+            String sql ="SELECT "+EVENT_DETAILS+ " FROM "+TABLE_CALENDAR_EVENTS+" WHERE "+MONTH +" = '"+month+"'";
+            cursor= db.rawQuery(sql,null);
+        }catch (Exception e){
+            Log.e("TAG", "ifStudentIdisExists: "+e );
+        }
+
+
+        if(cursor.getCount()>0){
+            //PID Found
+            isExits = true;
+        }else{
+            //PID Not Found
+            isExits = false;
+        }
+        cursor.close();
+        db.close();
+        return isExits;
+    }
+
+    public void dropCalendarEvent(String month){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "DELETE FROM " + TABLE_CALENDAR_EVENTS + " WHERE " + MONTH + "= '" + month + "'";
+
+        db.execSQL(selectQuery);
+        db.close();
+    }
 
     public boolean  checkTableIsEmpty(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -330,6 +383,19 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    public String getCalendarEvents(){
+        String calendarEvents = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_CALENDAR_EVENTS;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            calendarEvents = cursor.getString(1);
+            cursor.close();
+        }
+        db.close();
+        return calendarEvents;
+    }
 
 
     public String getParentChildDetails(){

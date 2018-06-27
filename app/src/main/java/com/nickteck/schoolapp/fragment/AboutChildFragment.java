@@ -292,7 +292,7 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
 
                 @Override
                 public void onFailure(Call<AboutMyChildDetails> call, Throwable t) {
-                    Toast.makeText(getActivity(),"Server Error",Toast.LENGTH_LONG).show();
+
                     setAllAboutViewFromDb();
                 }
             });

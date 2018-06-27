@@ -27,5 +27,12 @@
 
     <color name="greyDarkColor">#FF767373</color>
 
+    <!--Google colors-->
+    <color name="colorGoogleGreen">#3cba54</color>
+    <color name="colorGoogleYellow">#f4c20d</color>
+    <color name="colorGoogleRed">#db3236</color>
+    <color name="colorGoogleBlue">#4885ed</color>
+
+
     <color name="greyDarkColor_textcolor">#FFDF9191</color>
 </resources>

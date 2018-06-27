@@ -83,7 +83,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     String TAG = DashboardFragment.class.getName();
     TextView txtChildName,txtMobileNumber,txtChooseChild,txtBrodgeIcon,txtAnnouncementBrodgeIcon;
     Animation animSlideDown,txtNumberAnimation,profileImgAnimation;
-    LinearLayout ldtChildName,ldtMobileNumber,ldtImage;
+    LinearLayout ldtChildName,ldtMobileNumber,ldtImage,ldtCalendar;
     boolean isNetworkConnected= false;
     TSnackbar tSnackbar;
     ApiInterface apiInterface;
@@ -160,6 +160,9 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         all_children_dialoge = (LinearLayout) mainView.findViewById(R.id.all_children_dialoge);
 
         txtChooseChild= mainView.findViewById(R.id.txtChooseChild);
+
+        ldtCalendar= (LinearLayout) mainView.findViewById(R.id.ldtCalendar);
+        ldtCalendar.setOnClickListener(this);
 
         if ((DashboardActivity)getActivity() != null)
             ((DashboardActivity) getActivity()).setOnBackPressedListener(this);
@@ -476,7 +479,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                                     dataBaseHandler.dropParentDetails();
                                     dataBaseHandler.insertParentDetails(parentDetails.getParent_id(),parentObject.toString());
                                     setIntoView();
-
+                                    getChildunReadCount();
                                 }else {
                                     Toast.makeText(getActivity(),"Session Expired",Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -488,7 +491,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                         }
                     }else{
                         setIntoView();
-                        Toast.makeText(getActivity(),"Server Error",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),response.message(),Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -577,6 +580,13 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                     intent = new Intent(getActivity(), CommonFragmentActivity.class);
                     intent.putExtra("from",Constants.ANNOUNEMENT_FRAGMENT);
                     intent.putExtra("childId",childId);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    break;
+
+                case R.id.ldtCalendar:
+                    intent = new Intent(getActivity(), CommonFragmentActivity.class);
+                    intent.putExtra("from",Constants.CALENDAR_FRAGMENT);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;

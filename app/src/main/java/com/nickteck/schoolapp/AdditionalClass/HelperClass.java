@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -160,5 +162,19 @@ public class HelperClass {
         fragmentTransaction.commit();
 
 
+    }
+
+    //Convert Date to Calendar
+    public static Calendar dateToCalendar(Date date) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+
+    }
+
+    //Convert Calendar to Date
+    public static Date calendarToDate(Calendar calendar) {
+        return calendar.getTime();
     }
 }

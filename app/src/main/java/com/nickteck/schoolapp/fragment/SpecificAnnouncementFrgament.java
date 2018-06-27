@@ -83,7 +83,7 @@ public class SpecificAnnouncementFrgament extends Fragment implements OnBackPres
 
         if (HelperClass.isNetworkAvailable(getActivity())) {
             isNetworkConnected = true;
-            readStatus();
+
 
         } else {
             isNetworkConnected = false;
@@ -180,6 +180,8 @@ public class SpecificAnnouncementFrgament extends Fragment implements OnBackPres
         } else if (isVisible && isResumed()) {
             // Call code when Fragment becomes visible.
             setIntoView();
+            if (isNetworkConnected)
+                readStatus();
         }
     }
 
