@@ -2,7 +2,6 @@ package com.nickteck.schoolapp.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -10,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.image_cache.ImageLoader;
 import com.nickteck.schoolapp.model.CommonImageVideoEventData;
 import com.nickteck.schoolapp.utilclass.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -51,7 +50,11 @@ public class ImagePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = layoutInflater.inflate(R.layout.image_view_pager_adapter, container, false);
         ImageView imageView = (ImageView)view.findViewById(R.id.vip_image_page_adapter);
-        Glide.with(context).load(Constants.EVENTS_GALLERY_IMAGE_URI+commonImageVideoEventData.get(position).getImage_url()).into(imageView);
+        Picasso.with(activity)
+                .load(Constants.EVENTS_GALLERY_IMAGE_URI+commonImageVideoEventData.get(position).getImage_url())
+                .placeholder(R.drawable.camera_icon)
+                .into(imageView);
+
 
         container.addView(view);
         return view;

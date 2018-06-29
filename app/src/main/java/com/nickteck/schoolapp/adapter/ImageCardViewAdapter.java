@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
-import com.bumptech.glide.Glide;
 import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.activity.YouTubeActivity;
@@ -93,8 +92,11 @@ public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdap
         if (commonImageVideoEventData != null) {
             switch (commonImageVideoEventData.getType()) {
                 case CommonImageVideoEventData.IMAGE_TYPE:
-                    Glide.with(activity).load(Constants.EVENTS_GALLERY_IMAGE_URI+
-                            mcommonArrayList.get(position).getImage_url()).into(holder.image_view);
+                    Picasso.with(activity)
+                            .load(Constants.EVENTS_GALLERY_IMAGE_URI+
+                                    mcommonArrayList.get(position).getImage_url())
+                            .placeholder(R.drawable.camera_icon)
+                            .into(holder.image_view);
                     holder.image_description.setText(mcommonArrayList.get(position).getImage_description());
 
                     holder.image_view.setOnClickListener(new View.OnClickListener() {
