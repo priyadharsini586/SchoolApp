@@ -161,58 +161,67 @@ public class EventsFragment extends Fragment implements NetworkChangeReceiver.Co
         }
     }
 
+
     private void setIntoView() {
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progress_bar.setVisibility(View.VISIBLE);
-                String getShowEventsDetails = dataBaseHandler.getShowEventsDetails();
-                try{
-                    finalShowEventsArrayList = new ArrayList<>();
-                    showEventArrayList = new ArrayList<>();
-                    JSONObject getParentObject = new JSONObject(getShowEventsDetails);
-                    JSONArray getEventDetails = getParentObject.getJSONArray("event_details");
-                    if(getEventDetails.length()>0){
-                        for (int i = 0; i < getEventDetails.length(); i++) {
-                            JSONObject eventDEtails = getEventDetails.getJSONObject(i);
-                            title = eventDEtails.getString("title");
-                            content = eventDEtails.getString("content");
-                            held_on = eventDEtails.getString("held_on");
-                            date = eventDEtails.getString("date");
-                            JSONArray getEventImageDetails = eventDEtails.getJSONArray("image_details");
-                            showEventsImageArrayList = new ArrayList<>();
-                            if(getEventImageDetails.length()>0) {
-                                for (int j = 0; j < getEventImageDetails.length(); j++) {
-                                    JSONObject eventImageDetails = getEventImageDetails.getJSONObject(j);
-                                    img_url = eventImageDetails.getString("img_url");
-                                    img_description = eventImageDetails.getString("description");
-                                    imageDetails = new ShowEvent.ImageDetails(img_url,img_description);
-                                    showEventsImageArrayList.add(imageDetails);
+        try{
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progress_bar.setVisibility(View.VISIBLE);
+                    String getShowEventsDetails = dataBaseHandler.getShowEventsDetails();
+                    try{
+                        finalShowEventsArrayList = new ArrayList<>();
+                        showEventArrayList = new ArrayList<>();
+                        JSONObject getParentObject = new JSONObject(getShowEventsDetails);
+                        JSONArray getEventDetails = getParentObject.getJSONArray("event_details");
+                        if(getEventDetails.length()>0){
+                            for (int i = 0; i < getEventDetails.length(); i++) {
+                                JSONObject eventDEtails = getEventDetails.getJSONObject(i);
+                                title = eventDEtails.getString("title");
+                                content = eventDEtails.getString("content");
+                                held_on = eventDEtails.getString("held_on");
+                                date = eventDEtails.getString("date");
+                                JSONArray getEventImageDetails = eventDEtails.getJSONArray("image_details");
+                                showEventsImageArrayList = new ArrayList<>();
+                                if(getEventImageDetails.length()>0) {
+                                    for (int j = 0; j < getEventImageDetails.length(); j++) {
+                                        JSONObject eventImageDetails = getEventImageDetails.getJSONObject(j);
+                                        img_url = eventImageDetails.getString("img_url");
+                                        img_description = eventImageDetails.getString("description");
+                                        imageDetails = new ShowEvent.ImageDetails(img_url,img_description);
+                                        showEventsImageArrayList.add(imageDetails);
+                                    }
                                 }
-                            }
-                            JSONArray getEventVideoDetails = eventDEtails.getJSONArray("video_details");
-                            if(getEventVideoDetails.length()>0){
-                                showEventsVideoArrayList = new ArrayList<>();
-                                for(int k=0; k<getEventVideoDetails.length(); k++){
-                                    JSONObject eventVideoDetails = getEventVideoDetails.getJSONObject(k);
-                                    video_url = eventVideoDetails.getString("video_url");
-                                    video_description = eventVideoDetails.getString("description");
-                                    videoDetails = new ShowEvent.VideoDetails(video_url,video_description);
-                                    showEventsVideoArrayList.add(videoDetails);
+                                JSONArray getEventVideoDetails = eventDEtails.getJSONArray("video_details");
+                                if(getEventVideoDetails.length()>0){
+                                    showEventsVideoArrayList = new ArrayList<>();
+                                    for(int k=0; k<getEventVideoDetails.length(); k++){
+                                        JSONObject eventVideoDetails = getEventVideoDetails.getJSONObject(k);
+                                        video_url = eventVideoDetails.getString("video_url");
+                                        video_description = eventVideoDetails.getString("description");
+                                        videoDetails = new ShowEvent.VideoDetails(video_url,video_description);
+                                        showEventsVideoArrayList.add(videoDetails);
+                                    }
+
                                 }
-
+                                ShowEvent.EventDetails eventDetails  = new ShowEvent.EventDetails(title,content,held_on,date,showEventsImageArrayList,showEventsVideoArrayList);
+                                showEventArrayList.add(eventDetails);
                             }
-                            ShowEvent.EventDetails eventDetails  = new ShowEvent.EventDetails(title,content,held_on,date,showEventsImageArrayList,showEventsVideoArrayList);
-                            showEventArrayList.add(eventDetails);
-                        }
 
-                        if(showEventArrayList.size()>0){
-                            eventAdapter = new EventAdapter(getActivity(),showEventArrayList,getActivity());
-                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                            events_recyclerview.setLayoutManager(mLayoutManager);
-                            events_recyclerview.setAdapter(eventAdapter);
-                            progress_bar.setVisibility(View.INVISIBLE);
+                            if(showEventArrayList.size()>0){
+                                eventAdapter = new EventAdapter(getActivity(),showEventArrayList,getActivity());
+                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                                events_recyclerview.setLayoutManager(mLayoutManager);
+                                events_recyclerview.setAdapter(eventAdapter);
+                                progress_bar.setVisibility(View.INVISIBLE);
+                            }else {
+                                txtNoDataTextview.setVisibility(View.VISIBLE);
+                                progress_bar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(getActivity(), "Events List is Empty", Toast.LENGTH_SHORT).show();
+                            }
+
+
                         }else {
                             txtNoDataTextview.setVisibility(View.VISIBLE);
                             progress_bar.setVisibility(View.INVISIBLE);
@@ -220,20 +229,19 @@ public class EventsFragment extends Fragment implements NetworkChangeReceiver.Co
                         }
 
 
-                    }else {
-                        txtNoDataTextview.setVisibility(View.VISIBLE);
-                        progress_bar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getActivity(), "Events List is Empty", Toast.LENGTH_SHORT).show();
+                    }catch (Exception e ){
+                        Log.e("TAG", "dataexixts: "+e );
                     }
 
-
-                }catch (Exception e ){
-                    Log.e("TAG", "dataexixts: "+e );
                 }
 
-            }
+            });
 
-        });
+        }catch (Exception e ){
+            Log.e("TAG", "dataexixts: "+e );
+        }
+
+
     }
 
     @Override

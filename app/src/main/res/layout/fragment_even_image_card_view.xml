@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/image_common_heaader"
             android:gravity="center"
-            android:text="School opened"
-            android:textSize="25dp"/>
+            android:text="Text Sample"
+            android:textSize="@dimen/event_title_header"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

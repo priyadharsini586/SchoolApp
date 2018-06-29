@@ -1,6 +1,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp">
 
     <LinearLayout
             android:id="@+id/video_Linearlayout"
@@ -14,10 +17,9 @@
             <ImageView
                 android:id="@+id/thumbnail_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/vip_gallery_image_view_height"
+                android:layout_height="@dimen/card_image_height"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
-
 
             <ImageView
                 android:id="@+id/play_button"
@@ -37,10 +39,7 @@
             android:text="Sample Text"
             android:gravity="center"
             android:paddingBottom="10dp"
-            android:textSize="17sp"/>
+            android:textSize="@dimen/card_image_description_text"/>
 
-
-
-
-        </LinearLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

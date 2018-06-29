@@ -1,20 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\priya\\AndroidProjects\\SchoolApp\\SchoolApp\\library\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+            "outputFile": "E:\\aravind project\\SchoolApp\\library\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "D:\\priya\\AndroidProjects\\SchoolApp\\SchoolApp\\library\\build\\intermediates\\bundles\\debug\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
-                    "from": {
-                        "startLines": "2,3,4,5",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,104,149,196",
-                        "endColumns": "48,44,46,50",
-                        "endOffsets": "99,144,191,242"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\admin\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\891976aa8fe1538b0080bc3c38f9d9a6\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "source": "C:\\Users\\admin\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.3.1.aar\\05f5261b17eda6e3df25b950ab3d775a\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -30,6 +20,16 @@
                         "endLines": "10",
                         "endColumns": "13",
                         "endOffsets": "519"
+                    }
+                },
+                {
+                    "source": "E:\\aravind project\\SchoolApp\\library\\build\\intermediates\\bundles\\debug\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,104,149,196",
+                        "endColumns": "48,44,46,50",
+                        "endOffsets": "99,144,191,242"
                     }
                 }
             ]
