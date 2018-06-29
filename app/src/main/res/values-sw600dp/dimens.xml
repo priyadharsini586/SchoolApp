@@ -62,5 +62,13 @@
     <dimen name="view_pager_size_height">400dp</dimen>
 
 
+    <!--event layout -->
+    <dimen name="event_title_padding">7dp</dimen>
+    <dimen name="event_heading_padding">12dp</dimen>
+    <dimen name="event_title_size">20sp</dimen>
+    <dimen name="event_title_size1">18sp</dimen>
+    <dimen name="event_content_size">17sp</dimen>
+
+
 
 </resources>

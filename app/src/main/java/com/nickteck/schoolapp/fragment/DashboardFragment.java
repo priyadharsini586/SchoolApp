@@ -429,7 +429,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         }
         if (isNetworkConnected) {
             getDataFromServer();
-            getChildunReadCount();
+
         }
         else
             setIntoView();
