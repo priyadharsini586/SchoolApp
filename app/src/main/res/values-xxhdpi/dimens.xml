@@ -66,6 +66,10 @@
     <dimen name="common_annouce_message">14sp</dimen>
     <dimen name="common_annouce_date_time">12sp</dimen>
 
+    <dimen name="event_title_header">16dp</dimen>
+    <dimen name="card_image_height">170dp</dimen>
+    <dimen name="card_image_description_text">15dp</dimen>
+
 
     <!--event layout -->
     <dimen name="event_title_padding">5dp</dimen>
