@@ -15,6 +15,8 @@ public class Constants {
     public static String NOT_VERIFIED = "-1";
     public static String DEVICE_ID_NOT_MATCHED = "-2";
 
+    public static String fromMore = "fromMore";
+
 
 
     //fragment tag

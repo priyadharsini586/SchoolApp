@@ -50,7 +50,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = layoutInflater.inflate(R.layout.image_view_pager_adapter, container, false);
         ImageView imageView = (ImageView)view.findViewById(R.id.vip_image_page_adapter);
-        Picasso.with(activity)
+        Picasso.get()
                 .load(Constants.EVENTS_GALLERY_IMAGE_URI+commonImageVideoEventData.get(position).getImage_url())
                 .placeholder(R.drawable.camera_icon)
                 .into(imageView);

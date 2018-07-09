@@ -618,9 +618,14 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
         }
 
         @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
             Log.e(TAG, "onBitmapFailed " );
         }
+
+       /* @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+            Log.e(TAG, "onBitmapFailed " );
+        }*/
 
         @Override
         public void onPrepareLoad(Drawable placeHolderDrawable) {
@@ -643,9 +648,9 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                     if (link != null && !link.isEmpty()) {
                         Bitmap bitmap = null;
                         if (isNetworkConnected) {
-                             bitmap = Picasso.with(getActivity()).load(link).get();
+                             bitmap = Picasso.get().load(link).get();
                         }else {
-                            bitmap = Picasso.with(getActivity())
+                            bitmap = Picasso.get()
                                     .load(link)
                                     .networkPolicy(NetworkPolicy.OFFLINE)
                                     .get();

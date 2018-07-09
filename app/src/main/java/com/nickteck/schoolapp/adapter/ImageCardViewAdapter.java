@@ -92,7 +92,7 @@ public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdap
         if (commonImageVideoEventData != null) {
             switch (commonImageVideoEventData.getType()) {
                 case CommonImageVideoEventData.IMAGE_TYPE:
-                    Picasso.with(activity)
+                    Picasso.get()
                             .load(Constants.EVENTS_GALLERY_IMAGE_URI+
                                     mcommonArrayList.get(position).getImage_url())
                             .placeholder(R.drawable.camera_icon)
@@ -126,7 +126,7 @@ public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdap
                     final String url = "http://img.youtube.com/vi/" + concatUrl +"/0.jpg";
                     if(url != null) {
                         holder.play_image_view.setVisibility(View.VISIBLE);
-                        Picasso.with(activity)
+                        Picasso.get()
                                 .load(url)
                                 .placeholder(R.drawable.camera_icon)
                                 .into(holder.thumbnail_image_view);

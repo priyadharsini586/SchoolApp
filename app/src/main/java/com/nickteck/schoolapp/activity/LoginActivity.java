@@ -168,6 +168,7 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
         return result;
     }
 
+
     private boolean hasPermission(String permission) {
         if (canAskPermission()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -176,7 +177,6 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
         }
         return true;
     }
-
     private boolean canAskPermission() {
         return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
     }
@@ -201,7 +201,6 @@ public class LoginActivity extends AppCompatActivity implements NetworkChangeRec
                 isPhone = HelperClass.isValidMobile(mMobileNo.getText().toString());
                 //check for mobile no is valid
                 if (!isPhone) {
-
                     checkLogin();
                 } else {
                     validation();
