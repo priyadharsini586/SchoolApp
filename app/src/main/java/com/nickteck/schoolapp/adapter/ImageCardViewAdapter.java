@@ -17,10 +17,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
+import android.widget.Toast;
+
+import com.androidadvance.topsnackbar.TSnackbar;
+import com.nickteck.schoolapp.AdditionalClass.HelperClass;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.activity.YouTubeActivity;
 import com.nickteck.schoolapp.model.CommonImageVideoEventData;
+import com.nickteck.schoolapp.service.NetworkChangeReceiver;
 import com.nickteck.schoolapp.utilclass.Constants;
 import com.squareup.picasso.Picasso;
 
@@ -32,7 +36,7 @@ import java.util.ArrayList;
  * Created by admin on 6/26/2018.
  */
 
-public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdapter.ViewHolder> {
+public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdapter.ViewHolder> implements NetworkChangeReceiver.ConnectivityReceiverListener {
 
     Activity activity;
     Context context;
@@ -40,6 +44,8 @@ public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdap
     ArrayList<CommonImageVideoEventData> mcommonArrayList = new ArrayList<>();
     private String final1;
     private String concatUrl;
+    boolean isNetworkConnected = false;
+    TSnackbar tSnackbar;
 
     public ImageCardViewAdapter(Activity activity, ArrayList<CommonImageVideoEventData> commonArrayList,Context context) {
         this.activity = activity;
@@ -86,8 +92,11 @@ public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdap
         if (commonImageVideoEventData != null) {
             switch (commonImageVideoEventData.getType()) {
                 case CommonImageVideoEventData.IMAGE_TYPE:
-                    Glide.with(activity).load(Constants.EVENTS_GALLERY_IMAGE_URI+
-                            mcommonArrayList.get(position).getImage_url()).into(holder.image_view);
+                    Picasso.with(activity)
+                            .load(Constants.EVENTS_GALLERY_IMAGE_URI+
+                                    mcommonArrayList.get(position).getImage_url())
+                            .placeholder(R.drawable.camera_icon)
+                            .into(holder.image_view);
                     holder.image_description.setText(mcommonArrayList.get(position).getImage_description());
 
                     holder.image_view.setOnClickListener(new View.OnClickListener() {
@@ -124,17 +133,29 @@ public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdap
                     }
 
                     holder.video_description.setText(mcommonArrayList.get(position).getVideo_description());
-
-
                     holder.linearLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(context, YouTubeActivity.class);
-                            intent.putExtra("video_url",final1);
-                            context.startActivity(intent);
+
+                            if (HelperClass.isNetworkAvailable(context)) {
+                                isNetworkConnected = true;
+                            }else {
+                                isNetworkConnected = false;
+                            }
+                            if (isNetworkConnected) {
+                                    Intent intent = new Intent(context, YouTubeActivity.class);
+                                    intent.putExtra("video_url",final1);
+                                    context.startActivity(intent);
+
+                                }else {
+                                Toast.makeText(context, "Internet Connection Not Available", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
 
 
-                        }
+
+
                     });
             }
         }
@@ -214,6 +235,22 @@ public class ImageCardViewAdapter extends RecyclerView.Adapter<ImageCardViewAdap
     @Override
     public int getItemCount() {
         return mcommonArrayList.size();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        isNetworkConnected = isConnected;
+        if (!isConnected) {
+           // tSnackbar.show();
+        }else {
+
+            /*if (tSnackbar.isShown()){
+                tSnackbar.dismiss();
+            }*/
+
+        }
+
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

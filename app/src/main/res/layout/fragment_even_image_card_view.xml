@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/image_common_heaader"
             android:gravity="center"
-            android:text="School opened"
-            android:textSize="25dp"/>
+            android:text="Text Sample"
+            android:textSize="@dimen/event_title_header"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -75,7 +75,6 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/video_recyclerview"
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -90,9 +89,6 @@
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="17dp"/>-->
-
-
-
         </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

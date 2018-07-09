@@ -177,6 +177,7 @@ public  class ShowEvent {
                     jsonObject1.put("held_on",eventDetails.getHeld_on());
                     jsonObject1.put("date",eventDetails.getDate());
                     JSONArray imageArray = new JSONArray();
+
                     for (int j = 0 ; j < eventDetails.getImage_details().size() ; j ++){
                         ShowEvent.ImageDetails imageDetails = eventDetails.getImage_details().get(j);
                         JSONObject imageJson = new JSONObject();
@@ -185,6 +186,7 @@ public  class ShowEvent {
                         imageArray.put(imageJson);
                     }
                     jsonObject1.put("image_details",imageArray);
+
                     JSONArray videoArray = new JSONArray();
                     for(int k=0; k< eventDetails.getVideo_details().size(); k++){
                         ShowEvent.VideoDetails videoDetails = eventDetails.getVideo_details().get(k);
@@ -196,7 +198,6 @@ public  class ShowEvent {
                     jsonObject1.put("video_details",videoArray);
                     eventDetailsArray.put(jsonObject1);
                 }
-
                 eventObject.put("event_details",eventDetailsArray);
 
             }

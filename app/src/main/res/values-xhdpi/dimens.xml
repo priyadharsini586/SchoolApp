@@ -72,6 +72,10 @@
     <dimen name="view_pager_size_width">300dp</dimen>
     <dimen name="view_pager_size_height">300dp</dimen>
 
+    <dimen name="event_title_header">15dp</dimen>
+    <dimen name="card_image_height">150dp</dimen>
+    <dimen name="card_image_description_text">14dp</dimen>
+
     <!--event layout -->
     <dimen name="event_title_padding">6dp</dimen>
     <dimen name="event_heading_padding">12dp</dimen>

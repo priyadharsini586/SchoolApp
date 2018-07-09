@@ -58,8 +58,14 @@
     <dimen name="vip_gallery_image_view_width">160dp</dimen>
     <dimen name="vip_gallery_image_view_height">160dp</dimen>
 
-    <dimen name="view_pager_size_width">300dp</dimen>
-    <dimen name="view_pager_size_height">300dp</dimen>
+    <dimen name="view_pager_size_width">250dp</dimen>
+    <dimen name="view_pager_size_height">100dp</dimen>
+
+    <dimen name="card_image_description_text">12dp</dimen>
+    <dimen name="card_image_height">150dp</dimen>
+
+    <dimen name="event_title_header">12dp</dimen>
+
 
 
 

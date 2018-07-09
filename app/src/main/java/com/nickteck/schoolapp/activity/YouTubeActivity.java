@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -24,7 +25,6 @@ public class YouTubeActivity extends YouTubeBaseActivity implements NetworkChang
     private YouTubePlayer youTubeView;
     private String video_url;
     boolean isNetworkConnected;
-    TSnackbar tSnackbar;
     Config config = Config.getInstance();
 
     @Override
@@ -143,10 +143,9 @@ public class YouTubeActivity extends YouTubeBaseActivity implements NetworkChang
     public void onNetworkConnectionChanged(boolean isConnected) {
         isNetworkConnected = isConnected;
         if (!isConnected) {
-            tSnackbar.show();
+            Toast.makeText(this, "Internet Connection Not Available", Toast.LENGTH_SHORT).show();
         }else {
-            if (tSnackbar.isShown())
-                tSnackbar.dismiss();
+            Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
         }
 
     }
