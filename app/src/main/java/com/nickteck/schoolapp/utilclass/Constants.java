@@ -22,6 +22,7 @@ public class Constants {
 
 
     public static String CHILD_IMAGE_URL  = "http://docpat-app.com/school_app/images/students/";
+    public static String DRIVER_IMAGE_URL  = "http://docpat-app.com/school_app/images/drivers/";
 
     public static String ABOUT_CHILD_FRAGMENT = "ABOUT_CHILD_FRAGMENT";
     public static String ANNOUNEMENT_FRAGMENT = "ANNOUNEMENT_FRAGMENT";
@@ -29,6 +30,9 @@ public class Constants {
     public static String EVENTS_FRAGMENT = "EVENT_FRAGMENT";
     public static String EVENT_IMAGE_CARD_VIEW_FRAGMENT = "EVENT_CARD_VIEW_FRAGMENT";
     public static String FULL_IMAGE_SCREEN_VIEW_FRAGMENT = "FULL_SCREEN_IMAGE_FRAGMENT";
+    public static String BUS_TRACK_FRAGMENT = "BUS_TRACK_FRAGMENT";
+
+
     public static String EVENTS_GALLERY_IMAGE_URI = "http://docpat-app.com/school_app/images/events/";
 
 }

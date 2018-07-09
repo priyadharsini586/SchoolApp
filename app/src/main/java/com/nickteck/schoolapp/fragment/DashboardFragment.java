@@ -88,7 +88,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     TSnackbar tSnackbar;
     ApiInterface apiInterface;
     DataBaseHandler dataBaseHandler;
-    public LinearLayout about_child,announcement;
+    public LinearLayout about_child,announcement,ldtBusTrack;
     CardView ldtChoiceChildren;
 
     ArrayList<Bitmap>bitmapArrayList = new ArrayList<>();
@@ -152,6 +152,9 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
 
         txtAnnouncementBrodgeIcon = (TextView) mainView.findViewById(R.id.txtAnnouncementBrodgeIcon);
         txtAnnouncementBrodgeIcon.setVisibility(View.GONE);
+
+        ldtBusTrack = (LinearLayout) mainView.findViewById(R.id.ldtBusTrack);
+        ldtBusTrack.setOnClickListener(this);
 
         frameMainLayout = mainView.findViewById(R.id.frameMainLayout);
         MyApplication.getInstance().setConnectivityListener(this);
@@ -595,6 +598,12 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                     intent = new Intent(getActivity(), CommonFragmentActivity.class);
                     intent.putExtra("from",Constants.EVENTS_FRAGMENT);
                     startActivity(intent);
+                    break;
+
+                case R.id.ldtBusTrack:
+                    intent = new Intent(getActivity(),CommonFragmentActivity.class);
+                    intent.putExtra("from",Constants.BUS_TRACK_FRAGMENT);
+                    startActivity(intent );
                     break;
             }
     }

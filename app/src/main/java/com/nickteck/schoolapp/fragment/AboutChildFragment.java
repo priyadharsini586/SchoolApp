@@ -24,6 +24,7 @@ import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.activity.CommonFragmentActivity;
 import com.nickteck.schoolapp.api.ApiClient;
 import com.nickteck.schoolapp.api.ApiInterface;
+import com.nickteck.schoolapp.custom_view.LoadImage;
 import com.nickteck.schoolapp.database.DataBaseHandler;
 import com.nickteck.schoolapp.interfaces.OnBackPressedListener;
 import com.nickteck.schoolapp.model.AboutMyChildDetails;
@@ -155,7 +156,7 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
                 txtStudentName.setText(getChildAboutObject.getString("student_name"));
                 String studentimageUrl = getImageDeatils(getChildAboutObject.getString("student_id"));
                 CircleImageView circleImageView = v.findViewById(R.id.studentImage);
-                new LoadImage(circleImageView).execute(studentimageUrl);
+                new LoadImage(circleImageView,getActivity()).execute(studentimageUrl);
                 LinearLayout ldtTeacherList = v.findViewById(R.id.ldtTeacherList);
                 ldtMainAboutView.addView(v);
                 for (int i= 0 ; i < childDetailsArray.length() ; i ++){
@@ -194,7 +195,7 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
                     CircleImageView  circleImageView = v.findViewById(R.id.studentImage);
                     txtStudentName.setText(jsonObject.getString("student_name"));
                     String studentimageUrl = getImageDeatils(jsonObject.getString("student_id"));
-                    new LoadImage(circleImageView).execute(studentimageUrl);
+                    new LoadImage(circleImageView,getActivity()).execute(studentimageUrl);
                     ldtMainAboutView.addView(v);
                     LinearLayout ldtTeacherList = v.findViewById(R.id.ldtTeacherList);
                     for (int j= 0 ; j < notesArray.length() ; j ++){
@@ -369,36 +370,5 @@ public class AboutChildFragment extends Fragment implements NetworkChangeReceive
     }
 
 
-    private class LoadImage extends AsyncTask<String,Void,Bitmap> {
 
-        CircleImageView circleImageView ;
-        public LoadImage(CircleImageView circleImageView){
-            this.circleImageView = circleImageView;
-        }
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            String url = strings[0];
-            Bitmap bitmap = null;
-            try {
-            if (isNetworkConnected) {
-                bitmap = Picasso.with(getActivity()).load(url).get();
-            }else {
-                bitmap = Picasso.with(getActivity())
-                            .load(url)
-                            .networkPolicy(NetworkPolicy.OFFLINE)
-                            .get();
-            }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap aVoid) {
-            super.onPostExecute(aVoid);
-
-            circleImageView.setImageBitmap(aVoid);
-        }
-    }
 }
