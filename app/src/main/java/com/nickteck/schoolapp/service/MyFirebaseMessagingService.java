@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.nickteck.schoolapp.R;
+import com.nickteck.schoolapp.activity.CommonFragmentActivity;
 import com.nickteck.schoolapp.activity.DashboardActivity;
 import com.nickteck.schoolapp.fragment.DashboardFragment;
 import com.nickteck.schoolapp.interfaces.OnGetDataFromBusApp;
@@ -81,22 +82,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     JSONObject jsonObj = new JSONObject(strMsg);
                     String string = jsonObj.getString("student_id");
                     List<String> myList = new ArrayList<String>(Arrays.asList(string.split(",")));
-                    DashboardFragment.getStudentIdArrayList = studentArrayListId;
-                    Toast.makeText(this, ""+studentArrayListId, Toast.LENGTH_SHORT).show();
-
-                    if(studentIdMatchs()){
-
+                    boolean isStudentId = false;
+                    for (int i =0 ; i < myList.size() ; i ++){
+                        String studentID = myList.get(i);
+                        for (int j =0 ; j < DashboardFragment.getStudentIdArrayList.size() ; j++){
+                            String studentId = DashboardFragment.getStudentIdArrayList.get(j);
+                            if (studentID.equals(studentId)){
+                                isStudentId = true;
+                            }
+                        }
 
                     }
-
-                    Toast.makeText(this, ""+myList, Toast.LENGTH_SHORT).show();
-
-                    Toast.makeText(this, ""+ string, Toast.LENGTH_SHORT).show();
+                    if (isStudentId)
+                        handleNotification(strMsg);
 
                 } catch (Exception e) {
                     Log.e(TAG, "Exception: " + e.getMessage());
                 }
-                Log.e(TAG, "Data Payload: " + strMsg);
             }
 
             // Check if message contains a notification payload.
@@ -106,7 +108,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 handleNotification(remoteMessage.getNotification().getBody());
             }
 
-            // Check if message contains a data payload.
+           /* // Check if message contains a data payload.
             if (remoteMessage.getData().size() > 0) {
                 Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
 
@@ -116,7 +118,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 } catch (Exception e) {
                     Log.e(TAG, "Exception: " + e.getMessage());
                 }
-            }
+            }*/
 
         }
 
@@ -125,26 +127,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    private boolean studentIdMatchs(){
 
-
-        return true;
-    }
 
     private void handleNotification(String message) {
+        Intent resultIntent = new Intent(getApplicationContext(), CommonFragmentActivity.class);
+        resultIntent.putExtra("from",Constants.ABOUT_CHILD_FRAGMENT);
+        resultIntent.putExtra("childId","-1");
+        showNotificationMessage(getApplicationContext(), "notify", message, "12.00 Pm", resultIntent);
 
-        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+//        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
-            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-            pushNotification.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
-            // play notification sound
-            NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
-        }else{
-            // If the app is in background, firebase itself handles the notification
-        }
+
+
 
 
     }

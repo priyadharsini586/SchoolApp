@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.nickteck.schoolapp.R;
-import com.nickteck.schoolapp.image_cache.ImageLoader;
 import com.nickteck.schoolapp.model.CommonImageVideoEventData;
 import com.nickteck.schoolapp.utilclass.Constants;
 import com.squareup.picasso.Picasso;
@@ -26,14 +25,12 @@ public class ImagePagerAdapter extends PagerAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private ArrayList<CommonImageVideoEventData> commonImageVideoEventData;
-    ImageLoader imageLoader;
 
     public ImagePagerAdapter(Activity activity, Context context, ArrayList<CommonImageVideoEventData> commonImageVideoEventData) {
         this.activity = activity;
         this.context = context;
         this.layoutInflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         this.commonImageVideoEventData = commonImageVideoEventData;
-        imageLoader=new ImageLoader(context.getApplicationContext());
     }
 
     @Override
