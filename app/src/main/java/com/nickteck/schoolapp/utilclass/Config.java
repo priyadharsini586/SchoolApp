@@ -8,7 +8,7 @@ public class Config  {
 
     public static final String DEVELOPER_KEY = "AIzaSyBrqMGci99-EOOCzBd9kFRGF10KZusORYY";
 
-    public static final String TOPIC_GLOBAL = "latlan";
+    public static final String TOPIC_GLOBAL = "studentNote";
 
     // broadcast receiver intent filters
     public static final String REGISTRATION_COMPLETE = "registrationComplete";

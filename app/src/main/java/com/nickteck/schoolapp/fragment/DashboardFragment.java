@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -95,10 +96,12 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
     ArrayList<String>bitmapStrArrayList = new ArrayList<>();
     private LinearLayout all_children_dialoge;
     private ArrayList<ParentDetails.student_details> getStudentNameArrayList  = new ArrayList<>();
+    public static ArrayList<String> getStudentIdArrayList = new ArrayList<>();
     private String[] getStudentNameStringArray;
     private StudentCustomListAdapter studentCustomListAdapter;
     String childId = "-1";
     private LinearLayout about_events;
+    public static final String MyPREFERENCES = "MyStudentId";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -526,6 +529,7 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                         bitmapArrayList = new ArrayList<>();
                         bitmapStrArrayList = new ArrayList<>();
                         getStudentNameArrayList = new ArrayList<>();
+                        getStudentIdArrayList = new ArrayList<>();
                         ParentDetails.student_details student_details = new ParentDetails.student_details();
                         student_details.setStudent_id("-1");
                         student_details.setStudent_name("All Children");
@@ -535,13 +539,23 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                             if (studObject.has("student_photo")) {
                                 String stuPhoto = studObject.getString("student_photo");
                                 String studId = studObject.getString("student_id");
+                                String studentClass = studObject.getString("student_std");
+                                String studentSec = studObject.getString("student_section");
+
+                              //  setDataInSharedPreferences(studId);
                                 bitmapStrArrayList.add(stuPhoto);
                                 if (studObject.has("student_name")) {
                                     String studentName = studObject.getString("student_name");
                                     ParentDetails.student_details student_detail = new ParentDetails.student_details();
                                     student_detail.setStudent_id(studId);
                                     student_detail.setStudent_name(studentName);
+                                    student_detail.setStudent_std(studentClass);
+                                    student_detail.setStudent_section(studentSec);
+
                                     getStudentNameArrayList.add(student_detail);
+                                    getStudentIdArrayList.add(studId);
+                                    Toast.makeText(getActivity(), ""+getStudentIdArrayList, Toast.LENGTH_SHORT).show();
+
                                 }
                             }
                         }
@@ -563,6 +577,15 @@ public class DashboardFragment extends Fragment  implements OnBackPressedListene
                 }
             }
         });
+    }
+
+    private void setDataInSharedPreferences(String studId) {
+        SharedPreferences sharedpreferences = getActivity().getSharedPreferences(MyPREFERENCES, getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("studentId", studId);
+        editor.commit();
+
+
     }
 
     @Override

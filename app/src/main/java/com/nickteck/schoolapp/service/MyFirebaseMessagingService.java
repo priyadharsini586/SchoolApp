@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.activity.DashboardActivity;
+import com.nickteck.schoolapp.fragment.DashboardFragment;
 import com.nickteck.schoolapp.interfaces.OnGetDataFromBusApp;
 import com.nickteck.schoolapp.utilclass.Config;
 import com.nickteck.schoolapp.utilclass.Constants;
@@ -30,6 +33,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
     public static OnGetDataFromBusApp onGetDataFromBusApp ;
+    private ArrayList<String> studentArrayListId = new ArrayList<>();
 
     private NotificationUtils notificationUtils;
 
@@ -63,24 +67,37 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
 
-        }else {
-           // /topics/[2, 4, 5]
-            String teacherAppurl = remoteMessage.getFrom();
-            String[] parts = teacherAppurl.split("/");
-            String part1 = parts[0]; // 004
-            String part2 = parts[1];
-            String withoutFirstCharacter = part2.substring(1); // index starts at zero
-            String withoutLastCharacter = withoutFirstCharacter.substring(0, withoutFirstCharacter.length() - 1);
-            String[] finalData = withoutLastCharacter.split(",");
+        }else if(remoteMessage.getFrom().equals("/topics/studentNote")) {
+          //  {"messge":"hi","student_id":"1, 2, 4, 5"}
+            // Check if message contains a data payload.
 
-            List<String> stringArrayList = new ArrayList<String>();
-            stringArrayList = Arrays.asList(finalData);
 
-            for(String s: stringArrayList){
-                stringArrayList.add(s);
+            if (remoteMessage.getData().size() > 0) {
+
+                Map<String, String> getData = remoteMessage.getData();
+                String strMsg = getData.toString();
+
+                try {
+                    JSONObject jsonObj = new JSONObject(strMsg);
+                    String string = jsonObj.getString("student_id");
+                    List<String> myList = new ArrayList<String>(Arrays.asList(string.split(",")));
+                    DashboardFragment.getStudentIdArrayList = studentArrayListId;
+                    Toast.makeText(this, ""+studentArrayListId, Toast.LENGTH_SHORT).show();
+
+                    if(studentIdMatchs()){
+
+
+                    }
+
+                    Toast.makeText(this, ""+myList, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(this, ""+ string, Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Exception: " + e.getMessage());
+                }
+                Log.e(TAG, "Data Payload: " + strMsg);
             }
-
-
 
             // Check if message contains a notification payload.
             if (remoteMessage.getNotification() != null) {
@@ -106,6 +123,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
 
+    }
+
+    private boolean studentIdMatchs(){
+
+
+        return true;
     }
 
     private void handleNotification(String message) {
