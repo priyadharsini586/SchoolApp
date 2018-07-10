@@ -11,12 +11,15 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.nickteck.schoolapp.R;
 import com.nickteck.schoolapp.activity.CommonFragmentActivity;
 import com.nickteck.schoolapp.activity.DashboardActivity;
+import com.nickteck.schoolapp.database.DataBaseHandler;
 import com.nickteck.schoolapp.fragment.DashboardFragment;
 import com.nickteck.schoolapp.interfaces.OnGetDataFromBusApp;
+import com.nickteck.schoolapp.model.ParentDetails;
 import com.nickteck.schoolapp.utilclass.Config;
 import com.nickteck.schoolapp.utilclass.Constants;
 import com.nickteck.schoolapp.utilclass.NotificationUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.e(TAG, "From: " + remoteMessage.getFrom());
+
 
         if(remoteMessage.getFrom().equals("/topics/latlan")){
             if (remoteMessage == null)
@@ -81,20 +84,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 try {
                     JSONObject jsonObj = new JSONObject(strMsg);
                     String string = jsonObj.getString("student_id");
+                    getStudentIdList();
                     List<String> myList = new ArrayList<String>(Arrays.asList(string.split(",")));
                     boolean isStudentId = false;
+                    DataBaseHandler dataBaseHandler = new DataBaseHandler(getApplicationContext());
+                    String parent_id = dataBaseHandler.getParentId();
+                    Log.e("parent id",parent_id);
                     for (int i =0 ; i < myList.size() ; i ++){
-                        String studentID = myList.get(i);
-                        for (int j =0 ; j < DashboardFragment.getStudentIdArrayList.size() ; j++){
-                            String studentId = DashboardFragment.getStudentIdArrayList.get(j);
+                        String studentID = myList.get(i).trim();
+                        for (int j =0 ; j < studentArrayListId.size(); j++){
+                            String studentId = studentArrayListId.get(j).trim();
                             if (studentID.equals(studentId)){
                                 isStudentId = true;
                             }
                         }
 
                     }
-                    if (isStudentId)
+                    if (isStudentId) {
                         handleNotification(strMsg);
+                    }else {
+                        Log.e(TAG, "From: " + remoteMessage.getFrom());
+                    }
 
                 } catch (Exception e) {
                     Log.e(TAG, "Exception: " + e.getMessage());
@@ -233,5 +243,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static void onGetDataFromBusAppListener(OnGetDataFromBusApp onGetDataFromBusApp) {
         MyFirebaseMessagingService.onGetDataFromBusApp = onGetDataFromBusApp;
+    }
+
+    public void getStudentIdList (){
+        DataBaseHandler dataBaseHandler = new DataBaseHandler(getApplicationContext());
+        if (dataBaseHandler.ifParentChildisExists()) {
+            String getParentDetails = dataBaseHandler.getParentChildDetails();
+            try {
+                JSONObject getParentObject = new JSONObject(getParentDetails);
+                JSONArray getStudentArray = getParentObject.getJSONArray("student_details");
+                studentArrayListId = new ArrayList<>();
+                for (int i = 0; i < getStudentArray.length(); i++) {
+                    JSONObject studObject = getStudentArray.getJSONObject(i);
+                    if (studObject.has("student_id")) {
+                        String studId = studObject.getString("student_id");
+                        studentArrayListId.add(studId);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
